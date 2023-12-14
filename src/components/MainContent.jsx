@@ -6,7 +6,6 @@ import { shoppingListCollection, db } from "../firebase"
 import { useState, useEffect } from "react"
 
 export default function MainContent() {
-
   //state for form
   const [formData, setFormData] = useState({})
 
@@ -27,8 +26,10 @@ export default function MainContent() {
       setShoppingListItems(newItemsArray)  
     })
     return unsubscribe
+    // no dependencies needed for onShaphot, only mount once
   }, [])
 
+  // hande change for Form
   function handleChange(event) {
     const {name, value} = event.target
 
@@ -40,9 +41,12 @@ export default function MainContent() {
     })
   }
 
-
+  //add item to database 
   async function addNewItemToShoppingList(event) {
+    //prevent submitting
     event.preventDefault()
+
+    // check if user input is in current shoping ist
     const isInShoppingListItemsArray = ( 
       shoppingListItems.some(item => (
         item.name === formData.name.toLowerCase()
@@ -60,12 +64,13 @@ export default function MainContent() {
       //
       await addDoc(shoppingListCollection, newItem)
     }
-    
+    //reset formdata
     setFormData({})
   }
 
-
+  //to delete all items in firebase
   function clearShoppingList(event) {
+    //prevent submitting
     event.preventDefault()
 
     shoppingListItems.forEach(item => {
@@ -73,10 +78,12 @@ export default function MainContent() {
     })
   }
 
-
+  // tot delete item/doc based on ID
   async function deleteItem(itemId) {
     // get reference to doc for deleteDoc function
     const docRef = doc(db, "shopping-list", itemId)
+   
+    //use deleteDoc with the doc reference
     await deleteDoc(docRef)
   }
 
@@ -88,7 +95,12 @@ export default function MainContent() {
         addNewItemToShoppingList={addNewItemToShoppingList}
       />
       <ShoppingList>{shoppingListItems}</ShoppingList>
-      {allItemsChecked && shoppingListItems.length > 0 && <ConfirmAllItemsModal handleSubmit={clearShoppingList}/> }
+
+      {
+        allItemsChecked && 
+        shoppingListItems.length > 0 
+        && <ConfirmAllItemsModal handleSubmit={clearShoppingList}/>
+      }
     </main>
   )
 }

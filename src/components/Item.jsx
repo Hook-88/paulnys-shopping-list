@@ -8,14 +8,18 @@ export default function Item(props) {
     borderRadius: "5px",
     backgroundColor: "green"
   }
-
   const styleNormal = {
     display: "flex",
     border: "1px solid black",
     borderRadius: "5px",
   }
-
+  const cssLabel = {
+    userSelect: "none",
+    width: "100%",
+    padding: "10px 5px"
+  }
   const itemStyle = checked ? styleChecked : styleNormal
+  const displayName = name[0].toUpperCase() + name.slice(1)
 
   return (
     <li
@@ -25,34 +29,24 @@ export default function Item(props) {
         type="checkbox" 
         name={name} 
         id={id}
-        style={
-          {
-            display: "none"
-          }
-        }
+        style={{display: "none"}}
         onChange={handleCheck} 
         checked={checked ? true : false}
       />
       <label 
         htmlFor={id}
-        style={
-          {
-            userSelect: "none",
-            width: "100%",
-            padding: "10px 5px"
-          }
-        }
-      
+        style={cssLabel}
       >
-        {name[0].toUpperCase() + name.slice(1)}
+        {displayName}
       </label>
-      {!checked && 
-        <button 
-          type="button"
-          name={id}
-        >
-          Delete
-        </button>
+      {
+        !checked && 
+          <button 
+            type="button"
+            name={id}
+          >
+            Delete
+          </button>
       }      
     </li>
   )
