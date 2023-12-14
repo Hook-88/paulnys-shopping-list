@@ -4,21 +4,25 @@ export default function Item(props) {
 
   const styleChecked = {
     display: "flex",
-    border: "1px solid darkgreen",
-    borderRadius: "5px",
-    backgroundColor: "green"
+    borderRadius: "3px",
+    backgroundColor: "#D3C1B3"
   }
   const styleNormal = {
     display: "flex",
-    border: "1px solid black",
-    borderRadius: "5px",
+    borderRadius: "3px",
+    backgroundColor: "#D3C1B3"
   }
   const cssLabel = {
     userSelect: "none",
     width: "100%",
-    padding: "10px 5px"
+    padding: "10px 5px",
+    textDecoration: checked ? "line-through" : "none",
+    // textShadow: checked ? "0px 0px 1px black": "none",
+    // fontWeight: checked ? "bold" : "normal",
+    color: "black"
   }
   const itemStyle = checked ? styleChecked : styleNormal
+
   const displayName = name[0].toUpperCase() + name.slice(1)
 
   return (
@@ -44,6 +48,15 @@ export default function Item(props) {
           <button 
             type="button"
             name={id}
+            style={{
+              border: "none",
+              borderRadius: "3px",
+              borderTopLeftRadius: "0",
+              borderBottomLeftRadius: "0",
+              backgroundColor: "#CF3232",
+              padding: "0 10px",
+              color: "white"
+            }}
           >
             Delete
           </button>

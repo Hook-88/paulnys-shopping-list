@@ -13,7 +13,7 @@ export default function Form(props) {
     fontSize: "1rem",
     padding: ".6em 0",
     backgroundColor: "#4a8290",
-    border: "1px solid #2D5058",
+    border: "0px solid #2D5058",
     borderRadius: "3px",
     color: "#efeadd",
     textShadow: "0px 0px 1px black"
@@ -31,11 +31,7 @@ export default function Form(props) {
         onChange={handleChange}
         value={formData.hasOwnProperty("name") ? formData.name : ""}
         required
-        style={
-          {
-            fontSize: "1rem"
-          }
-        }
+        style={{fontSize: "1rem"}}
       />
       <button
         disabled={!formData.hasOwnProperty("name") || formData.name.length === 0}
