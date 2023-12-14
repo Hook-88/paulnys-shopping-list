@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <header style={cssHeader}>
       <img 
-        src="../assets/logo_paulny.png" 
+        src="../public/logo_paulny.png" 
         alt="Logo Paulny"
         style={cssImage} 
         />
