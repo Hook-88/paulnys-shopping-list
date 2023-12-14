@@ -7,7 +7,7 @@ function App() {
   const cssApp = {
     width: "375px",
     margin: "0 auto",
-    padding: "20px 5px 10px 5px",
+    padding: "20px 10px 10px 10px",
     display: "flex",
     flexDirection: "column",
     backgroundColor: "#efeadd"
