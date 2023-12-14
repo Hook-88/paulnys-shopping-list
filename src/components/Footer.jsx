@@ -1,7 +1,7 @@
 export default function Footer() {
   const cssFooter = {
     textAlign: "center",
-    marginTop: "1em"
+    marginTop: "auto"
   }
 
   return (

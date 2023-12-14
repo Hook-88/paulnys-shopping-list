@@ -8,3 +8,8 @@ body {
   margin: 0;
   font-family: 'Dosis', sans-serif;
 }
+
+#root {
+  min-height: 100vh;
+  display: flex;
+}
