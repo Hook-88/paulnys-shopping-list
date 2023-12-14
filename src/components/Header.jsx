@@ -5,17 +5,20 @@ export default function Header() {
     gap: "1em",
     paddingBottom: "10px"
   }
+  const cssImage = {
+    maxWidth: "70%",
+    margin: "0 auto",
+    paddingBottom: "1em"
+  }
 
   
   return (
-    <header
-      style={cssHeader}
-    >
-      <h1 style={{margin: "0"}}>PaulNy's Shopping List</h1>
-      <i 
-        className="fa-solid fa-basket-shopping"
-        style={{fontSize: "1.8rem"}}
-      ></i>
+    <header style={cssHeader}>
+      <img 
+        src="../assets/logo_paulny.png" 
+        alt="Logo Paulny"
+        style={cssImage} 
+        />
     </header>
   )
 }
