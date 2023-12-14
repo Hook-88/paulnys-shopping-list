@@ -7,10 +7,10 @@
 body {
   margin: 0;
   font-family: 'Dosis', sans-serif;
-  background-color: "#efeadd";
 }
 
 #root {
   min-height: 100vh;
   display: flex;
+  background-color: #efeadd;
 }
