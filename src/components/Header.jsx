@@ -11,7 +11,6 @@ export default function Header() {
     paddingBottom: "1em"
   }
 
-  
   return (
     <header style={cssHeader}>
       <img 
