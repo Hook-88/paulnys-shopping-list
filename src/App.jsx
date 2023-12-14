@@ -10,7 +10,6 @@ function App() {
     padding: "20px 10px 10px 10px",
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#efeadd"
     
   }
 
