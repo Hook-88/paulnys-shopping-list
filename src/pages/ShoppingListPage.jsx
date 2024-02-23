@@ -43,16 +43,30 @@ export default function ShoppingListPage() {
         await deleteDoc(docRef)
     }
 
+    async function toggleChecked(itemId) {
+        const docRef = doc(db, "shopping-list", itemId)
+        //get snapshot of document
+        const docSnap = await getDoc(docRef)
+
+        await updateDoc(
+            docRef, { 
+                //toggle checked value
+                checked: !docSnap.data().checked 
+            }
+        ) 
+    }
+
     return (
         <>
             <PageHeader>
                 <h1>Here goes header</h1>
             </PageHeader>
-            <ShoppingListContext.Provider value={{addItemToList, deleteItem}}>
+            <ShoppingListContext.Provider value={{addItemToList, deleteItem, toggleChecked}}>
                 <MainContent>
                     <AddNewItem />
-                    <ShoppingList items={shoppingListItems}/>
-
+                    {
+                        shoppingListItems.length > 0 && <ShoppingList items={shoppingListItems}/>
+                    }
                 </MainContent>
             </ShoppingListContext.Provider>
             <PageFooter>
