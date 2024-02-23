@@ -1,5 +1,14 @@
+import PageHeader from "../components/PageHeader/PageHeader"
+
 export default function ShoppingListPage() {
 
-    return <h1>Here goes shopping list</h1>
+    return (
+        <>
+            <PageHeader>
+                <h1>Here goes header</h1>
+            </PageHeader>
+        </>
+    
+    )
     
 }
