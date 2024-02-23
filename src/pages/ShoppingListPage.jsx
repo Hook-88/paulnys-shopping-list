@@ -1,6 +1,10 @@
 import PageHeader from "../components/PageHeader/PageHeader"
 import MainContent from "../components/MainContent/MainContent"
 import PageFooter from "../components/PageFooter/PageFooter"
+import AddNewItem from "../components/AddNewItem/AddNewItem"
+
+import Card from "../components/Card/Card"
+import Form from "../components/Form/Form"
 
 export default function ShoppingListPage() {
 
@@ -10,7 +14,7 @@ export default function ShoppingListPage() {
                 <h1>Here goes header</h1>
             </PageHeader>
             <MainContent>
-                <h2>Main content goed here</h2>
+                <AddNewItem />
             </MainContent>
             <PageFooter>
                 <small>Copyright sheit</small>

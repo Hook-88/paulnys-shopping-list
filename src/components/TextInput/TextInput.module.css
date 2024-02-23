@@ -1,0 +1,16 @@
+.input {
+    font-size: 1rem;
+    border: none;
+}
+
+.newItem {
+    border-radius: 1.5em;
+    padding: .5em 1em;
+    background-color: #f7f7f8;
+}
+
+.newItem:active, 
+.newItem:focus {
+    background-color: #fff;
+    outline: 2px solid #4b8290;
+}
