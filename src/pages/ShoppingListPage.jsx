@@ -35,7 +35,12 @@ export default function ShoppingListPage() {
         }
 
         const docRef = await addDoc(shoppingListCollection, newItem)
-        
+    }
+
+    async function deleteItem(itemId) {
+        const docRef = doc(db, "shopping-list", itemId)
+
+        await deleteDoc(docRef)
     }
 
     return (
@@ -43,7 +48,7 @@ export default function ShoppingListPage() {
             <PageHeader>
                 <h1>Here goes header</h1>
             </PageHeader>
-            <ShoppingListContext.Provider value={{addItemToList}}>
+            <ShoppingListContext.Provider value={{addItemToList, deleteItem}}>
                 <MainContent>
                     <AddNewItem />
                     <ShoppingList items={shoppingListItems}/>

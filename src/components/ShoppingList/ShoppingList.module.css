@@ -13,3 +13,9 @@
 .span {
     margin-top: .5em;
 }
+
+.spanChecked {
+    margin-top: .5em;
+    text-decoration: line-through;
+}
+
