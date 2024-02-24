@@ -24,6 +24,8 @@ export default function ShoppingListPage() {
                     ...doc.data(),
                     id: doc.id
                 }))
+                .sort((a, b) => b.dateAdded - a.dateAdded)
+                .sort((a, b) => a.checked - b.checked)
 
             setShoppingListItems(itemArray)
         })
@@ -72,6 +74,24 @@ export default function ShoppingListPage() {
         await updateDoc(docRef, { name: value})
     }
 
+    function deleteCheckedItems() {
+        shoppingListItems.forEach(item => {
+            if (item.checked) {
+                deleteItem(item.id)
+            }
+
+        })
+    }
+
+    function uncheckItems() {
+        shoppingListItems.forEach(item => {
+            if (item.checked) {
+                toggleChecked(item.id)
+            }
+        })
+        
+    }
+
     return (
         <>
             <PageHeader>
@@ -86,8 +106,8 @@ export default function ShoppingListPage() {
                     {
                         showButtons &&
                         <div className={css.buttons}>
-                            <Button variant="danger">Delete checked</Button>
-                            <Button variant="success">Uncheck checked</Button>
+                            <Button variant="danger" onClick={deleteCheckedItems}>Delete checked</Button>
+                            <Button variant="success"onClick={uncheckItems}>Uncheck checked</Button>
                         </div>
                     }
                     
