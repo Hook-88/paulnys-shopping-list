@@ -8,6 +8,8 @@ import AddNewItem from "../components/AddNewItem/AddNewItem"
 import ShoppingList from "../components/ShoppingList/ShoppingList"
 import Button from "../components/Button/Button"
 import css from "./ShoppingListPage.module.css"
+import { FaCaretDown } from "react-icons/fa6"
+import { FaCaretUp } from "react-icons/fa6"
 import useToggle from "../hooks/useToggle"
 
 const ShoppingListContext = createContext()
@@ -15,6 +17,7 @@ const ShoppingListContext = createContext()
 export default function ShoppingListPage() {
     const [shoppingListItems, setShoppingListItems] = useState([])
     const [showButtons, setShowButtons] = useState(false)
+    const [showAddItem, toggleAddITem] = useToggle(false)
 
     useEffect(() => {
         const unsubscribe = onSnapshot(shoppingListCollection, (snapshot) => {
@@ -94,12 +97,19 @@ export default function ShoppingListPage() {
 
     return (
         <>
-            <PageHeader>
-                <h1>Here goes header</h1>
+            <PageHeader onClick={toggleAddITem}>
+                <h1>Shopping list</h1>
+                {
+                    showAddItem ?
+                        <FaCaretUp className={css.headerIcon}/>:
+                        <FaCaretDown className={css.headerIcon}/>
+                }
             </PageHeader>
             <ShoppingListContext.Provider value={{addItemToList, deleteItem, toggleChecked, updateItemName}}>
                 <MainContent>
-                    <AddNewItem />
+                    {
+                        showAddItem && <AddNewItem />
+                    }
                     {
                         shoppingListItems.length > 0 && <ShoppingList items={shoppingListItems}/>
                     }
