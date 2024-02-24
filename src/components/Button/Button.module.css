@@ -1,5 +1,5 @@
 .button {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 700;
     padding: .5em 1em;
     display: flex;
@@ -8,4 +8,14 @@
     border: none;
     cursor: pointer;
     user-select: none;
+}
+
+.danger {
+    background-color: #dc3445;
+    color: #fff;
+}
+
+.success {
+    background-color: #408754;
+    color: #fff;
 }

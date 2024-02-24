@@ -6,11 +6,15 @@ import MainContent from "../components/MainContent/MainContent"
 import PageFooter from "../components/PageFooter/PageFooter"
 import AddNewItem from "../components/AddNewItem/AddNewItem"
 import ShoppingList from "../components/ShoppingList/ShoppingList"
+import Button from "../components/Button/Button"
+import css from "./ShoppingListPage.module.css"
+import useToggle from "../hooks/useToggle"
 
 const ShoppingListContext = createContext()
 
 export default function ShoppingListPage() {
     const [shoppingListItems, setShoppingListItems] = useState([])
+    const [showButtons, setShowButtons] = useState(false)
 
     useEffect(() => {
         const unsubscribe = onSnapshot(shoppingListCollection, (snapshot) => {
@@ -26,6 +30,12 @@ export default function ShoppingListPage() {
 
         return unsubscribe
     },[])
+
+    useEffect(() => {
+        const itemChecked = shoppingListItems.some(item => item.checked === true)
+        setShowButtons(itemChecked)
+        
+    }, [shoppingListItems])
 
     async function addItemToList(value) {
         const newItem = {
@@ -73,6 +83,15 @@ export default function ShoppingListPage() {
                     {
                         shoppingListItems.length > 0 && <ShoppingList items={shoppingListItems}/>
                     }
+                    {
+                        showButtons &&
+                        <div className={css.buttons}>
+                            <Button variant="danger">Delete checked</Button>
+                            <Button variant="success">Uncheck checked</Button>
+                        </div>
+                    }
+                    
+
                 </MainContent>
             </ShoppingListContext.Provider>
             <PageFooter>
