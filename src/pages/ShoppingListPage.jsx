@@ -56,12 +56,18 @@ export default function ShoppingListPage() {
         ) 
     }
 
+    async function updateItemName(itemId, value) {
+        const docRef = doc(db, "shopping-list", itemId)
+        
+        await updateDoc(docRef, { name: value})
+    }
+
     return (
         <>
             <PageHeader>
                 <h1>Here goes header</h1>
             </PageHeader>
-            <ShoppingListContext.Provider value={{addItemToList, deleteItem, toggleChecked}}>
+            <ShoppingListContext.Provider value={{addItemToList, deleteItem, toggleChecked, updateItemName}}>
                 <MainContent>
                     <AddNewItem />
                     {
