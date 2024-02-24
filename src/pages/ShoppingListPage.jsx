@@ -98,7 +98,7 @@ export default function ShoppingListPage() {
     return (
         <>
             <PageHeader onClick={toggleAddITem}>
-                <h1>Shopping list</h1>
+                <h2>Shopping list</h2>
                 {
                     showAddItem ?
                         <FaCaretUp className={css.headerIcon}/>:
