@@ -9,6 +9,7 @@ export default function App() {
             <Link to="recipes">Recipes</Link>
             <Link to="add-recipe">Add recipe</Link>
             <Link to="/">Shopping list</Link>
+            
             <Outlet />
         </>
     )
