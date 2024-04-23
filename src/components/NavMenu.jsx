@@ -5,14 +5,14 @@ import Menu from "./Menu/Index"
 export default function NavMenu() {
 
     return (
-        <Menu>
-            <Menu.Button className="text-xl p-3 z-10 relative">
+        <Menu className="fixed text-2xl">
+            <Menu.Button className="p-3 z-10 relative">
                 {
                     open => open ? <FaBars className="text-white"/> : <FaBars />
                 }
             </Menu.Button>
             <Menu.Dropdown
-                className="bg-sky-700 text-white text-xl fixed inset-x-0 top-0 text-center flex flex-col gap-2 py-2 pb-3"
+                className="bg-sky-700 text-white fixed inset-x-0 top-0 text-center flex flex-col gap-2 py-2 pb-3"
             >
                 <Menu.Item><Link to="recipes">Recipes</Link></Menu.Item>
                 <Menu.Item><Link to="add-recipe">Add recipe</Link></Menu.Item>
