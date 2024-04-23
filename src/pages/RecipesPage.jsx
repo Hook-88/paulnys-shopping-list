@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom"
-import { FaPlus, FaAngleRight } from "react-icons/fa6";
+import { FaPlus, FaAngleRight } from "react-icons/fa6"
 import Card from "../components/Card"
+import { onSnapshot } from "firebase/firestore"
+import { db, recipesCollection } from "../firebase"
+import { useEffect, useState } from "react"
 
 const recipesArray = [
     {
@@ -14,6 +17,25 @@ const recipesArray = [
 ]
 
 export default function RecipesPage() {
+    const [recipes, setRecipes] = useState(null)
+
+    useEffect(() => {
+        const unSub = onSnapshot(recipesCollection, snapshot => {
+            //sync with local state
+            const recipesArray = snapshot.docs.map(
+                recipe => (
+                    {
+                        ...recipe.data(),
+                        id: recipe.id
+                    }
+                )
+            )
+
+            setRecipes(recipesArray)
+        })
+        //preventing memory leak
+        return unSub
+    },[])
 
     return (
         <div>
@@ -23,7 +45,7 @@ export default function RecipesPage() {
             <main className="px-2">
                 <ul className="space-y-2 mb-2">
                     {
-                        recipesArray.sort((a, b) => a.name.localeCompare(b.name))
+                        recipes?.sort((a, b) => a.name.localeCompare(b.name))
                             .map(recipe => (
                             <li key={recipe.id}>
                                 <Link to={recipe.id}>
