@@ -39,8 +39,12 @@ export default function RecipesPage() {
 
     return (
         <div>
-            <header className="text-2xl py-2 text-center border-b mb-2">
+            <header className="text-2xl py-2 text-center border-b mb-2 flex items-center justify-between">
+                <FaPlus className="text-transparent m-1 mx-2"/>
                 <h1>Recipes</h1>
+                <Link to="/add-recipe" className="p-1 px-2">
+                    <FaPlus className=""/>
+                </Link>
             </header>
             <main className="px-2">
                 <ul className="space-y-2 mb-2">
@@ -55,11 +59,16 @@ export default function RecipesPage() {
                         ))
                     }
                 </ul>
-                <Card
-                    className="grid p-0"
-                >
-                    <Link to="/add-recipe" className="py-2 px-2 flex justify-center items-center text-lg gap">Add Recipe <FaAngleRight /></Link>
-                </Card>
+                {   recipes ?
+                    <Card
+                        className="grid p-0"
+                    >
+                        <Link to="/add-recipe" className="py-2 px-2 flex justify-center items-center text-lg gap">Add Recipe <FaAngleRight /></Link>
+                    </Card> :
+                    <Card>
+                        <h1>Loading...</h1>
+                    </Card>
+                }
             </main>
         </div>
     )
