@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { FaPlus, FaAngleRight } from "react-icons/fa6"
+import { FaPlus, FaAngleRight, FaAngleLeft } from "react-icons/fa6"
 import Card from "../components/Card"
 import { onSnapshot } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
@@ -30,10 +30,10 @@ export default function RecipesPage() {
 
     return (
         <div>
-            <header className="-z-10 font-bold py-2 text-center mb-2 flex items-center justify-between fixed top-0 inset-x-0">
-                <Link to="/add-recipe" className="text-base font-normal pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
-                <h1>Recipes</h1>
-                <Link to="/add-recipe" className="text-base font-normal pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
+            <header className="-z-10 font-bold py-2 px-4 text-center mb-2 grid grid-cols-6 items-center fixed top-0 inset-x-0">
+                <Link to="/" className="text-sm font-normal flex items-center justify-end col-span-2 justify-self-start"> <FaAngleLeft className="text-base"/>Shopping List</Link>
+                <h1 className="col-start-3 text-lg col-span-2 justify-self-center font-bold">Recipes</h1>
+                <Link to="/add-recipe" className="col-start-6 text-xl font-normal flex items-center justify-end"><FaPlus /></Link>
             </header>
             <main className="mt-12 px-4">
                 {   recipes ?    

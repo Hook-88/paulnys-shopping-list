@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom"
 import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
+import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
 import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
@@ -89,8 +90,8 @@ export default function RecipePage() {
                     className="col-start-2 col-span-2 justify-self-center font-bold"
                 >{recipe ? getCapString(recipe.name) : "Loading"}</h1>
                 <Link to="/recipes" className="flex items-center justify-self-end">
-                    Edit
-                    <FaAngleRight />
+                    <FaRegEdit />
+                    {/* <FaAngleRight /> */}
                 </Link>
             </header>
             <main className="px-4 mt-12 flex flex-col gap-4">
@@ -106,7 +107,7 @@ export default function RecipePage() {
                         {
                             recipe.ingredients.map(ingredient => (
                                     <List.ItemCheck key={ingredient.id} itemObj={ingredient} onClick={() => toggleCheckItem(ingredient.id)}>
-                                        {ingredient.name}
+                                        {getCapString(ingredient.name)}
                                     </List.ItemCheck>
                                 ) 
                             )
