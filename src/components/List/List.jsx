@@ -8,7 +8,7 @@ export default function List({children, itemsArray}) {
     
     return (
         <ListContext.Provider value={{itemsArray}}>
-            <ul className="cursor-pointer bg-white bg-opacity-15 rounded-lg mb-4">
+            <ul className="cursor-pointer bg-white bg-opacity-15 rounded-lg">
                 {children}
             </ul>
         </ListContext.Provider>

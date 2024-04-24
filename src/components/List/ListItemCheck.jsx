@@ -4,12 +4,13 @@ import { FaCheck, FaRegCircle } from "react-icons/fa6"
 import { ListContext } from "./List"
 
 
-export default function ListItemCheck({children, itemObj}) {
+export default function ListItemCheck({children, itemObj, onClick}) {
     const {itemsArray} = useContext(ListContext)
     
     return (
                     <li
                         className="flex items-center pl-3"
+                        onClick={onClick}
                     >   
                         <div
                             className={`

@@ -1,73 +1,151 @@
 import { Link, useParams } from "react-router-dom"
 import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle } from "react-icons/fa6"
 import Card from "../components/Card"
-import { onSnapshot } from "firebase/firestore"
+import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
 
-const recipeObj = {
-    name: "tosti",
-    ingredients: [
-        {
-            id: "bxchds5",
-            name: "kaas",
-            checked: false
-        },
-        {
-            id: "bxcaefdwefhds5",
-            name: "brood",
-            checked: true
-        },
-        {
-            id: "caefdwefhds5",
-            name: "ham",
-            checked: false
-        },
-    ]
-}
 
 export default function RecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
 
+    async function toggleCheckItem(itemId) {
+        const docRef = doc(db, "recipes", id)
+
+        const newIngredientsArray = recipe.ingredients.map(ingredient => {
+            if (ingredient.id === itemId) {
+                
+                return {
+                    ...ingredient,
+                    checked: !ingredient.checked
+                }
+            } else {
+
+                return ingredient
+            }
+        })
+
+        await updateDoc(docRef, {ingredients : newIngredientsArray})
+
+    }
+
+    async function checkItem(itemId, checkValue) {
+        const docRef = doc(db, "recipes", id)
+
+        const newIngredientsArray = recipe.ingredients.map(ingredient => {
+            if (ingredient.id === itemId) {
+                
+                return {
+                    ...ingredient,
+                    checked: checkValue
+                }
+            } else {
+
+                return ingredient
+            }
+        })
+
+        await updateDoc(docRef, {ingredients : newIngredientsArray})
+
+    }
+
+    async function checkAllItems(checkValue) {
+        const docRef = doc(db, "recipes", id)
+
+        const newIngredientsArray = recipe.ingredients.map(ingredient => ({...ingredient, checked: checkValue}))
+
+        await updateDoc(docRef, {ingredients : newIngredientsArray})
+
+    }
+
+
+
+    useEffect(() => {
+        const docRef = doc(db, "recipes", id)
+        const unsub = onSnapshot(docRef, snapshot => {
+            const recipeObj = {
+                ...snapshot.data(),
+                id: snapshot.id
+            }
+
+            setRecipe(recipeObj)
+        })
+
+        return unsub 
+
+    }, [])
 
     return (
         <div>
             <header className="-z-10 ml-11 text-2xl py-2 text-center border-b flex items-center justify-between fixed top-0 inset-x-0">
-                <h1>Recipe Name</h1>
+                <h1>{getCapString(recipe.name)}</h1>
             </header>
-            <main className="px-4 mt-16">
+            <main className="px-4 mt-16 flex flex-col gap-4">
 
-                <List itemsArray={recipeObj.ingredients}>
+                {/* <List itemsArray={recipeObj.ingredients}>
                     {
                         recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
                     }
-                </List>
+                </List> */}
 
-                <List itemsArray={recipeObj.ingredients}>
-                    {
-                        recipeObj.ingredients.map(ingredient => (
-                                <List.ItemCheck key={ingredient.id} itemObj={ingredient}>
-                                    {ingredient.name}
-                                </List.ItemCheck>
-                            ) 
-                        )
-                    }
-                </List>
+                {   recipe ? 
+                    <List itemsArray={recipe.ingredients}>
+                        {
+                            recipe.ingredients.map(ingredient => (
+                                    <List.ItemCheck key={ingredient.id} itemObj={ingredient} onClick={() => toggleCheckItem(ingredient.id)}>
+                                        {ingredient.name}
+                                    </List.ItemCheck>
+                                ) 
+                            )
+                        }
+                    </List> : null
+                }
 
-                <List itemsArray={recipeObj.ingredients}>
+                {/* <List itemsArray={recipe.ingredients}>
                     {
-                        recipeObj.ingredients.map(ingredient => (
+                        recipe.ingredients.map(ingredient => (
                                 <List.ItemSelect key={ingredient.id} itemObj={ingredient}>
                                     {ingredient.name}
                                 </List.ItemSelect>
                             ) 
                         )
                     }
-                </List>
+                </List> */}
 
+                    {
+                        recipe?.ingredients.every(ingredient => ingredient.checked) ?
+                        <button
+                            className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
+                            onClick={() => checkAllItems(false)}
+                            >
+                            Uncheck All
+                        </button> :
+
+                        <button
+                            className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
+                            onClick={() => checkAllItems(true)}
+                        >
+                            Check All
+                            <span className="mr-3">  
+                                <FaCheck />
+                            </span>
+                        </button>
+                    }
+                    
+
+                    
+
+                        {
+                            recipe.ingredients.some(ingredient => ingredient.checked) &&
+                            <button
+                                className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
+                            >
+                                Add to Shopping List
+                            </button>
+                        }
 
             </main>
         </div>
