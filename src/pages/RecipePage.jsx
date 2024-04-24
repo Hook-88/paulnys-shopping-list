@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom"
-import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle } from "react-icons/fa6"
+import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
 import Card from "../components/Card"
 import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
@@ -80,10 +80,20 @@ export default function RecipePage() {
 
     return (
         <div>
-            <header className="-z-10 ml-11 text-2xl py-2 text-center border-b flex items-center justify-between fixed top-0 inset-x-0">
-                <h1>{recipe ? getCapString(recipe.name) : "Loading"}</h1>
+            <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
+                <Link to="/recipes" className="flex items-center">
+                    <FaAngleLeft  />
+                    Recipes
+                </Link>
+                <h1
+                    className="col-start-2 col-span-2 justify-self-center font-bold"
+                >{recipe ? getCapString(recipe.name) : "Loading"}</h1>
+                <Link to="/recipes" className="flex items-center justify-self-end">
+                    Edit
+                    <FaAngleRight />
+                </Link>
             </header>
-            <main className="px-4 mt-16 flex flex-col gap-4">
+            <main className="px-4 mt-12 flex flex-col gap-4">
 
                 {/* <List itemsArray={recipeObj.ingredients}>
                     {
