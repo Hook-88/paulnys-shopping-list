@@ -4,17 +4,8 @@ import Card from "../components/Card"
 import { onSnapshot } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
-
-const recipesArray = [
-    {
-        name: "tosti",
-        id: "hdcbvyw37"
-    }, 
-    {
-        name: "arepa",
-        id: "ascbvedefeyw37"
-    }
-]
+import List from "../components/List/Index"
+import getCapString from "../utility/getCapString"
 
 export default function RecipesPage() {
     const [recipes, setRecipes] = useState(null)
@@ -39,29 +30,31 @@ export default function RecipesPage() {
 
     return (
         <div>
-            <header className="-z-10 text-lg font-bold py-2 text-center border-b mb-2 flex items-center justify-between fixed top-0 inset-x-0">
+            <header className="-z-10 font-bold py-2 text-center mb-2 flex items-center justify-between fixed top-0 inset-x-0">
                 <Link to="/add-recipe" className="text-base font-normal pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
                 <h1>Recipes</h1>
                 <Link to="/add-recipe" className="text-base font-normal pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
             </header>
-            <main className="">
-                <ul className="mt-12 mb-4 pl-11">
-                    {
-                        recipes?.sort((a, b) => a.name.localeCompare(b.name))
-                            .map(recipe => (
-                            <Link to={recipe.id} key={recipe.id}>
-                                <li 
-                                    key={recipe.id}
-                                    className="text-lg border-b pt-2 pb-1 pr-4 flex justify-between items-center"
-                                    >
-                                    {recipe.name}
-                                    <FaAngleRight />
-                                </li>
-                            </Link>
-                        ))
-                    }
-                    <li></li>
-                </ul>
+            <main className="mt-12 px-4">
+                {   recipes ?    
+                    <List itemsArray={recipes}>
+                        {
+                            recipes.map(recipe => (
+                                    <Link key={recipe.id} to={recipe.id}>
+                                    <List.ItemCheck  itemObj={recipe} >
+                                        {getCapString(recipe.name)}
+                                        <span className="mr-3">
+                                            <FaAngleRight />
+                                        </span>
+                                    </List.ItemCheck>
+                                    </Link>
+                                ) 
+                            )
+                        }
+                    </List> : null
+                }
+                
+                
                 {/* {   recipes ?
                     <Card
                         className="grid p-0"
