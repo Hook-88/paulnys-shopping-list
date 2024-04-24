@@ -9,58 +9,58 @@ import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
 
 
-export default function RecipePage() {
+export default function EditRecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
 
-    async function toggleCheckItem(itemId) {
-        const docRef = doc(db, "recipes", id)
+    // async function toggleCheckItem(itemId) {
+    //     const docRef = doc(db, "recipes", id)
 
-        const newIngredientsArray = recipe.ingredients.map(ingredient => {
-            if (ingredient.id === itemId) {
+    //     const newIngredientsArray = recipe.ingredients.map(ingredient => {
+    //         if (ingredient.id === itemId) {
                 
-                return {
-                    ...ingredient,
-                    checked: !ingredient.checked
-                }
-            } else {
+    //             return {
+    //                 ...ingredient,
+    //                 checked: !ingredient.checked
+    //             }
+    //         } else {
 
-                return ingredient
-            }
-        })
+    //             return ingredient
+    //         }
+    //     })
 
-        await updateDoc(docRef, {ingredients : newIngredientsArray})
+    //     await updateDoc(docRef, {ingredients : newIngredientsArray})
 
-    }
+    // }
 
-    async function checkItem(itemId, checkValue) {
-        const docRef = doc(db, "recipes", id)
+    // async function checkItem(itemId, checkValue) {
+    //     const docRef = doc(db, "recipes", id)
 
-        const newIngredientsArray = recipe.ingredients.map(ingredient => {
-            if (ingredient.id === itemId) {
+    //     const newIngredientsArray = recipe.ingredients.map(ingredient => {
+    //         if (ingredient.id === itemId) {
                 
-                return {
-                    ...ingredient,
-                    checked: checkValue
-                }
-            } else {
+    //             return {
+    //                 ...ingredient,
+    //                 checked: checkValue
+    //             }
+    //         } else {
 
-                return ingredient
-            }
-        })
+    //             return ingredient
+    //         }
+    //     })
 
-        await updateDoc(docRef, {ingredients : newIngredientsArray})
+    //     await updateDoc(docRef, {ingredients : newIngredientsArray})
 
-    }
+    // }
 
-    async function checkAllItems(checkValue) {
-        const docRef = doc(db, "recipes", id)
+    // async function checkAllItems(checkValue) {
+    //     const docRef = doc(db, "recipes", id)
 
-        const newIngredientsArray = recipe.ingredients.map(ingredient => ({...ingredient, checked: checkValue}))
+    //     const newIngredientsArray = recipe.ingredients.map(ingredient => ({...ingredient, checked: checkValue}))
 
-        await updateDoc(docRef, {ingredients : newIngredientsArray})
+    //     await updateDoc(docRef, {ingredients : newIngredientsArray})
 
-    }
+    // }
 
 
 
@@ -84,13 +84,13 @@ export default function RecipePage() {
             <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
                 <Link to="/recipes" className="flex items-center">
                     <FaAngleLeft  />
-                    Recipes
+                    Recipe
                 </Link>
                 <h1
                     className="col-start-2 col-span-2 justify-self-center font-bold"
                 >{recipe ? getCapString(recipe.name) : "Loading"}</h1>
-                <Link to="edit" className="flex items-center justify-self-end">
-                    <FaRegEdit />
+                <Link to="/recipes" className="flex items-center justify-self-end">
+                    <FaPlus />
                     {/* <FaAngleRight /> */}
                 </Link>
             </header>
@@ -106,9 +106,12 @@ export default function RecipePage() {
                     <List itemsArray={recipe.ingredients}>
                         {
                             recipe.ingredients.map(ingredient => (
-                                    <List.ItemCheck key={ingredient.id} itemObj={ingredient} onClick={() => toggleCheckItem(ingredient.id)}>
+                                    <List.Item key={ingredient.id} itemObj={ingredient} >
                                         {getCapString(ingredient.name)}
-                                    </List.ItemCheck>
+                                        <span className="mr-3">
+                                            <FaAngleRight />
+                                        </span>
+                                    </List.Item>
                                 ) 
                             )
                         }
