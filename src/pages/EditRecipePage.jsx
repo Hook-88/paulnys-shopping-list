@@ -7,11 +7,18 @@ import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
+import ListItemNameRecipe from "../components/ListItemNameRecipe"
+import Form from "../components/Form"
 
 
 export default function EditRecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
+    const [addIngredients, setAddIngredients] = useState(false)
+
+    function toggleAddIngredients() {
+        setAddIngredients(prev => !prev)
+    }
 
     // async function toggleCheckItem(itemId) {
     //     const docRef = doc(db, "recipes", id)
@@ -89,10 +96,13 @@ export default function EditRecipePage() {
                 <h1
                     className="col-start-2 col-span-2 justify-self-center font-bold"
                 >{recipe ? getCapString(recipe.name) : "Loading"}</h1>
-                <Link to="/recipes" className="flex items-center justify-self-end">
-                    <FaPlus />
+                <button 
+                    className="flex items-center justify-self-end"
+                    onClick={toggleAddIngredients}
+                >
+                    { addIngredients ? <FaCheck /> : <FaPlus />}
                     {/* <FaAngleRight /> */}
-                </Link>
+                </button>
             </header>
             <main className="px-4 mt-12 flex flex-col gap-4">
 
@@ -101,6 +111,20 @@ export default function EditRecipePage() {
                         recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
                     }
                 </List> */}
+
+                {
+                    recipe &&
+                    <List>
+                        <Link>
+                            <ListItemNameRecipe>
+                                {getCapString(recipe.name)}
+                                <span className="mr-3">
+                                    <FaAngleRight />
+                                </span>
+                            </ListItemNameRecipe>
+                        </Link>
+                    </List>
+                }
 
                 {   recipe ? 
                     <List itemsArray={recipe.ingredients}>
@@ -118,48 +142,17 @@ export default function EditRecipePage() {
                     </List> : null
                 }
 
-                {/* <List itemsArray={recipe.ingredients}>
-                    {
-                        recipe.ingredients.map(ingredient => (
-                                <List.ItemSelect key={ingredient.id} itemObj={ingredient}>
-                                    {ingredient.name}
-                                </List.ItemSelect>
-                            ) 
-                        )
-                    }
-                </List> */}
-
-                    {
-                        recipe?.ingredients.every(ingredient => ingredient.checked) ?
-                        <button
-                            className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
-                            onClick={() => checkAllItems(false)}
-                            >
-                            Uncheck All
-                        </button> :
-
-                        <button
-                            className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
-                            onClick={() => checkAllItems(true)}
-                        >
-                            Check All
-                            <span className="mr-3">  
-                                <FaCheck />
-                            </span>
-                        </button>
-                    }
-                    
-
-                    
-
-                        {
-                            recipe?.ingredients.some(ingredient => ingredient.checked) &&
-                            <button
-                                className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
-                            >
-                                Add to Shopping List
-                            </button>
-                        }
+                {
+                    addIngredients &&
+                    <Form>
+                        <input 
+                            type="text"
+                            placeholder="Ingredient"
+                            className="bg-white bg-opacity-15 py-2 rounded-lg w-full text-xl text-center"
+                            autoFocus 
+                        />
+                    </Form>
+                }
 
             </main>
         </div>

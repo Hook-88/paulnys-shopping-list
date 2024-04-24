@@ -3,7 +3,7 @@ import getCapString from "../../utility/getCapString"
 
 const ListContext = createContext()
 
-export default function List({children, itemsArray}) {
+export default function List({children, itemsArray = []}) {
 
     
     return (
