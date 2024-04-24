@@ -5,7 +5,7 @@ import Menu from "./Menu/Index"
 export default function NavMenu() {
 
     return (
-        <Menu className="fixed text-2xl">
+        <Menu className="fixed text-2xl top-0 left-0">
             <Menu.Button className="p-3 z-10 relative">
                 {
                     open => open ? <FaBars className="text-white"/> : <FaBars />

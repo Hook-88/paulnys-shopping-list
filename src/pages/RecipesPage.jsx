@@ -39,15 +39,12 @@ export default function RecipesPage() {
 
     return (
         <div>
-            <header className="text-2xl py-2 text-center border-b mb-2 flex items-center justify-between">
-                <FaPlus className="text-transparent m-1 mx-2"/>
+            <header className="ml-11 text-2xl py-2 text-center border-b mb-2 flex items-center justify-between fixed top-0 inset-x-0">
                 <h1>Recipes</h1>
-                <Link to="/add-recipe" className="p-1 px-2">
-                    <FaPlus className=""/>
-                </Link>
+                <Link to="/add-recipe" className="text-base pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
             </header>
-            <main className="px-2">
-                <ul className="space-y-2 mb-2">
+            <main className="">
+                {/* <ul className="space-y-2 mb-2">
                     {
                         recipes?.sort((a, b) => a.name.localeCompare(b.name))
                             .map(recipe => (
@@ -58,8 +55,25 @@ export default function RecipesPage() {
                             </li>
                         ))
                     }
+                </ul> */}
+                <ul className="mt-12 mb-4 pl-11">
+                    {
+                        recipes?.sort((a, b) => a.name.localeCompare(b.name))
+                            .map(recipe => (
+                            <Link to={recipe.id} key={recipe.id}>
+                                <li 
+                                    key={recipe.id}
+                                    className="text-lg border-b pt-2 pb-1 pr-4 flex justify-between items-center"
+                                    >
+                                    {recipe.name}
+                                    <FaAngleRight />
+                                </li>
+                            </Link>
+                        ))
+                    }
+                    <li></li>
                 </ul>
-                {   recipes ?
+                {/* {   recipes ?
                     <Card
                         className="grid p-0"
                     >
@@ -68,7 +82,7 @@ export default function RecipesPage() {
                     <Card>
                         <h1>Loading...</h1>
                     </Card>
-                }
+                } */}
             </main>
         </div>
     )
