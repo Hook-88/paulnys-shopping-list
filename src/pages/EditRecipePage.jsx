@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom"
+import { nanoid } from "nanoid"
 import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
 import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
@@ -15,9 +16,27 @@ export default function EditRecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
     const [addIngredients, setAddIngredients] = useState(false)
+    const [formData, setFormData] = useState("")
 
     function toggleAddIngredients() {
         setAddIngredients(prev => !prev)
+    }
+
+    function handleFormChange(event) {
+        setFormData(event.target.value)
+    }
+
+    async function addIngredient() {
+        const docRef = doc(db, "recipes", id)
+        const ingredientObj = {
+            name: formData.toLowerCase().trim(),
+            checked: false,
+            id: nanoid()
+        }
+        const newIngredientsArray = [...recipe.ingredients, ingredientObj]
+
+        await updateDoc(docRef, {ingredients: newIngredientsArray})
+        setFormData("")
     }
 
     // async function toggleCheckItem(itemId) {
@@ -144,12 +163,14 @@ export default function EditRecipePage() {
 
                 {
                     addIngredients &&
-                    <Form>
+                    <Form onSubmit={addIngredient}>
                         <input 
                             type="text"
                             placeholder="Ingredient"
                             className="bg-white bg-opacity-15 py-2 rounded-lg w-full text-xl text-center"
-                            autoFocus 
+                            autoFocus
+                            onChange={handleFormChange}
+                            value={formData} 
                         />
                     </Form>
                 }

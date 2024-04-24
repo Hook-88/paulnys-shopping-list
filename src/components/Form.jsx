@@ -1,7 +1,7 @@
 export default function Form({children, onSubmit = () => {}}) {
 
     function handleSubmit(event) {
-        event.prevetDefault()
+        event.preventDefault()
         onSubmit()
     }
     
