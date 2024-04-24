@@ -39,23 +39,12 @@ export default function RecipesPage() {
 
     return (
         <div>
-            <header className="ml-11 text-2xl py-2 text-center border-b mb-2 flex items-center justify-between fixed top-0 inset-x-0">
+            <header className="-z-10 text-lg font-bold py-2 text-center border-b mb-2 flex items-center justify-between fixed top-0 inset-x-0">
+                <Link to="/add-recipe" className="text-base font-normal pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
                 <h1>Recipes</h1>
-                <Link to="/add-recipe" className="text-base pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
+                <Link to="/add-recipe" className="text-base font-normal pr-2 flex items-center justify-end">Add Recipe <FaAngleRight /></Link>
             </header>
             <main className="">
-                {/* <ul className="space-y-2 mb-2">
-                    {
-                        recipes?.sort((a, b) => a.name.localeCompare(b.name))
-                            .map(recipe => (
-                            <li key={recipe.id}>
-                                <Link to={recipe.id}>
-                                    <Card>{recipe.name}</Card>
-                                </Link>
-                            </li>
-                        ))
-                    }
-                </ul> */}
                 <ul className="mt-12 mb-4 pl-11">
                     {
                         recipes?.sort((a, b) => a.name.localeCompare(b.name))
