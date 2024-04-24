@@ -39,57 +39,6 @@ export default function EditRecipePage() {
         setFormData("")
     }
 
-    // async function toggleCheckItem(itemId) {
-    //     const docRef = doc(db, "recipes", id)
-
-    //     const newIngredientsArray = recipe.ingredients.map(ingredient => {
-    //         if (ingredient.id === itemId) {
-                
-    //             return {
-    //                 ...ingredient,
-    //                 checked: !ingredient.checked
-    //             }
-    //         } else {
-
-    //             return ingredient
-    //         }
-    //     })
-
-    //     await updateDoc(docRef, {ingredients : newIngredientsArray})
-
-    // }
-
-    // async function checkItem(itemId, checkValue) {
-    //     const docRef = doc(db, "recipes", id)
-
-    //     const newIngredientsArray = recipe.ingredients.map(ingredient => {
-    //         if (ingredient.id === itemId) {
-                
-    //             return {
-    //                 ...ingredient,
-    //                 checked: checkValue
-    //             }
-    //         } else {
-
-    //             return ingredient
-    //         }
-    //     })
-
-    //     await updateDoc(docRef, {ingredients : newIngredientsArray})
-
-    // }
-
-    // async function checkAllItems(checkValue) {
-    //     const docRef = doc(db, "recipes", id)
-
-    //     const newIngredientsArray = recipe.ingredients.map(ingredient => ({...ingredient, checked: checkValue}))
-
-    //     await updateDoc(docRef, {ingredients : newIngredientsArray})
-
-    // }
-
-
-
     useEffect(() => {
         const docRef = doc(db, "recipes", id)
         const unsub = onSnapshot(docRef, snapshot => {
