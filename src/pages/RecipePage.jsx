@@ -81,7 +81,7 @@ export default function RecipePage() {
     return (
         <div>
             <header className="-z-10 ml-11 text-2xl py-2 text-center border-b flex items-center justify-between fixed top-0 inset-x-0">
-                <h1>{getCapString(recipe.name)}</h1>
+                <h1>{recipe ? getCapString(recipe.name) : "Loading"}</h1>
             </header>
             <main className="px-4 mt-16 flex flex-col gap-4">
 
@@ -139,7 +139,7 @@ export default function RecipePage() {
                     
 
                         {
-                            recipe.ingredients.some(ingredient => ingredient.checked) &&
+                            recipe?.ingredients.some(ingredient => ingredient.checked) &&
                             <button
                                 className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
                             >
