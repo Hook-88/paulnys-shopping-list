@@ -5,6 +5,7 @@ import { onSnapshot } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
+import List from "../components/List/Index"
 
 const recipeObj = {
     name: "tosti",
@@ -17,7 +18,7 @@ const recipeObj = {
         {
             id: "bxcaefdwefhds5",
             name: "brood",
-            checked: false
+            checked: true
         },
         {
             id: "caefdwefhds5",
@@ -37,41 +38,37 @@ export default function RecipePage() {
             <header className="-z-10 ml-11 text-2xl py-2 text-center border-b flex items-center justify-between fixed top-0 inset-x-0">
                 <h1>Recipe Name</h1>
             </header>
-            <main className="px-4">
+            <main className="px-4 mt-16">
 
+                <List itemsArray={recipeObj.ingredients}>
+                    {
+                        recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
+                    }
+                </List>
 
-
-
-                <ul className="mt-16 cursor-pointer bg-white bg-opacity-15 rounded-lg">
+                <List itemsArray={recipeObj.ingredients}>
                     {
                         recipeObj.ingredients.map(ingredient => (
-                            <li
-                                key={ingredient.id} 
-                                className="flex items-center pl-3"
-                            >
-                                {/* <button className="mr-3">
-                                    <FaRegCircle />
-                                </button> */}
-                                <div
-                                    className={`
-                                        flex-grow py-2 flex justify-between items-center
-                                        ${ingredient.id === recipeObj.ingredients[recipeObj.ingredients.length - 1].id ? 
-                                            "" : "shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"} 
-                                    `}
-                                >
-                                    {getCapString(ingredient.name)}
-                                    {
-                                        ingredient.checked &&
-                                        <span className="mr-3">
-                                            <FaCheck />
-                                        </span>
-                                        
-                                    } 
-                                </div>      
-                            </li>
-                        ))
+                                <List.ItemCheck key={ingredient.id} itemObj={ingredient}>
+                                    {ingredient.name}
+                                </List.ItemCheck>
+                            ) 
+                        )
                     }
-                </ul>
+                </List>
+
+                <List itemsArray={recipeObj.ingredients}>
+                    {
+                        recipeObj.ingredients.map(ingredient => (
+                                <List.ItemSelect key={ingredient.id} itemObj={ingredient}>
+                                    {ingredient.name}
+                                </List.ItemSelect>
+                            ) 
+                        )
+                    }
+                </List>
+
+
             </main>
         </div>
     )
