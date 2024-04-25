@@ -48,9 +48,6 @@ export default function EditIngredientPage() {
 
         const newIngredientArray = recipe.ingredients.filter(ingredient => ingredient.id !== ingredientId)
 
-        console.log(newIngredientArray)
-
-
         await updateDoc(docRef, {ingredients: newIngredientArray})
 
         navigate(`/recipes/${id}/edit`)
@@ -129,7 +126,7 @@ export default function EditIngredientPage() {
                     className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center text-red-500"
                     onClick={deleteRecipe}
                 >
-                    Delete recipe
+                    Delete ingredient
                 </button>
 
             </main>

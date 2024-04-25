@@ -65,14 +65,14 @@ export default function EditRecipePage() {
 
     return (
         <div>
-            <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
-                <button onClick={() => navigate(-1)} className="flex items-center">
+            <header className="-z-10 text-base py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
+                <button onClick={() => navigate("./..")} className="flex items-center text-lg">
                     <FaAngleLeft  />
                     Recipe
                 </button>
                 <h1
                     className="col-start-2 col-span-2 justify-self-center font-bold"
-                >{recipe ? getCapString(recipe.name) : "Loading"}</h1>
+                >{recipe ? getCapString(recipe.name) + " (edit)" : "Loading"}</h1>
                 <button 
                     className="flex items-center justify-self-end"
                     onClick={toggleAddIngredients}

@@ -81,7 +81,7 @@ export default function RecipePage() {
 
     return (
         <div>
-            <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
+            <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4 bg-black">
                 <Link to="/recipes" className="flex items-center" onClick={() => checkAllItems(false)}>
                     <FaAngleLeft  />
                     Recipes

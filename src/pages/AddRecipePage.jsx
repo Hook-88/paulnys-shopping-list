@@ -18,7 +18,7 @@ export default function RecipesPage() {
 
     async function addRecipe() {
         const docRef = await addDoc(recipesCollection, {name: formData.toLowerCase().trim(), ingredients: []})
-        navigate(`/recipes/${docRef.id}`)
+        navigate(`/recipes/${docRef.id}/edit`)
 
     }
 

@@ -85,7 +85,6 @@ export default function EditRecipeNamePage() {
                             type="text"
                             placeholder="Ingredient"
                             className="bg-white bg-opacity-15 py-2 rounded-lg w-full text-xl text-center mb-4"
-                            autoFocus
                             onChange={handleFormChange}
                             value={formData ? getCapString(formData) : ""} 
                         />
