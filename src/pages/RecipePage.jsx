@@ -82,7 +82,7 @@ export default function RecipePage() {
     return (
         <div>
             <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
-                <Link to="/recipes" className="flex items-center">
+                <Link to="/recipes" className="flex items-center" onClick={() => checkAllItems(false)}>
                     <FaAngleLeft  />
                     Recipes
                 </Link>
@@ -96,12 +96,6 @@ export default function RecipePage() {
             </header>
             <main className="px-4 mt-12 flex flex-col gap-4">
 
-                {/* <List itemsArray={recipeObj.ingredients}>
-                    {
-                        recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
-                    }
-                </List> */}
-
                 {   recipe && recipe.ingredients ? 
                     <List itemsArray={recipe.ingredients}>
                         {
@@ -114,17 +108,6 @@ export default function RecipePage() {
                         }
                     </List> : null
                 }
-
-                {/* <List itemsArray={recipe.ingredients}>
-                    {
-                        recipe.ingredients.map(ingredient => (
-                                <List.ItemSelect key={ingredient.id} itemObj={ingredient}>
-                                    {ingredient.name}
-                                </List.ItemSelect>
-                            ) 
-                        )
-                    }
-                </List> */}
 
                     {
                         recipe?.ingredients && recipe.ingredients.length > 0 &&

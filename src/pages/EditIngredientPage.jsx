@@ -1,0 +1,112 @@
+import { Link, useParams, useNavigate } from "react-router-dom"
+import { nanoid } from "nanoid"
+import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
+import { FaEdit, FaRegEdit } from "react-icons/fa"
+import Card from "../components/Card"
+import { onSnapshot, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore"
+import { db, recipesCollection } from "../firebase"
+import { useEffect, useState } from "react"
+import getCapString from "../utility/getCapString"
+import List from "../components/List/Index"
+import ListItemNameRecipe from "../components/ListItemNameRecipe"
+import Form from "../components/Form"
+
+
+export default function EditIngredientPage() {
+    const { id } = useParams()
+    const navigate = useNavigate()
+    const [recipe, setRecipe] = useState(null)
+    const [formData, setFormData] = useState("")
+
+    function handleFormChange(event) {
+        setFormData(event.target.value)
+    }
+
+    async function saveName() {
+        const docRef = doc(db, "recipes", id)
+
+        await updateDoc(docRef, {name: formData.toLowerCase().trim()})
+        const recipeDoc = await getDoc(docRef)
+        setRecipe(recipeDoc.data())
+
+    }
+
+    async function deleteRecipe() {
+        const docRef = doc(db, "recipes", id)
+        navigate("/recipes")
+        await deleteDoc(docRef)
+    }
+
+    useEffect(() => {
+        const docRef = doc(db, "recipes", id)
+        const unsub = onSnapshot(docRef, snapshot => {
+            const recipeObj = {
+                ...snapshot.data(),
+                id: snapshot.id
+            }
+
+            setRecipe(recipeObj)
+        })
+
+        return unsub 
+
+    }, [])
+
+    useEffect(() => {
+        if (recipe) {
+            setFormData(recipe.name)
+        }
+
+    }, [recipe])
+
+    return (
+        <div>
+            <header className="-z-10 text-lg py-2 grid items-center justify-between fixed top-0 inset-x-0 px-4">
+                <button onClick={() => navigate(-1)} className="flex items-center">
+                    <FaAngleLeft  />
+                    Edit recipe
+                </button>
+                {/* <h1
+                    className="col-start-3 col-span-2 justify-self-center font-bold"
+                >{recipe ? getCapString(recipe.name) : "Loading"}</h1> */}
+            </header>
+            <main className="px-4 mt-12 flex flex-col gap-4">
+
+                {/* <List itemsArray={recipeObj.ingredients}>
+                    {
+                        recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
+                    }
+                </List> */}
+
+                {
+                    recipe ?
+                    <Form onSubmit={saveName}>
+                        <input 
+                            type="text"
+                            placeholder="Ingredient"
+                            className="bg-white bg-opacity-15 py-2 rounded-lg w-full text-xl text-center mb-4"
+                            autoFocus
+                            onChange={handleFormChange}
+                            value={formData ? getCapString(formData) : ""} 
+                        />
+                        {/* <button
+                            className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center disabled:text-gray-500"
+                            disabled={formData.toLowerCase() === recipe?.name}
+                        >
+                            Save Name
+                        </button> */}
+                    </Form> : <h1>Loading....</h1>
+                }
+
+
+                <button
+                    className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center text-red-500"
+                    onClick={deleteRecipe}
+                >
+                    Delete recipe
+                </button>
+
+            </main>
+        </div>
+    )
+}

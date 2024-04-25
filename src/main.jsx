@@ -6,7 +6,9 @@ import RecipesPage from './pages/RecipesPage.jsx'
 import RecipePage from './pages/RecipePage.jsx'
 import EditRecipePage from './pages/EditRecipePage.jsx'
 import EditRecipeNamePage from './pages/EditRecipeNamePage.jsx'
+import EditIngredientPage from './pages/EditIngredientPage.jsx'
 import AddRecipePage from "./pages/AddRecipePage.jsx"
+
 import './index.css'
 
 
@@ -21,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="recipes/:id" element={<RecipePage />}/>
                     <Route path="recipes/:id/edit" element={<EditRecipePage />}/>
                     <Route path="recipes/:id/edit/name" element={<EditRecipeNamePage />}/>
+                    <Route path="recipes/:id/edit/:ingredientId" element={<EditIngredientPage />}/>
                 </Route>
             </Routes>
         </BrowserRouter>

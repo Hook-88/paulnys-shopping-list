@@ -10,6 +10,7 @@ import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
 import ListItemNameRecipe from "../components/ListItemNameRecipe"
 import Form from "../components/Form"
+import useEffectOnUpdate from "../hooks/useEffectOnUpdate"
 
 
 export default function EditRecipePage() {
@@ -55,6 +56,13 @@ export default function EditRecipePage() {
 
     }, [])
 
+    useEffectOnUpdate(() => {
+        if (recipe && recipe.ingredients.length === 0) {
+            setAddIngredients(true)
+        }
+
+    },[recipe])
+
     return (
         <div>
             <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
@@ -74,12 +82,6 @@ export default function EditRecipePage() {
                 </button>
             </header>
             <main className="px-4 mt-12 flex flex-col gap-4">
-
-                {/* <List itemsArray={recipeObj.ingredients}>
-                    {
-                        recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
-                    }
-                </List> */}
 
                 {
                     recipe &&
@@ -120,7 +122,7 @@ export default function EditRecipePage() {
                             className="bg-white bg-opacity-15 py-2 rounded-lg w-full text-xl text-center"
                             autoFocus
                             onChange={handleFormChange}
-                            value={formData} 
+                            value={formData ? getCapString(formData): ""} 
                         />
                     </Form>
                 }
