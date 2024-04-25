@@ -152,7 +152,6 @@ export default function RecipePage() {
                     
 
                         {
-                            recipe?.ingredient &&
                             recipe?.ingredients.some(ingredient => ingredient.checked) &&
                             <button
                                 className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
