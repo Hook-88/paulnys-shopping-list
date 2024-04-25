@@ -10,6 +10,9 @@ import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
 import ListItemNameRecipe from "../components/ListItemNameRecipe"
 import Form from "../components/Form"
+import Header from "../components/Header"
+import Main from "../components/Main"
+import Button from "../components/Button"
 
 
 export default function EditRecipeNamePage() {
@@ -61,25 +64,16 @@ export default function EditRecipeNamePage() {
 
     return (
         <div>
-            <header className="-z-10 text-lg py-2 grid items-center justify-between fixed top-0 inset-x-0 px-4">
-                <button onClick={() => navigate(-1)} className="flex items-center">
+            <Header>
+                <button onClick={() => navigate(-1)} className="flex items-center col-span-2">
                     <FaAngleLeft  />
                     Edit recipe
                 </button>
-                {/* <h1
-                    className="col-start-3 col-span-2 justify-self-center font-bold"
-                >{recipe ? getCapString(recipe.name) : "Loading"}</h1> */}
-            </header>
-            <main className="px-4 mt-12 flex flex-col gap-4">
-
-                {/* <List itemsArray={recipeObj.ingredients}>
-                    {
-                        recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
-                    }
-                </List> */}
-
+            </Header>
+            <Main>
                 {
                     recipe ?
+                    <>
                     <Form onSubmit={saveName}>
                         <input 
                             type="text"
@@ -87,25 +81,24 @@ export default function EditRecipeNamePage() {
                             className="bg-white bg-opacity-15 py-2 rounded-lg w-full text-xl text-center mb-4"
                             onChange={handleFormChange}
                             value={formData ? getCapString(formData) : ""} 
-                        />
+                            />
                         <button
                             className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center disabled:text-gray-500"
                             disabled={formData.toLowerCase() === recipe?.name}
-                        >
+                            >
                             Save Name
                         </button>
-                    </Form> : <h1>Loading....</h1>
+                    </Form> 
+
+                    <Button
+                        className="text-red-500 justify-center"
+                        onClick={deleteRecipe}
+                    >
+                        Delete recipe
+                    </Button>
+                    </> : <h1>Loading....</h1>
                 }
-
-
-                <button
-                    className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center text-red-500"
-                    onClick={deleteRecipe}
-                >
-                    Delete recipe
-                </button>
-
-            </main>
+            </Main>
         </div>
     )
 }

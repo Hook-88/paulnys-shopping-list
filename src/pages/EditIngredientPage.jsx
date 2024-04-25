@@ -1,16 +1,13 @@
-import { Link, useParams, useNavigate } from "react-router-dom"
-import { nanoid } from "nanoid"
-import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
-import { FaEdit, FaRegEdit } from "react-icons/fa"
-import Card from "../components/Card"
-import { onSnapshot, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore"
-import { db, recipesCollection } from "../firebase"
+import { useParams, useNavigate } from "react-router-dom"
+import { FaAngleLeft } from "react-icons/fa6"
+import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
+import { db } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
-import List from "../components/List/Index"
-import ListItemNameRecipe from "../components/ListItemNameRecipe"
 import Form from "../components/Form"
-
+import Header from "../components/Header"
+import Main from "../components/Main"
+import Button from "../components/Button"
 
 export default function EditIngredientPage() {
     const { id, ingredientId } = useParams()
@@ -48,9 +45,10 @@ export default function EditIngredientPage() {
 
         const newIngredientArray = recipe.ingredients.filter(ingredient => ingredient.id !== ingredientId)
 
+        navigate(`/recipes/${id}/edit`)
+
         await updateDoc(docRef, {ingredients: newIngredientArray})
 
-        navigate(`/recipes/${id}/edit`)
 
     }
 
@@ -82,25 +80,16 @@ export default function EditIngredientPage() {
 
     return (
         <div>
-            <header className="-z-10 text-lg py-2 grid items-center justify-between fixed top-0 inset-x-0 px-4">
-                <button onClick={() => navigate(-1)} className="flex items-center">
+            <Header>
+                <button onClick={() => navigate(-1)} className="flex items-center col-span-2">
                     <FaAngleLeft  />
                     Edit recipe
                 </button>
-                {/* <h1
-                    className="col-start-3 col-span-2 justify-self-center font-bold"
-                >{recipe ? getCapString(recipe.name) : "Loading"}</h1> */}
-            </header>
-            <main className="px-4 mt-12 flex flex-col gap-4">
-
-                {/* <List itemsArray={recipeObj.ingredients}>
-                    {
-                        recipeObj.ingredients.map(ingredient => (<List.Item key={ingredient.id} itemObj={ingredient}>{ingredient.name}</List.Item>) )
-                    }
-                </List> */}
-
+            </Header>
+            <Main>
                 {
                     recipe ?
+                    <>
                     <Form onSubmit={saveName}>
                         <input 
                             type="text"
@@ -118,18 +107,17 @@ export default function EditIngredientPage() {
                         >
                             Save Name
                         </button>
-                    </Form> : <h1>Loading....</h1>
+                    </Form>
+
+                    <Button
+                        className="justify-center text-red-500"
+                        onClick={deleteRecipe}
+                    >
+                        Delete ingredient
+                    </Button> 
+                    </> : <h1>Loading....</h1>
                 }
-
-
-                <button
-                    className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center text-red-500"
-                    onClick={deleteRecipe}
-                >
-                    Delete ingredient
-                </button>
-
-            </main>
+            </Main>
         </div>
     )
 }

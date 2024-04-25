@@ -7,16 +7,19 @@ import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
+import Header from "../components/Header"
+import Main from "../components/Main"
+import Button from "../components/Button"
 
 
 export default function RecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
 
-    async function toggleCheckItem(itemId) {
+    async function toggleCheckItem(itemId) { 
         const docRef = doc(db, "recipes", id)
-
         const newIngredientsArray = recipe.ingredients.map(ingredient => {
+            
             if (ingredient.id === itemId) {
                 
                 return {
@@ -28,41 +31,16 @@ export default function RecipePage() {
                 return ingredient
             }
         })
-
+        
         await updateDoc(docRef, {ingredients : newIngredientsArray})
-
-    }
-
-    async function checkItem(itemId, checkValue) {
-        const docRef = doc(db, "recipes", id)
-
-        const newIngredientsArray = recipe.ingredients.map(ingredient => {
-            if (ingredient.id === itemId) {
-                
-                return {
-                    ...ingredient,
-                    checked: checkValue
-                }
-            } else {
-
-                return ingredient
-            }
-        })
-
-        await updateDoc(docRef, {ingredients : newIngredientsArray})
-
     }
 
     async function checkAllItems(checkValue) {
         const docRef = doc(db, "recipes", id)
-
         const newIngredientsArray = recipe.ingredients.map(ingredient => ({...ingredient, checked: checkValue}))
 
         await updateDoc(docRef, {ingredients : newIngredientsArray})
-
     }
-
-
 
     useEffect(() => {
         const docRef = doc(db, "recipes", id)
@@ -76,74 +54,60 @@ export default function RecipePage() {
         })
 
         return unsub 
-
     }, [])
+
+    function handleClickToCheck() {
+        recipe.ingredients.every(ingredient => ingredient.checked) ?
+            checkAllItems(false) :
+            checkAllItems(true)
+    }
 
     return (
         <div>
-            <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4 bg-black">
+            <Header>
                 <Link to="/recipes" className="flex items-center" onClick={() => checkAllItems(false)}>
                     <FaAngleLeft  />
                     Recipes
                 </Link>
                 <h1
                     className="col-start-2 col-span-2 justify-self-center font-bold"
-                >{recipe ? getCapString(recipe.name) : "Loading"}</h1>
+                >
+                    {recipe ? getCapString(recipe.name) : "Loading..."}
+                </h1>
                 <Link to="edit" className="flex items-center justify-self-end">
                     <FaRegEdit />
-                    {/* <FaAngleRight /> */}
                 </Link>
-            </header>
-            <main className="px-4 mt-12 flex flex-col gap-4">
-
-                {   recipe && recipe.ingredients ? 
+            </Header>
+            <Main>
+                {
+                    recipe ?
+                    <>
                     <List itemsArray={recipe.ingredients}>
                         {
                             recipe.ingredients.map(ingredient => (
-                                    <List.ItemCheck key={ingredient.id} itemObj={ingredient} onClick={() => toggleCheckItem(ingredient.id)}>
+                                <List.ItemCheck key={ingredient.id} itemObj={ingredient} onClick={() => toggleCheckItem(ingredient.id)}>
                                         {getCapString(ingredient.name)}
                                     </List.ItemCheck>
                                 ) 
                             )
                         }
-                    </List> : null
+                    </List>
+
+                    <Button
+                        className="justify-between"
+                        onClick={handleClickToCheck}
+                    >
+                        {recipe.ingredients.every(ingredient => ingredient.checked) ? "Uncheck all" : "Check all"}
+                        {!recipe.ingredients.every(ingredient => ingredient.checked) ? <FaCheck /> : null}
+                    </Button>
+
+                    </>: "Loading...."
                 }
-
-                    {
-                        recipe?.ingredients && recipe.ingredients.length > 0 &&
-                        
-                        recipe?.ingredients.every(ingredient => ingredient.checked) ?
-                        <button
-                            className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
-                            onClick={() => checkAllItems(false)}
-                            >
-                            Uncheck All
-                        </button> :
-
-                        <button
-                            className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
-                            onClick={() => checkAllItems(true)}
-                        >
-                            Check All
-                            <span className="mr-3">  
-                                <FaCheck />
-                            </span>
-                        </button>
-                    }
-                    
-
-                    
-
-                        {
-                            recipe?.ingredients.some(ingredient => ingredient.checked) &&
-                            <button
-                                className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
-                            >
-                                Add to Shopping List
-                            </button>
-                        }
-
-            </main>
+                {
+                    recipe?.ingredients.some(ingredient => ingredient.checked) &&
+                    <Button>Add to Shopping List</Button>
+                }
+            </Main>
         </div>
     )
 }

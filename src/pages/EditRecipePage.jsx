@@ -1,16 +1,16 @@
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { nanoid } from "nanoid"
-import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
-import { FaEdit, FaRegEdit } from "react-icons/fa"
-import Card from "../components/Card"
-import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
-import { db, recipesCollection } from "../firebase"
+import { FaPlus, FaAngleRight, FaCircle, FaRegCircle, FaCheck, FaAngleLeft } from "react-icons/fa6"
+import { onSnapshot, doc, updateDoc } from "firebase/firestore"
+import { db } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
 import ListItemNameRecipe from "../components/ListItemNameRecipe"
 import Form from "../components/Form"
 import useEffectOnUpdate from "../hooks/useEffectOnUpdate"
+import Header from "../components/Header"
+import Main from "../components/Main"
 
 
 export default function EditRecipePage() {
@@ -65,7 +65,7 @@ export default function EditRecipePage() {
 
     return (
         <div>
-            <header className="-z-10 text-base py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
+            <Header className="text-base">
                 <button onClick={() => navigate("./..")} className="flex items-center text-lg">
                     <FaAngleLeft  />
                     Recipe
@@ -78,12 +78,12 @@ export default function EditRecipePage() {
                     onClick={toggleAddIngredients}
                 >
                     { addIngredients ? <FaCheck /> : <FaPlus />}
-                    {/* <FaAngleRight /> */}
                 </button>
-            </header>
-            <main className="px-4 mt-12 flex flex-col gap-4">
+            </Header>
+            <Main>
                 {
-                    recipe &&
+                    recipe ? 
+                    <>
                     <List>
                         <Link to="name">
                             <ListItemNameRecipe>
@@ -94,14 +94,13 @@ export default function EditRecipePage() {
                             </ListItemNameRecipe>
                         </Link>
                     </List>
-                }
-
-                {   recipe ? 
+                    
                     <List itemsArray={recipe.ingredients}>
                         {
                             recipe.ingredients.map(ingredient => (
                                 <Link key={ingredient.id} to={ingredient.id}>
                                     <List.Item itemObj={ingredient} >
+
                                         {getCapString(ingredient.name)}
                                         <span className="mr-3">
                                             <FaAngleRight />
@@ -111,9 +110,44 @@ export default function EditRecipePage() {
                                 ) 
                             )
                         }
-                    </List> : null
-                }
+                    </List> 
 
+                    {/* <List itemsArray={recipe.ingredients}>
+                        {
+                            recipe.ingredients.map(ingredient => (
+                                <li
+                                    className="flex items-center pl-3"
+                                >   
+                                    {   
+                                        ingredient.checked ?
+                                        <button className="pr-3">
+                                            <FaCircle />
+                                        </button> :
+                                        <button className="pr-3">
+                                            <FaRegCircle />
+                                        </button> 
+                                    }
+                                    <Link to={ingredient.id}
+                                        className={`
+                                            flex-grow py-2 flex justify-between items-center
+                                            ${ingredient.id === recipe.ingredients[recipe.ingredients.length - 1].id ? 
+                                                "" : "shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"} 
+                                        `}
+                                    >
+                                        {getCapString(ingredient.name)}
+                                        <span className="mr-3">
+                                             <FaAngleRight />
+                                        </span>
+                                    </Link>      
+                                </li>
+
+
+                                ) 
+                            )
+                        }
+                    </List>  */}
+                    </> : "Loading..."
+                }
                 {
                     addIngredients &&
                     <Form onSubmit={addIngredient}>
@@ -128,7 +162,7 @@ export default function EditRecipePage() {
                     </Form>
                 }
 
-            </main>
+            </Main>
         </div>
     )
 }

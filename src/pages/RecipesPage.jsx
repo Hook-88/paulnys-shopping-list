@@ -6,6 +6,8 @@ import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
 import List from "../components/List/Index"
 import getCapString from "../utility/getCapString"
+import Header from "../components/Header"
+import Main from "../components/Main"
 
 export default function RecipesPage() {
     const [recipes, setRecipes] = useState(null)
@@ -30,12 +32,12 @@ export default function RecipesPage() {
 
     return (
         <div>
-            <header className="-z-10 font-bold py-2 px-4 text-center mb-2 grid grid-cols-6 items-center fixed top-0 inset-x-0 bg-black">
+            <Header className="grid-cols-6">
                 <Link to="/" className="text-sm font-normal flex items-center justify-end col-span-2 justify-self-start"> <FaAngleLeft className="text-base"/>Shopping List</Link>
                 <h1 className="col-start-3 text-lg col-span-2 justify-self-center font-bold">Recipes</h1>
                 <Link to="/add-recipe" className="col-start-6 text-xl font-normal flex items-center justify-end"><FaPlus /></Link>
-            </header>
-            <main className="mt-12 px-4">
+            </Header>
+            <Main>
                 {   recipes ?    
                     <List itemsArray={recipes}>
                         {
@@ -53,19 +55,7 @@ export default function RecipesPage() {
                         }
                     </List> : null
                 }
-                
-                
-                {/* {   recipes ?
-                    <Card
-                        className="grid p-0"
-                    >
-                        <Link to="/add-recipe" className="py-2 px-2 flex justify-center items-center text-lg gap">Add Recipe <FaAngleRight /></Link>
-                    </Card> :
-                    <Card>
-                        <h1>Loading...</h1>
-                    </Card>
-                } */}
-            </main>
+            </Main>
         </div>
     )
 }
