@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import { nanoid } from "nanoid"
 import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
 import { FaEdit, FaRegEdit } from "react-icons/fa"
@@ -14,6 +14,7 @@ import Form from "../components/Form"
 
 export default function EditRecipePage() {
     const { id } = useParams()
+    const navigate = useNavigate()
     const [recipe, setRecipe] = useState(null)
     const [addIngredients, setAddIngredients] = useState(false)
     const [formData, setFormData] = useState("")
@@ -57,10 +58,10 @@ export default function EditRecipePage() {
     return (
         <div>
             <header className="-z-10 text-lg py-2 grid grid-cols-4 items-center justify-between fixed top-0 inset-x-0 px-4">
-                <Link to="/recipes" className="flex items-center">
+                <button onClick={() => navigate(-1)} className="flex items-center">
                     <FaAngleLeft  />
                     Recipe
-                </Link>
+                </button>
                 <h1
                     className="col-start-2 col-span-2 justify-self-center font-bold"
                 >{recipe ? getCapString(recipe.name) : "Loading"}</h1>
@@ -83,7 +84,7 @@ export default function EditRecipePage() {
                 {
                     recipe &&
                     <List>
-                        <Link>
+                        <Link to="name">
                             <ListItemNameRecipe>
                                 {getCapString(recipe.name)}
                                 <span className="mr-3">
