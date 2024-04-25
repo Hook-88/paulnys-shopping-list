@@ -102,7 +102,7 @@ export default function RecipePage() {
                     }
                 </List> */}
 
-                {   recipe ? 
+                {   recipe && recipe.ingredients ? 
                     <List itemsArray={recipe.ingredients}>
                         {
                             recipe.ingredients.map(ingredient => (
@@ -127,6 +127,8 @@ export default function RecipePage() {
                 </List> */}
 
                     {
+                        recipe?.ingredients && recipe.ingredients.length > 0 &&
+                        
                         recipe?.ingredients.every(ingredient => ingredient.checked) ?
                         <button
                             className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"
@@ -150,6 +152,7 @@ export default function RecipePage() {
                     
 
                         {
+                            recipe?.ingredient &&
                             recipe?.ingredients.some(ingredient => ingredient.checked) &&
                             <button
                                 className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-between"

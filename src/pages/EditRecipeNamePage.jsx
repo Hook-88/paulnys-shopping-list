@@ -3,7 +3,7 @@ import { nanoid } from "nanoid"
 import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
 import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
-import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
+import { onSnapshot, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
@@ -29,6 +29,12 @@ export default function EditRecipeNamePage() {
         const recipeDoc = await getDoc(docRef)
         setRecipe(recipeDoc.data())
 
+    }
+
+    async function deleteRecipe() {
+        const docRef = doc(db, "recipes", id)
+        navigate("/recipes")
+        await deleteDoc(docRef)
     }
 
     useEffect(() => {
@@ -95,6 +101,7 @@ export default function EditRecipeNamePage() {
 
                 <button
                     className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center text-red-500"
+                    onClick={deleteRecipe}
                 >
                     Delete recipe
                 </button>
