@@ -82,7 +82,6 @@ export default function EditRecipePage() {
                 </button>
             </header>
             <main className="px-4 mt-12 flex flex-col gap-4">
-
                 {
                     recipe &&
                     <List>
@@ -101,12 +100,14 @@ export default function EditRecipePage() {
                     <List itemsArray={recipe.ingredients}>
                         {
                             recipe.ingredients.map(ingredient => (
-                                    <List.Item key={ingredient.id} itemObj={ingredient} >
+                                <Link key={ingredient.id} to={ingredient.id}>
+                                    <List.Item itemObj={ingredient} >
                                         {getCapString(ingredient.name)}
                                         <span className="mr-3">
                                             <FaAngleRight />
                                         </span>
                                     </List.Item>
+                                </Link>
                                 ) 
                             )
                         }

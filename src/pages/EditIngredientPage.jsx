@@ -13,7 +13,7 @@ import Form from "../components/Form"
 
 
 export default function EditIngredientPage() {
-    const { id } = useParams()
+    const { id, ingredientId } = useParams()
     const navigate = useNavigate()
     const [recipe, setRecipe] = useState(null)
     const [formData, setFormData] = useState("")
@@ -24,17 +24,37 @@ export default function EditIngredientPage() {
 
     async function saveName() {
         const docRef = doc(db, "recipes", id)
+        const newIngredientArray = recipe.ingredients.map(ingredient => {
+            if (ingredient.id === ingredientId) {
+                
+                return {
+                    ...ingredient,
+                    name: formData.toLowerCase().trim()
+                }
+            } else {
 
-        await updateDoc(docRef, {name: formData.toLowerCase().trim()})
+                return ingredient
+            }
+        })
+
+        await updateDoc(docRef, {ingredients: newIngredientArray})
         const recipeDoc = await getDoc(docRef)
-        setRecipe(recipeDoc.data())
+        // setRecipe(recipeDoc.data())
 
     }
 
     async function deleteRecipe() {
         const docRef = doc(db, "recipes", id)
-        navigate("/recipes")
-        await deleteDoc(docRef)
+
+        const newIngredientArray = recipe.ingredients.filter(ingredient => ingredient.id !== ingredientId)
+
+        console.log(newIngredientArray)
+
+
+        await updateDoc(docRef, {ingredients: newIngredientArray})
+
+        navigate(`/recipes/${id}/edit`)
+
     }
 
     useEffect(() => {
@@ -54,7 +74,11 @@ export default function EditIngredientPage() {
 
     useEffect(() => {
         if (recipe) {
-            setFormData(recipe.name)
+            const ingredientObjArray = recipe.ingredients.filter(ingredient => ingredient.id === ingredientId)
+            if (ingredientObjArray[0]) {
+                setFormData(ingredientObjArray[0].name)
+            }
+            
         }
 
     }, [recipe])
@@ -85,16 +109,18 @@ export default function EditIngredientPage() {
                             type="text"
                             placeholder="Ingredient"
                             className="bg-white bg-opacity-15 py-2 rounded-lg w-full text-xl text-center mb-4"
-                            autoFocus
                             onChange={handleFormChange}
                             value={formData ? getCapString(formData) : ""} 
                         />
-                        {/* <button
+                        <button
                             className="bg-white bg-opacity-15 w-full py-2 rounded-lg pl-3 flex items-center justify-center disabled:text-gray-500"
-                            disabled={formData.toLowerCase() === recipe?.name}
+                            disabled={
+                                formData.toLowerCase() === recipe?.ingredients.filter(ingredient => ingredient.id === ingredientId)[0]?.name
+                            
+                            }
                         >
                             Save Name
-                        </button> */}
+                        </button>
                     </Form> : <h1>Loading....</h1>
                 }
 
