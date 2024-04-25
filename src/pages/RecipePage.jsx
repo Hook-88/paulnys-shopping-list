@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom"
 import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
 import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
-import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
+import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
 import { useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
@@ -62,6 +62,41 @@ export default function RecipePage() {
             checkAllItems(true)
     }
 
+    async function addToShoppingList() {
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const docSnap = await getDoc(docRef)
+        const currentShoppingList = docSnap.data().items
+        const itemsToAdd = 
+            recipe.ingredients
+                .filter(ingredient => {
+                    return ingredient.checked === true
+                })
+                
+                .map(ingredient => ({...ingredient, checked: false}))
+        
+        const newShoppingList = mergeArraysByProperty(currentShoppingList, itemsToAdd, "name")
+
+        await updateDoc(docRef, {items : newShoppingList})
+
+
+    }
+
+    function mergeArraysByProperty(arr1, arr2, prop) {
+        // Create an object to store unique objects based on the property
+        let uniqueObjects = {}
+    
+        // Merge the arrays and filter out duplicates
+        let mergedArray = arr1.concat(arr2).reduce((result, obj) => {
+            if (!uniqueObjects[obj[prop]]) {
+                uniqueObjects[obj[prop]] = true
+                result.push(obj)
+            }
+            return result
+        }, [])
+    
+        return mergedArray
+    }
+
     return (
         <div>
             <Header>
@@ -105,7 +140,7 @@ export default function RecipePage() {
                 }
                 {
                     recipe?.ingredients.some(ingredient => ingredient.checked) &&
-                    <Button>Add to Shopping List</Button>
+                    <Button onClick={addToShoppingList}>Add to Shopping List</Button>
                 }
             </Main>
         </div>

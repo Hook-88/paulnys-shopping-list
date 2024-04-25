@@ -8,6 +8,7 @@ import EditRecipePage from './pages/EditRecipePage.jsx'
 import EditRecipeNamePage from './pages/EditRecipeNamePage.jsx'
 import EditIngredientPage from './pages/EditIngredientPage.jsx'
 import AddRecipePage from "./pages/AddRecipePage.jsx"
+import ShoppingListPage from './pages/ShoppingListPage.jsx'
 
 import './index.css'
 
@@ -17,13 +18,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<App />} >
-                    <Route index element={<h1>Here goes shopping list page</h1>}/>
-                    <Route path="add-recipe" element={<AddRecipePage />}/>
-                    <Route path="recipes" element={<RecipesPage />}/>
-                    <Route path="recipes/:id" element={<RecipePage />}/>
-                    <Route path="recipes/:id/edit" element={<EditRecipePage />}/>
-                    <Route path="recipes/:id/edit/name" element={<EditRecipeNamePage />}/>
-                    <Route path="recipes/:id/edit/:ingredientId" element={<EditIngredientPage />}/>
+                    <Route index element={<ShoppingListPage />} />
+                    <Route path="add-recipe" element={<AddRecipePage />} />
+                    <Route path="recipes" element={<RecipesPage />} />
+                    <Route path="recipes/:id" element={<RecipePage />} />
+                    <Route path="recipes/:id/edit" element={<EditRecipePage />} />
+                    <Route path="recipes/:id/edit/name" element={<EditRecipeNamePage />} />
+                    <Route path="recipes/:id/edit/:ingredientId" element={<EditIngredientPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
