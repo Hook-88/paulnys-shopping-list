@@ -111,41 +111,6 @@ export default function EditRecipePage() {
                             )
                         }
                     </List> 
-
-                    {/* <List itemsArray={recipe.ingredients}>
-                        {
-                            recipe.ingredients.map(ingredient => (
-                                <li
-                                    className="flex items-center pl-3"
-                                >   
-                                    {   
-                                        ingredient.checked ?
-                                        <button className="pr-3">
-                                            <FaCircle />
-                                        </button> :
-                                        <button className="pr-3">
-                                            <FaRegCircle />
-                                        </button> 
-                                    }
-                                    <Link to={ingredient.id}
-                                        className={`
-                                            flex-grow py-2 flex justify-between items-center
-                                            ${ingredient.id === recipe.ingredients[recipe.ingredients.length - 1].id ? 
-                                                "" : "shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"} 
-                                        `}
-                                    >
-                                        {getCapString(ingredient.name)}
-                                        <span className="mr-3">
-                                             <FaAngleRight />
-                                        </span>
-                                    </Link>      
-                                </li>
-
-
-                                ) 
-                            )
-                        }
-                    </List>  */}
                     </> : "Loading..."
                 }
                 {

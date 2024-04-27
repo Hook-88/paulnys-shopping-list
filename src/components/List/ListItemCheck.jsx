@@ -17,6 +17,7 @@ export default function ListItemCheck({children, itemObj, onClick}) {
                                 flex-grow py-2 flex justify-between items-center
                                 ${itemObj.id === itemsArray[itemsArray.length - 1].id ? 
                                     "" : "shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"} 
+                                
                             `}
                         >
                             {children}
