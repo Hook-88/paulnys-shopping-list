@@ -14,24 +14,24 @@ import Button from "../components/Button"
 export default function ShoppingListPage() {
     const [shoppingList, setShoppingList] = useState(null)
 
-    // async function toggleCheckItem(itemId) { 
-    //     const docRef = doc(db, "recipes", id)
-    //     const newIngredientsArray = recipe.ingredients.map(ingredient => {
+    async function toggleCheckItem(itemId) { 
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const newItemsArray = shoppingList.items.map(item => {
             
-    //         if (ingredient.id === itemId) {
+            if (item.id === itemId) {
                 
-    //             return {
-    //                 ...ingredient,
-    //                 checked: !ingredient.checked
-    //             }
-    //         } else {
+                return {
+                    ...item,
+                    checked: !item.checked
+                }
+            } else {
 
-    //             return ingredient
-    //         }
-    //     })
+                return item
+            }
+        })
         
-    //     await updateDoc(docRef, {ingredients : newIngredientsArray})
-    // }
+        await updateDoc(docRef, {items : newItemsArray})
+    }
 
     // async function checkAllItems(checkValue) {
     //     const docRef = doc(db, "recipes", id)
