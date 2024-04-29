@@ -79,7 +79,6 @@ export default function RecipePage() {
         await updateDoc(docRef, {items : newShoppingList})
         checkAllItems(false)
 
-
     }
 
     function mergeArraysByProperty(arr1, arr2, prop) {
@@ -144,6 +143,15 @@ export default function RecipePage() {
                     <Button onClick={addToShoppingList}>Add to Shopping List</Button>
                 }
             </Main>
+
+            <section className="bg-white/15 backdrop-blur-sm fixed inset-0 z-50 p-4 text-center">
+                <p>Add items to shopping list?</p>
+                <div className="flex gap-4">
+
+                <button className="flex-grow text-center px-2 py-1">Yes</button>
+                <button className="flex-grow text-center px-2 py-1">No</button>
+                </div>
+            </section>
         </div>
     )
 }
