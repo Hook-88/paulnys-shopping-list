@@ -64,7 +64,7 @@ export default function ShoppingListPage() {
 
     useEffect(() => {
         if(shoppingList?.items.length === 0) {
-            setFormData(true)
+            setAddItems(true)
         }
 
     }, [shoppingList])
@@ -98,8 +98,6 @@ export default function ShoppingListPage() {
     function handleFormChange(event) {
         setFormData(event.target.value)
     }
-
-    console.log(formData)
 
     return (
         <div>
@@ -169,22 +167,27 @@ export default function ShoppingListPage() {
                             />
                         </Form>
                     }
+                    {
+                        !addItems ?
+                        <>
+                        <Button
+                            className="justify-between"
+                            onClick={handleClickToCheck}
+                            >
+                            {shoppingList.items.every(item => item.checked) ? "Uncheck all" : "Check all"}
+                            {!shoppingList.items.every(item => item.checked) ? <FaCheck /> : null}
+                        </Button> 
+                        
+                        <Button
+                            className="text-red-500 justify-center disabled:text-red-500/30"
+                            onClick={deleteChecked}
+                            disabled={!shoppingList.items.some(item => item.checked)}
+                        >
+                            Delete checked items
+                        </Button>
 
-                    <Button
-                        className="justify-between"
-                        onClick={handleClickToCheck}
-                    >
-                        {shoppingList.items.every(item => item.checked) ? "Uncheck all" : "Check all"}
-                        {!shoppingList.items.every(item => item.checked) ? <FaCheck /> : null}
-                    </Button>
-
-                    <Button
-                        className="text-red-500 justify-center"
-                        onClick={deleteChecked}
-                    >
-                        Delete checked items
-                    </Button>
-
+                        </> : null
+                    }
                     </>: "Loading...."
                 }
             </Main>
