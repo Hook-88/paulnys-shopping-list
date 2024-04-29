@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom"
 import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
+import { IoClose } from "react-icons/io5"
 import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
 import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore"
@@ -11,10 +12,10 @@ import Header from "../components/Header"
 import Main from "../components/Main"
 import Button from "../components/Button"
 
-
 export default function RecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
+    const [showConfirmModal, setShowConformModal] = useState(false)
 
     async function toggleCheckItem(itemId) { 
         const docRef = doc(db, "recipes", id)
@@ -77,7 +78,7 @@ export default function RecipePage() {
         const newShoppingList = mergeArraysByProperty(currentShoppingList, itemsToAdd, "name")
 
         await updateDoc(docRef, {items : newShoppingList})
-        checkAllItems(false)
+        
 
     }
 
@@ -95,6 +96,12 @@ export default function RecipePage() {
         }, [])
     
         return mergedArray
+    }
+
+    function handleAddToShoppingList() {
+        addToShoppingList()
+        checkAllItems(false)
+        setShowConformModal(false)
     }
 
     return (
@@ -140,18 +147,62 @@ export default function RecipePage() {
                 }
                 {
                     recipe?.ingredients.some(ingredient => ingredient.checked) &&
-                    <Button onClick={addToShoppingList}>Add to Shopping List</Button>
+                    <Button onClick={() => setShowConformModal(true)}>Add to Shopping List</Button>
                 }
             </Main>
+            {
+                showConfirmModal &&
+                <section className="flex fixed bg-white/30 backdrop-blur inset-0 items-center justify-center z-30">
+                <ul className="cursor-pointer bg-[#262626] rounded-lg mx-4">
+                    <li
+                        className="flex items-center"
+                    >
+                        <div
+                            className={`
+                                flex-grow py-2 flex justify-center items-center
+                                shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]
+                                px-3
+                            `}
+                        >
+                            Do yo want to add these items?
+                        </div>      
+                    </li>
 
-            <section className="bg-white/15 backdrop-blur-sm fixed inset-0 z-50 p-4 text-center">
-                <p>Add items to shopping list?</p>
-                <div className="flex gap-4">
+                    <li
+                        className="flex items-center px-3"
+                    >
+                        <button
+                            className={`
+                                flex-grow py-2 flex justify-center items-center
+                                 shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]
+                                 gap-2
+                            `}
+                            onClick={handleAddToShoppingList}
+                        >
+                            Yes <FaCheck className="text-green-500"/>
+                        </button>      
+                    </li>
 
-                <button className="flex-grow text-center px-2 py-1">Yes</button>
-                <button className="flex-grow text-center px-2 py-1">No</button>
-                </div>
+                    <li
+                        className="flex items-center px-3"
+                    >
+                        <button
+                            className={`
+                                flex-grow py-2 flex justify-center items-center gap-2
+                            `}
+                            onClick={() => setShowConformModal(false)}
+
+                        >
+                            No
+                            <span className="text-xl text-red-500">
+                                <IoClose />
+                            </span> 
+                        </button>      
+                    </li>
+                </ul>
             </section>
+            }
+
         </div>
     )
 }
