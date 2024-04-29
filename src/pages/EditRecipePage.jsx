@@ -65,13 +65,13 @@ export default function EditRecipePage() {
 
     return (
         <div>
-            <Header className="text-base">
-                <button onClick={() => navigate("./..")} className="flex items-center text-lg">
+            <Header className="grid-cols-9">
+                <button onClick={() => navigate("./..")} className="flex items-center text col-span-2">
                     <FaAngleLeft  />
                     Recipe
                 </button>
                 <h1
-                    className="col-start-2 col-span-2 justify-self-center font-bold"
+                    className="col-start-3 col-span-6 font-bold justify-self-center"
                 >{recipe ? getCapString(recipe.name) + " (edit)" : "Loading"}</h1>
                 <button 
                     className="flex items-center justify-self-end"
