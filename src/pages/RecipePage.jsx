@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom"
-import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
+import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft, FaCartShopping } from "react-icons/fa6"
 import { IoClose } from "react-icons/io5"
 import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
@@ -149,6 +149,12 @@ export default function RecipePage() {
                     recipe?.ingredients.some(ingredient => ingredient.checked) &&
                     <Button onClick={() => setShowConformModal(true)}>Add to Shopping List</Button>
                 }
+
+                <Link to="/" className="bg-white bg-opacity-15 w-full py-2 rounded-lg flex px-3 gap-2 items-center justify-center disabled:text-gray-500">
+                    Go to the shopping List
+                    <FaCartShopping />
+                </Link>
+
             </Main>
             {
                 showConfirmModal &&
@@ -202,6 +208,8 @@ export default function RecipePage() {
                 </ul>
             </section>
             }
+
+            
 
         </div>
     )
