@@ -114,7 +114,7 @@ export default function ShoppingListPage() {
                 >
                     {getCapString("koop lijst")}
                 </h1>
-                <button onClick={toggleAddItems} className="flex items-center justify-self-end">
+                <button onClick={toggleAddItems} className="flex items-center text-xl justify-self-end">
                     {addItems ? <FaCheck /> : <FaPlus />}
                 </button>
             </Header>

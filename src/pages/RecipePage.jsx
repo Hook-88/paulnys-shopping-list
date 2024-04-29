@@ -77,6 +77,7 @@ export default function RecipePage() {
         const newShoppingList = mergeArraysByProperty(currentShoppingList, itemsToAdd, "name")
 
         await updateDoc(docRef, {items : newShoppingList})
+        checkAllItems(false)
 
 
     }
