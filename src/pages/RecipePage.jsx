@@ -5,12 +5,15 @@ import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
 import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore"
 import { db, recipesCollection } from "../firebase"
-import { useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import getCapString from "../utility/getCapString"
 import List from "../components/List/Index"
 import Header from "../components/Header"
 import Main from "../components/Main"
 import Button from "../components/Button"
+import ConfirmModal from "../components/ConfirmModal"
+
+const RecipePageContext = createContext()
 
 export default function RecipePage() {
     const { id } = useParams()
@@ -104,113 +107,77 @@ export default function RecipePage() {
         setShowConformModal(false)
     }
 
+    function closeConfirmModal() {
+        setShowConformModal(false)
+    }
+
     return (
-        <div>
-            <Header>
-                <Link to="/recipes" className="flex items-center" onClick={() => checkAllItems(false)}>
-                    <FaAngleLeft  />
-                    Recipes
-                </Link>
-                <h1
-                    className="col-start-2 col-span-2 justify-self-center font-bold"
-                >
-                    {recipe ? getCapString(recipe.name) : "Loading..."}
-                </h1>
-                <Link to="edit" className="flex items-center justify-self-end">
-                    <FaRegEdit />
-                </Link>
-            </Header>
-            <Main>
+        <RecipePageContext.Provider value={{closeConfirmModal}}>
+            <div>
+                <Header>
+                    <Link to="/recipes" className="flex items-center" onClick={() => checkAllItems(false)}>
+                        <FaAngleLeft  />
+                        Recipes
+                    </Link>
+                    <h1
+                        className="col-start-2 col-span-2 justify-self-center font-bold"
+                    >
+                        {recipe ? getCapString(recipe.name) : "Loading..."}
+                    </h1>
+                    <Link to="edit" className="flex items-center justify-self-end">
+                        <FaRegEdit />
+                    </Link>
+                </Header>
+                <Main>
+                    {
+                        recipe ?
+                        <>
+                        <List itemsArray={recipe.ingredients}>
+                            {
+                                recipe.ingredients.map(ingredient => (
+                                    <List.ItemCheck key={ingredient.id} itemObj={ingredient} onClick={() => toggleCheckItem(ingredient.id)}>
+                                            {getCapString(ingredient.name)}
+                                        </List.ItemCheck>
+                                    ) 
+                                )
+                            }
+                        </List>
+
+                        <Button
+                            className="justify-between"
+                            onClick={handleClickToCheck}
+                        >
+                            {recipe.ingredients.every(ingredient => ingredient.checked) ? "Uncheck all" : "Check all"}
+                            {!recipe.ingredients.every(ingredient => ingredient.checked) ? <FaCheck /> : null}
+                        </Button>
+
+                        </>: "Loading...."
+                    }
+                    {
+                        recipe?.ingredients.some(ingredient => ingredient.checked) &&
+                        <Button onClick={() => setShowConformModal(true)}>Add to Shopping List</Button>
+                    }
+
+                    <Link to="/" className="bg-white bg-opacity-15 w-full py-2 rounded-lg flex px-3 gap-2 items-center justify-center disabled:text-gray-500">
+                        Go to the shopping List
+                        <FaCartShopping />
+                    </Link>
+
+                </Main>
                 {
-                    recipe ?
-                    <>
-                    <List itemsArray={recipe.ingredients}>
-                        {
-                            recipe.ingredients.map(ingredient => (
-                                <List.ItemCheck key={ingredient.id} itemObj={ingredient} onClick={() => toggleCheckItem(ingredient.id)}>
-                                        {getCapString(ingredient.name)}
-                                    </List.ItemCheck>
-                                ) 
-                            )
-                        }
-                    </List>
-
-                    <Button
-                        className="justify-between"
-                        onClick={handleClickToCheck}
-                    >
-                        {recipe.ingredients.every(ingredient => ingredient.checked) ? "Uncheck all" : "Check all"}
-                        {!recipe.ingredients.every(ingredient => ingredient.checked) ? <FaCheck /> : null}
-                    </Button>
-
-                    </>: "Loading...."
-                }
-                {
-                    recipe?.ingredients.some(ingredient => ingredient.checked) &&
-                    <Button onClick={() => setShowConformModal(true)}>Add to Shopping List</Button>
+                    showConfirmModal && 
+                        <ConfirmModal 
+                            closeModalFunc={closeConfirmModal} 
+                            confirmActionFunc={handleAddToShoppingList} 
+                            question="Do you want to add these items?"
+                        />
                 }
 
-                <Link to="/" className="bg-white bg-opacity-15 w-full py-2 rounded-lg flex px-3 gap-2 items-center justify-center disabled:text-gray-500">
-                    Go to the shopping List
-                    <FaCartShopping />
-                </Link>
+                
 
-            </Main>
-            {
-                showConfirmModal &&
-                <section className="flex fixed bg-white/30 backdrop-blur inset-0 items-center justify-center z-30">
-                <ul className="cursor-pointer bg-[#262626] rounded-lg mx-4">
-                    <li
-                        className="flex items-center"
-                    >
-                        <div
-                            className={`
-                                flex-grow py-2 flex justify-center items-center
-                                shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]
-                                px-3
-                            `}
-                        >
-                            Do yo want to add these items?
-                        </div>      
-                    </li>
-
-                    <li
-                        className="flex items-center px-3"
-                    >
-                        <button
-                            className={`
-                                flex-grow py-2 flex justify-center items-center
-                                 shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]
-                                 gap-2
-                            `}
-                            onClick={handleAddToShoppingList}
-                        >
-                            Yes <FaCheck className="text-green-500"/>
-                        </button>      
-                    </li>
-
-                    <li
-                        className="flex items-center px-3"
-                    >
-                        <button
-                            className={`
-                                flex-grow py-2 flex justify-center items-center gap-2
-                            `}
-                            onClick={() => setShowConformModal(false)}
-
-                        >
-                            No
-                            <span className="text-xl text-red-500">
-                                <IoClose />
-                            </span> 
-                        </button>      
-                    </li>
-                </ul>
-            </section>
-            }
-
-            
-
-        </div>
+            </div>
+        </RecipePageContext.Provider>
     )
 }
+
+export { RecipePageContext }

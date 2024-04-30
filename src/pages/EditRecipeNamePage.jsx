@@ -13,6 +13,7 @@ import Form from "../components/Form"
 import Header from "../components/Header"
 import Main from "../components/Main"
 import Button from "../components/Button"
+import ConfirmModal from "../components/ConfirmModal"
 
 
 export default function EditRecipeNamePage() {
@@ -20,6 +21,7 @@ export default function EditRecipeNamePage() {
     const navigate = useNavigate()
     const [recipe, setRecipe] = useState(null)
     const [formData, setFormData] = useState("")
+    const [showConfirm, setShowConfirm] = useState(false)
 
     function handleFormChange(event) {
         setFormData(event.target.value)
@@ -62,6 +64,11 @@ export default function EditRecipeNamePage() {
 
     }, [recipe])
 
+
+    function closeConfirmModal() {
+        setShowConfirm(false)
+    }
+
     return (
         <div>
             <Header>
@@ -92,13 +99,21 @@ export default function EditRecipeNamePage() {
 
                     <Button
                         className="text-red-500 justify-center"
-                        onClick={deleteRecipe}
+                        onClick={() => setShowConfirm(true)}
                     >
                         Delete recipe
                     </Button>
                     </> : <h1>Loading....</h1>
                 }
             </Main>
+            {
+                showConfirm && 
+                <ConfirmModal 
+                    closeModalFunc={closeConfirmModal} 
+                    confirmActionFunc={deleteRecipe} 
+                    question="Are you sure you want to delete the recipe?"
+                />
+            }
         </div>
     )
 }
