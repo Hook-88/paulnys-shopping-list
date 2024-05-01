@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { FaPlus, FaAngleRight } from "react-icons/fa6"
+import PageHeader from "../components/PageHeader"
 
 const shoppingListDummy = [
     {
@@ -23,16 +24,23 @@ export default function ShoppingListPage() {
     
     return (
         <div>
-            <header className="text-lg font-bold grid grid-cols-6 py-2 mb-2">
+            <PageHeader>
                 <h1 className="col-start-2 col-span-4 justify-self-center">Shopping List</h1>
                 <button className="col-start-6 flex items-center justify-center text-xl">
                     <FaPlus />
                 </button>
-            </header>
-            <main>
-                <ul>
+            </PageHeader>
+            <main className="px-4">
+                <ul className="bg-white/5 rounded-lg">
                     {
-                        shoppingListDummy.map(item => <li key={item.id}>{item.name}</li>)
+                        shoppingListDummy.map(item => (
+                            <li 
+                                key={item.id}
+                                className="py-1 shadow-sm"
+                            >
+                                {item.name}
+                            </li>
+                        ))
                     }
                 </ul>
                 <button>Check All</button>
