@@ -8,6 +8,7 @@ import List from "../components/List/Index"
 import getCapString from "../utility/getCapString"
 import Header from "../components/Header"
 import Main from "../components/Main"
+import LinkButton from "../components/LinkButton"
 
 export default function RecipesPage() {
     const [recipes, setRecipes] = useState(null)
@@ -35,7 +36,6 @@ export default function RecipesPage() {
             <Header className="grid-cols-6">
                 <Link to="/" className="text-sm font-normal flex items-center justify-end col-span-2 justify-self-start"> <FaAngleLeft className="text-base"/>Shopping List</Link>
                 <h1 className="col-start-3 text-lg col-span-2 justify-self-center font-bold">Recipes</h1>
-                <Link to="/add-recipe" className="col-start-6 text-xl font-normal flex items-center justify-end"><FaPlus /></Link>
             </Header>
             <Main>
                 {   recipes ?    
@@ -55,6 +55,9 @@ export default function RecipesPage() {
                         }
                     </List> : null
                 }
+                <LinkButton className="justify-center text-xl py-4" to="/add-recipe">
+                    <FaPlus />
+                </LinkButton>
             </Main>
         </div>
     )
