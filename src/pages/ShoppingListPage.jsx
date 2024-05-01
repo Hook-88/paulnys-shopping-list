@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { FaPlus, FaAngleRight } from "react-icons/fa6"
 
 const shoppingListDummy = [
     {
@@ -22,7 +23,12 @@ export default function ShoppingListPage() {
     
     return (
         <div>
-            <header>Shopping List</header>
+            <header>
+                <h1>Shopping List</h1>
+                <button>
+                    <FaPlus />
+                </button>
+            </header>
             <main>
                 <ul>
                     {
@@ -31,9 +37,9 @@ export default function ShoppingListPage() {
                 </ul>
                 <button>Check All</button>
                 <br />
-                <Link>Recipes</Link>
-                <br />
                 <button>Delete checked items</button>
+                <br />
+                <Link>Recipes <FaAngleRight /></Link>
 
             </main>
         </div>
