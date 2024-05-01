@@ -31,16 +31,24 @@ export default function ShoppingListPage() {
                 </button>
             </PageHeader>
             <main className="px-4">
-                <ul className="bg-white/5 rounded-lg">
+                <ul className="bg-white/5 rounded-lg pl-4">
                     {
-                        shoppingListDummy.map(item => (
-                            <li 
-                                key={item.id}
-                                className="py-1 shadow-sm"
-                            >
-                                {item.name}
-                            </li>
-                        ))
+                        shoppingListDummy.map((item, index, arr) => {
+                            let liCSS = "py-2"
+
+                            liCSS += index === arr.length - 1 ? 
+                                "" : 
+                                " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
+
+                            return (
+                                <li
+                                    key={item.id}
+                                    className={liCSS}
+                                >
+                                    {item.name}
+                                </li>
+                            )
+                        })
                     }
                 </ul>
                 <button>Check All</button>
@@ -53,3 +61,5 @@ export default function ShoppingListPage() {
         </div>
     )
 }
+
+// className="py-1 shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
