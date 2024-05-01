@@ -126,6 +126,10 @@ export default function EditRecipePage() {
                         />
                     </Form>
                 }
+                <Link to="./.." className="bg-white bg-opacity-15 w-full py-2 rounded-lg flex px-3 gap-2 items-center justify-center disabled:text-gray-500">
+                    I'm done editing the recipe
+                    <FaCheck className="text-green-600"/>
+                </Link>
 
             </Main>
         </div>

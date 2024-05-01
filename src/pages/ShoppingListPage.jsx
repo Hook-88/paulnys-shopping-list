@@ -180,7 +180,11 @@ export default function ShoppingListPage() {
                             >
                             {shoppingList.items.every(item => item.checked) ? "Uncheck all" : "Check all"}
                             {!shoppingList.items.every(item => item.checked) ? <FaCheck /> : null}
-                        </Button> 
+                        </Button>
+
+                        <Link to="recipes" className="bg-white bg-opacity-15 w-full py-2 rounded-lg flex px-3 items-center justify-between">
+                            Go to the recipes page <FaAngleRight />
+                        </Link> 
                         
                         <Button
                             className="text-red-500 justify-center disabled:text-red-500/30"
@@ -200,6 +204,7 @@ export default function ShoppingListPage() {
                     <Button className="justify-center gap-2 text-5xl py-8" onClick={toggleAddItems}>
                         <FaPlus />
                     </Button>
+                    
                     <Link to="recipes" className="bg-white bg-opacity-15 w-full py-2 rounded-lg flex px-3 items-center justify-between">
                         Go to the recipes page <FaAngleRight />
                     </Link>
