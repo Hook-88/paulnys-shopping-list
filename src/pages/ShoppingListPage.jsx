@@ -36,7 +36,7 @@ export default function ShoppingListPage() {
                     <FaPlus />
                 </button>
             </PageHeader>
-            <main className="px-4 grid gap-4">
+            <main className="px-4 grid gap-4 mt-12">
                 <List>
                     {
                         shoppingListDummy.map((item, index, arr) => {
