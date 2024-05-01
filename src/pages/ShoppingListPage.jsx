@@ -12,11 +12,13 @@ import Main from "../components/Main"
 import Button from "../components/Button"
 import Form from "../components/Form"
 import { nanoid } from "nanoid"
+import ConfirmModal from "../components/ConfirmModal"
 
 export default function ShoppingListPage() {
     const [shoppingList, setShoppingList] = useState(null)
     const [addItems, setAddItems] = useState(false)
     const [formData, setFormData] = useState("")
+    const [showConfirm, setShowConfirm] = useState(false)
 
     async function toggleCheckItem(itemId) { 
         const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
@@ -79,6 +81,7 @@ export default function ShoppingListPage() {
         const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
         const newItemsArray = shoppingList.items.filter(item => item.checked === false)
 
+        setShowConfirm(false)
         await updateDoc(docRef, {items : newItemsArray})
     }
 
@@ -180,7 +183,7 @@ export default function ShoppingListPage() {
                         
                         <Button
                             className="text-red-500 justify-center disabled:text-red-500/30"
-                            onClick={deleteChecked}
+                            onClick={() => setShowConfirm(true)}
                             disabled={!shoppingList.items.some(item => item.checked)}
                         >
                             Delete checked items
@@ -191,6 +194,14 @@ export default function ShoppingListPage() {
                     </>: "Loading...."
                 }
             </Main>
+            {
+                showConfirm && 
+                <ConfirmModal 
+                    question="Do you want to delete the checked items?"
+                    closeModalFunc={() => setShowConfirm(false)}
+                    confirmActionFunc={deleteChecked}
+                />
+            }
         </div>
     )
 }
