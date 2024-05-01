@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom"
-import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft } from "react-icons/fa6"
+import { FaPlus, FaAngleRight, FaRegSquare, FaCircle, FaCheck, FaRegCircle, FaAngleLeft, FaCartShopping } from "react-icons/fa6"
 import { FaEdit, FaRegEdit } from "react-icons/fa"
 import Card from "../components/Card"
 import { onSnapshot, doc, getDoc, updateDoc } from "firebase/firestore"
@@ -64,12 +64,12 @@ export default function ShoppingListPage() {
         return unsub 
     }, [])
 
-    useEffect(() => {
-        if(shoppingList?.items.length === 0) {
-            setAddItems(true)
-        }
+    // useEffect(() => {
+    //     if(shoppingList?.items.length === 0) {
+    //         setAddItems(true)
+    //     }
 
-    }, [shoppingList])
+    // }, [shoppingList])
 
     function handleClickToCheck() {
         shoppingList.items.every(item => item.checked) ?
@@ -105,21 +105,25 @@ export default function ShoppingListPage() {
     return (
         <div>
             <Header>
-                <Link 
+                {/* <Link 
                     to="/recipes" 
                     className="flex items-center" 
                 >
                     <FaAngleLeft  />
                     Recipes
-                </Link>
+                </Link> */}
                 <h1
                     className="col-start-2 col-span-2 justify-self-center font-bold"
                 >
-                    {getCapString("koop lijst")}
+                    {getCapString("Shopping list")}
                 </h1>
-                <button onClick={toggleAddItems} className="flex items-center text-xl justify-self-end">
-                    {addItems ? <FaCheck /> : <FaPlus />}
-                </button>
+                {
+                    shoppingList?.items.length > 0 &&
+                    <button onClick={toggleAddItems} className="flex items-center text-xl justify-self-end">
+                        {addItems ? <FaCheck /> : <FaPlus />}
+                    </button>
+                }
+                
             </Header>
             <Main>
                 {
@@ -168,7 +172,7 @@ export default function ShoppingListPage() {
                         </Form>
                     }
                     {
-                        !addItems ?
+                        !addItems && shoppingList.items.length > 0 ?
                         <>
                         <Button
                             className="justify-between"
@@ -190,12 +194,18 @@ export default function ShoppingListPage() {
                     }
                     </>: "Loading...."
                 }
-                <button>
-                    add items
-                </button>
-                <button>
-                    Go to the recipes page
-                </button>
+                {
+                    !addItems && shoppingList?.items.length === 0 &&
+                    <>
+                    <Button className="justify-center gap-2 text-5xl py-8" onClick={toggleAddItems}>
+                        <FaPlus />
+                    </Button>
+                    <Link to="recipes" className="bg-white bg-opacity-15 w-full py-2 rounded-lg flex px-3 items-center justify-between">
+                        Go to the recipes page <FaAngleRight />
+                    </Link>
+                    </>
+                }
+                
             </Main>
             {
                 showConfirm && 
