@@ -12,24 +12,6 @@ import { useEffect, useState } from "react"
 import { doc, onSnapshot } from "firebase/firestore"
 import { db } from "../firebase"
 
-const shoppingListDummy = [
-    {
-        id: "bhkce5677",
-        name: "beer",
-        checked: false
-    },
-    {
-        id: "bhbhj3e5677",
-        name: "rice",
-        checked: false
-    },
-    {
-        id: "bhnbjkcdw7e5677",
-        name: "coca cola",
-        checked: false
-    }
-]
-
 export default function ShoppingListPage() {
     const [shoppingList, setShoppipngList] = useState(null)
 
@@ -51,11 +33,12 @@ export default function ShoppingListPage() {
                     <FaPlus />
                 </button>
             </PageHeader>
-
-            <PageMain>
+            {
+                shoppingList ?
+                <PageMain>
                 <List>
                     {
-                        shoppingListDummy.map((item, index, arr) => {
+                        shoppingList.items.map((item, index, arr) => {
 
                             if (index === arr.length - 1) {
                                 
@@ -92,7 +75,8 @@ export default function ShoppingListPage() {
 
                 </Button>
 
-            </PageMain>
+            </PageMain> : "Loading..."
+            }
         </div>
     )
 }
