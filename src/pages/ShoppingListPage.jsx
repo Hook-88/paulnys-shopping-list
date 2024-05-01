@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom"
 import { FaPlus, FaAngleRight } from "react-icons/fa6"
 import PageHeader from "../components/PageHeader"
+import getCapString from "../utility/getCapedString"
+import List from "../components/List/List"
+import ListItem from "../components/List/ListItem"
+import ListItemLast from "../components/List/ListItemLast"
 
 const shoppingListDummy = [
     {
@@ -31,26 +35,33 @@ export default function ShoppingListPage() {
                 </button>
             </PageHeader>
             <main className="px-4">
-                <ul className="bg-white/5 rounded-lg pl-4">
+                <List>
                     {
                         shoppingListDummy.map((item, index, arr) => {
-                            let liCSS = "py-2"
 
-                            liCSS += index === arr.length - 1 ? 
-                                "" : 
-                                " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
+                            if (index === arr.length - 1) {
+                                
+                                return (
+                                    <ListItemLast
+                                        key={item.id}
+                                    >
+                                        {getCapString(item.name)}
+                                    </ListItemLast>
+                                )
+                            } else {
 
-                            return (
-                                <li
-                                    key={item.id}
-                                    className={liCSS}
-                                >
-                                    {item.name}
-                                </li>
-                            )
+                                return (
+                                    <ListItem
+                                        key={item.id}
+                                    >
+                                        {getCapString(item.name)}
+                                    </ListItem>
+                                )
+
+                            }
                         })
                     }
-                </ul>
+                </List>
                 <button>Check All</button>
                 <br />
                 <button>Delete checked items</button>
