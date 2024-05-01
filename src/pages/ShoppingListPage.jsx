@@ -7,6 +7,10 @@ import ListItem from "../components/List/ListItem"
 import ListItemLast from "../components/List/ListItemLast"
 import Button from "../components/Button"
 import NavLink from "../components/NavLink"
+import PageMain from "../components/PageMain"
+import { useEffect, useState } from "react"
+import { doc, onSnapshot } from "firebase/firestore"
+import { db } from "../firebase"
 
 const shoppingListDummy = [
     {
@@ -27,6 +31,17 @@ const shoppingListDummy = [
 ]
 
 export default function ShoppingListPage() {
+    const [shoppingList, setShoppipngList] = useState(null)
+
+    useEffect(() => {
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const unSub = onSnapshot(docRef, snapshot => {
+            //sync with local state
+            setShoppipngList(snapshot.data())
+        })
+
+        return unSub
+    }, [])
     
     return (
         <div>
@@ -36,7 +51,8 @@ export default function ShoppingListPage() {
                     <FaPlus />
                 </button>
             </PageHeader>
-            <main className="px-4 grid gap-4 mt-12">
+
+            <PageMain>
                 <List>
                     {
                         shoppingListDummy.map((item, index, arr) => {
@@ -68,13 +84,15 @@ export default function ShoppingListPage() {
                     Check All
                     <FaCheck />
                 </Button>
+
+                <NavLink>Recipes <FaAngleRight /></NavLink>
+
                 <Button className="text-red-700">
                     Delete checked items
 
                 </Button>
-                <NavLink>Recipes <FaAngleRight /></NavLink>
 
-            </main>
+            </PageMain>
         </div>
     )
 }
