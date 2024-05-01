@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom"
-import { FaPlus, FaAngleRight } from "react-icons/fa6"
+import { FaPlus, FaAngleRight, FaCheck } from "react-icons/fa6"
 import PageHeader from "../components/PageHeader"
 import getCapString from "../utility/getCapedString"
 import List from "../components/List/List"
 import ListItem from "../components/List/ListItem"
 import ListItemLast from "../components/List/ListItemLast"
+import Button from "../components/Button"
+import NavLink from "../components/NavLink"
 
 const shoppingListDummy = [
     {
@@ -34,7 +36,7 @@ export default function ShoppingListPage() {
                     <FaPlus />
                 </button>
             </PageHeader>
-            <main className="px-4">
+            <main className="px-4 grid gap-4">
                 <List>
                     {
                         shoppingListDummy.map((item, index, arr) => {
@@ -62,11 +64,15 @@ export default function ShoppingListPage() {
                         })
                     }
                 </List>
-                <button>Check All</button>
-                <br />
-                <button>Delete checked items</button>
-                <br />
-                <Link>Recipes <FaAngleRight /></Link>
+                <Button className="flex items-center justify-between">
+                    Check All
+                    <FaCheck />
+                </Button>
+                <Button className="text-red-700">
+                    Delete checked items
+
+                </Button>
+                <NavLink>Recipes <FaAngleRight /></NavLink>
 
             </main>
         </div>
