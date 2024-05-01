@@ -23,9 +23,9 @@ export default function ShoppingListPage() {
     
     return (
         <div>
-            <header>
-                <h1>Shopping List</h1>
-                <button>
+            <header className="text-lg font-bold grid grid-cols-6 py-2 mb-2">
+                <h1 className="col-start-2 col-span-4 justify-self-center">Shopping List</h1>
+                <button className="col-start-6 flex items-center justify-center text-xl">
                     <FaPlus />
                 </button>
             </header>
