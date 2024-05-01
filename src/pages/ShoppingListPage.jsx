@@ -190,6 +190,12 @@ export default function ShoppingListPage() {
                     }
                     </>: "Loading...."
                 }
+                <button>
+                    add items
+                </button>
+                <button>
+                    Go to the recipes page
+                </button>
             </Main>
             {
                 showConfirm && 
