@@ -131,9 +131,6 @@ export default function ShoppingListPage() {
                         <List itemsArray={shoppingList.items}>
                         {
                             shoppingList?.items.map(item => (
-                                // <List.ItemCheck key={item.id} itemObj={item} onClick={() => toggleCheckItem(item.id)}>
-                                //     {getCapString(item.name)}
-                                // </List.ItemCheck>
                                 <li
                                     key={item.id}
                                     className="flex items-center px-3"
