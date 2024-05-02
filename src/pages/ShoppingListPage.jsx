@@ -62,6 +62,22 @@ export default function ShoppingListPage() {
             checkAllItems(true) :
             checkAllItems(false)
     }
+
+    async function deleteItem(itemId) {
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const slDoc = await getDoc(docRef)
+        const newSlArray = slDoc.data().items.filter(item => item.id !== itemId)
+
+        await updateDoc(docRef, {items: newSlArray})
+    }
+
+    async function deleteCheckedItems() {
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const slDoc = await getDoc(docRef)
+        const newSlArray = slDoc.data().items.filter(item => item.checked === false)
+
+        await updateDoc(docRef, {items: newSlArray})
+    }
     
     return (
         <div>
@@ -122,7 +138,10 @@ export default function ShoppingListPage() {
 
                 <NavLink>Recipes <FaAngleRight /></NavLink>
 
-                <Button className="text-red-700">
+                <Button 
+                    className="text-red-700"
+                    onClick={deleteCheckedItems}
+                >
                     Delete checked items
 
                 </Button>
