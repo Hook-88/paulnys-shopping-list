@@ -113,6 +113,15 @@ export default function ShoppingListPage() {
             <PageHeader>
                 <h1 className="col-start-2 col-span-4 justify-self-center">Shopping List</h1>
                 {
+                    showAddItem || shoppingList?.items.length > 0 ?
+                    <button 
+                        className="col-start-6 flex items-center justify-center text-xl"
+                        onClick={toggleShowAddITem}
+                    >
+                        {showAddItem ? <FaCheck /> : <FaPlus />}
+                    </button> : null
+                }
+                {/* {
                     shoppingList?.items.length !== 0 &&
                     <button 
                         className="col-start-6 flex items-center justify-center text-xl"
@@ -120,11 +129,56 @@ export default function ShoppingListPage() {
                     >
                         {showAddItem ? <FaCheck /> : <FaPlus />}
                     </button>
-                }
+                } */}
             </PageHeader>
             {
                 shoppingList ?
                 <PageMain>
+                    {
+                        shoppingList.items.length > 0 ?
+                        <List>
+                            {
+                                shoppingList.items.map((item, index, arr) => {
+        
+                                    if (index === arr.length - 1) {
+                                        
+                                        return (
+                                            <ListItemLast
+                                                key={item.id}
+                                                className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
+                                                onClick={() => toggleChecked(item.id)}
+                                            >
+                                                {getCapString(item.name)}
+                                                {item.checked ? <FaCheck /> : null}
+                                            </ListItemLast>
+                                        )
+                                    } else {
+        
+                                        return (
+                                            <ListItem
+                                                key={item.id}
+                                                className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
+                                                onClick={() => toggleChecked(item.id)}
+                                            >
+                                                {getCapString(item.name)}
+                                                {item.checked ? <FaCheck /> : null}
+                                            </ListItem>
+                                        )
+        
+                                    }
+                                })
+                            }
+                        </List> : 
+                        !showAddItem ? 
+                        <Button
+                            className="text-3xl py-4 flex justify-center"
+                            onClick={toggleShowAddITem}
+                        >
+                            <FaPlus />
+                        </Button> : null
+
+                    }
+
                     {
                         showAddItem &&
                         <Form 
@@ -144,75 +198,38 @@ export default function ShoppingListPage() {
                         </Form>
                     }
 
-                {
-                    shoppingList?.items.length === 0 && !showAddItem &&
-                    <Button
-                        className="text-3xl py-4 flex justify-center"
-                        onClick={toggleShowAddITem}
-                    >
-                        <FaPlus />
-                    </Button>
-                }
-
-                <List>
                     {
-                        shoppingList.items.map((item, index, arr) => {
+                        !showAddItem && shoppingList.items.length > 0 &&
+                        <>
+                            <Button 
+                                className="flex items-center justify-between"
+                                onClick={toggleCheckAllItems}
+                            >
+                                {
+                                    shoppingList?.items.some(item => item.checked === false) ?
+                                        <>
+                                        Check All <FaCheck /> 
+                                        </>:
+                                        "Uncheck All"
+                                }
+                            </Button>
 
-                            if (index === arr.length - 1) {
-                                
-                                return (
-                                    <ListItemLast
-                                        key={item.id}
-                                        className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
-                                        onClick={() => toggleChecked(item.id)}
-                                    >
-                                        {getCapString(item.name)}
-                                        {item.checked ? <FaCheck /> : null}
-                                    </ListItemLast>
-                                )
-                            } else {
+                            <NavLink>Recipes <FaAngleRight /></NavLink>
 
-                                return (
-                                    <ListItem
-                                        key={item.id}
-                                        className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
-                                        onClick={() => toggleChecked(item.id)}
-                                    >
-                                        {getCapString(item.name)}
-                                        {item.checked ? <FaCheck /> : null}
-                                    </ListItem>
-                                )
+                            <Button 
+                                className="text-red-700 disabled:text-red-700/40"
+                                onClick={deleteCheckedItems}
+                                disabled={shoppingList?.items.every(item => item.checked === false)}
+                            >
+                                Delete checked items
 
-                            }
-                        })
+                            </Button>
+                        </>
                     }
-                </List>
-                <Button 
-                    className="flex items-center justify-between"
-                    onClick={toggleCheckAllItems}
-                >
-                    {
-                        shoppingList?.items.some(item => item.checked === false) ?
-                            <>
-                            Check All <FaCheck /> 
-                            </>:
-                            "Uncheck All"
-                    }
-                </Button>
 
-                <NavLink>Recipes <FaAngleRight /></NavLink>
-
-                <Button 
-                    className="text-red-700 disabled:text-red-700/40"
-                    onClick={deleteCheckedItems}
-                    disabled={shoppingList?.items.every(item => item.checked === false)}
-                >
-                    Delete checked items
-
-                </Button>
-
-            </PageMain> : "Loading..."
+                </PageMain> : "Loading..."
             }
+
         </div>
     )
 }
