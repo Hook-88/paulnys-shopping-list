@@ -8,12 +8,41 @@ import ListItemLast from "../components/List/ListItemLast"
 import Button from "../components/Button"
 import NavLink from "../components/NavLink"
 import PageMain from "../components/PageMain"
+import Form from "../components/Form"
 import { useEffect, useState } from "react"
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
+import { nanoid } from "nanoid"
 
 export default function ShoppingListPage() {
     const [shoppingList, setShoppipngList] = useState(null)
+    const [showAddItem, setShowAddItem] = useState(false)
+    const [formData, setFormData] = useState("")
+
+    function toggleShowAddITem() {
+        setShowAddItem(prev => !prev)
+    }
+
+    function handleFormChange(event) {
+        setFormData(event.target.value)
+    }
+
+    async function addItem() {
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const slDoc = await getDoc(docRef)
+        const itemObj = {
+            name: formData.toLowerCase(),
+            checked: false,
+            id: nanoid()
+        }
+        const newSlArray = [...slDoc.data().items, itemObj]
+
+        await updateDoc(docRef, {items: newSlArray})
+
+        setFormData("")
+
+    }
+
 
     useEffect(() => {
         const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
@@ -83,13 +112,34 @@ export default function ShoppingListPage() {
         <div>
             <PageHeader>
                 <h1 className="col-start-2 col-span-4 justify-self-center">Shopping List</h1>
-                <button className="col-start-6 flex items-center justify-center text-xl">
-                    <FaPlus />
+                <button 
+                    className="col-start-6 flex items-center justify-center text-xl"
+                    onClick={toggleShowAddITem}
+                >
+                    {showAddItem ? <FaCheck /> : <FaPlus />}
                 </button>
             </PageHeader>
             {
                 shoppingList ?
                 <PageMain>
+                    {
+                        showAddItem &&
+                        <Form 
+                            className="grid"
+                            onSubmit={addItem}
+                        >
+                        <input 
+                            type="text" 
+                            name=""
+                            className="bg-white/5 rounded-lg py-2 px-4 text-center font-bold"
+                            autoFocus
+                            placeholder="Item..."
+                            onChange={handleFormChange}
+                            value={formData}
+                            required 
+                        />
+                    </Form>
+                    }
                 <List>
                     {
                         shoppingList.items.map((item, index, arr) => {
