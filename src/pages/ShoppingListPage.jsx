@@ -112,12 +112,15 @@ export default function ShoppingListPage() {
         <div>
             <PageHeader>
                 <h1 className="col-start-2 col-span-4 justify-self-center">Shopping List</h1>
-                <button 
-                    className="col-start-6 flex items-center justify-center text-xl"
-                    onClick={toggleShowAddITem}
-                >
-                    {showAddItem ? <FaCheck /> : <FaPlus />}
-                </button>
+                {
+                    shoppingList?.items.length !== 0 &&
+                    <button 
+                        className="col-start-6 flex items-center justify-center text-xl"
+                        onClick={toggleShowAddITem}
+                    >
+                        {showAddItem ? <FaCheck /> : <FaPlus />}
+                    </button>
+                }
             </PageHeader>
             {
                 shoppingList ?
@@ -128,18 +131,29 @@ export default function ShoppingListPage() {
                             className="grid"
                             onSubmit={addItem}
                         >
-                        <input 
-                            type="text" 
-                            name=""
-                            className="bg-white/5 rounded-lg py-2 px-4 text-center font-bold"
-                            autoFocus
-                            placeholder="Item..."
-                            onChange={handleFormChange}
-                            value={formData}
-                            required 
-                        />
-                    </Form>
+                            <input 
+                                type="text" 
+                                name=""
+                                className="bg-white/5 rounded-lg py-2 px-4 text-center font-bold"
+                                autoFocus
+                                placeholder="Item..."
+                                onChange={handleFormChange}
+                                value={formData}
+                                required 
+                            />
+                        </Form>
                     }
+
+                {
+                    shoppingList?.items.length === 0 && !showAddItem &&
+                    <Button
+                        className="text-3xl py-4 flex justify-center"
+                        onClick={toggleShowAddITem}
+                    >
+                        <FaPlus />
+                    </Button>
+                }
+
                 <List>
                     {
                         shoppingList.items.map((item, index, arr) => {
