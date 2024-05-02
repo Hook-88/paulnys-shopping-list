@@ -139,8 +139,9 @@ export default function ShoppingListPage() {
                 <NavLink>Recipes <FaAngleRight /></NavLink>
 
                 <Button 
-                    className="text-red-700"
+                    className="text-red-700 disabled:text-red-700/40"
                     onClick={deleteCheckedItems}
+                    disabled={shoppingList?.items.every(item => item.checked === false)}
                 >
                     Delete checked items
 
