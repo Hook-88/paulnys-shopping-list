@@ -9,7 +9,7 @@ import Button from "../components/Button"
 import NavLink from "../components/NavLink"
 import PageMain from "../components/PageMain"
 import { useEffect, useState } from "react"
-import { doc, onSnapshot } from "firebase/firestore"
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 
 export default function ShoppingListPage() {
@@ -24,6 +24,25 @@ export default function ShoppingListPage() {
 
         return unSub
     }, [])
+
+    async function toggleChecked(itemId) {
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const slDoc = await getDoc(docRef)
+        const newSlArray = slDoc.data().items.map(item => {
+            if (item.id === itemId) {
+                
+                return {
+                    ...item,
+                    checked: !item.checked
+                }
+            } else {
+
+                return item
+            }
+        })
+
+        await updateDoc(docRef, {items: newSlArray})
+    }
     
     return (
         <div>
@@ -46,6 +65,7 @@ export default function ShoppingListPage() {
                                     <ListItemLast
                                         key={item.id}
                                         className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
+                                        onClick={() => toggleChecked(item.id)}
                                     >
                                         {getCapString(item.name)}
                                         {item.checked ? <FaCheck /> : null}
@@ -57,6 +77,7 @@ export default function ShoppingListPage() {
                                     <ListItem
                                         key={item.id}
                                         className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
+                                        onClick={() => toggleChecked(item.id)}
                                     >
                                         {getCapString(item.name)}
                                         {item.checked ? <FaCheck /> : null}
