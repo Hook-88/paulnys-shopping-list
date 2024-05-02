@@ -89,8 +89,11 @@ export default function ShoppingListPage() {
                     }
                 </List>
                 <Button className="flex items-center justify-between">
-                    Check All
-                    <FaCheck />
+                    {
+                        shoppingList?.items.some(item => item.checked === false) ?
+                            `Check All ${<FaCheck />}` : 
+                            "Uncheck All"
+                    }
                 </Button>
 
                 <NavLink>Recipes <FaAngleRight /></NavLink>
