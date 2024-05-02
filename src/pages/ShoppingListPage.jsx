@@ -43,6 +43,25 @@ export default function ShoppingListPage() {
 
         await updateDoc(docRef, {items: newSlArray})
     }
+
+    async function checkAllItems(checkValue) {
+        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        const slDoc = await getDoc(docRef)
+        const newSlArray = slDoc.data().items.map(item => {
+            return {
+                ...item,
+                checked: checkValue
+            }
+        })
+
+        await updateDoc(docRef, {items: newSlArray})
+    }
+
+    function toggleCheckAllItems() {
+        shoppingList?.items.some(item => item.checked === false) ?
+            checkAllItems(true) :
+            checkAllItems(false)
+    }
     
     return (
         <div>
@@ -88,10 +107,15 @@ export default function ShoppingListPage() {
                         })
                     }
                 </List>
-                <Button className="flex items-center justify-between">
+                <Button 
+                    className="flex items-center justify-between"
+                    onClick={toggleCheckAllItems}
+                >
                     {
                         shoppingList?.items.some(item => item.checked === false) ?
-                            `Check All ${<FaCheck />}` : 
+                            <>
+                            Check All <FaCheck /> 
+                            </>:
                             "Uncheck All"
                     }
                 </Button>
