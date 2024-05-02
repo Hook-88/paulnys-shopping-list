@@ -9,10 +9,14 @@ import Button from "../components/Button"
 import NavLink from "../components/NavLink"
 import PageMain from "../components/PageMain"
 import Form from "../components/Form"
-import { useEffect, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { nanoid } from "nanoid"
+import ShoppingListPageHeader from "./ShoppingListPageHeader"
+import addItemToFirebase from "../utility/addItemToFirebase"
+
+const ShoppingListPageContext = createContext()
 
 export default function ShoppingListPage() {
     const [shoppingList, setShoppipngList] = useState(null)
@@ -27,18 +31,20 @@ export default function ShoppingListPage() {
         setFormData(event.target.value)
     }
 
-    async function addItem() {
-        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
-        const slDoc = await getDoc(docRef)
-        const itemObj = {
-            name: formData.toLowerCase(),
-            checked: false,
-            id: nanoid()
-        }
-        const newSlArray = [...slDoc.data().items, itemObj]
+    function addItem() {
+        // const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
+        // const slDoc = await getDoc(docRef)
+        // const itemObj = {
+        //     name: formData.toLowerCase(),
+        //     checked: false,
+        //     id: nanoid()
+        // }
+        // const newSlArray = [...slDoc.data().items, itemObj]
 
-        await updateDoc(docRef, {items: newSlArray})
+        // await updateDoc(docRef, {items: newSlArray})
 
+        // setFormData("")
+        addItemToFirebase("shoppingList", "MMy6fOXSXocRw3w7k7GR", "items", formData)
         setFormData("")
 
     }
@@ -109,129 +115,127 @@ export default function ShoppingListPage() {
     }
     
     return (
-        <div>
-            <PageHeader>
-                <h1 className="col-start-2 col-span-4 justify-self-center">Shopping List</h1>
+        <ShoppingListPageContext.Provider 
+            value={{
+                showAddItem,
+                shoppingList,
+                toggleShowAddITem
+            }}
+        >
+            <div>
+                <ShoppingListPageHeader />
                 {
-                    showAddItem || shoppingList?.items.length > 0 ?
-                    <button 
-                        className="col-start-6 flex items-center justify-center text-xl"
-                        onClick={toggleShowAddITem}
-                    >
-                        {showAddItem ? <FaCheck /> : <FaPlus />}
-                    </button> : null
-                }
-                {/* {
-                    shoppingList?.items.length !== 0 &&
-                    <button 
-                        className="col-start-6 flex items-center justify-center text-xl"
-                        onClick={toggleShowAddITem}
-                    >
-                        {showAddItem ? <FaCheck /> : <FaPlus />}
-                    </button>
-                } */}
-            </PageHeader>
-            {
-                shoppingList ?
-                <PageMain>
-                    {
-                        shoppingList.items.length > 0 ?
-                        <List>
-                            {
-                                shoppingList.items.map((item, index, arr) => {
-        
-                                    if (index === arr.length - 1) {
-                                        
-                                        return (
-                                            <ListItemLast
-                                                key={item.id}
-                                                className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
-                                                onClick={() => toggleChecked(item.id)}
-                                            >
-                                                {getCapString(item.name)}
-                                                {item.checked ? <FaCheck /> : null}
-                                            </ListItemLast>
-                                        )
-                                    } else {
-        
-                                        return (
-                                            <ListItem
-                                                key={item.id}
-                                                className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
-                                                onClick={() => toggleChecked(item.id)}
-                                            >
-                                                {getCapString(item.name)}
-                                                {item.checked ? <FaCheck /> : null}
-                                            </ListItem>
-                                        )
-        
-                                    }
-                                })
-                            }
-                        </List> : 
-                        !showAddItem ? 
-                        <Button
-                            className="text-3xl py-4 flex justify-center"
-                            onClick={toggleShowAddITem}
-                        >
-                            <FaPlus />
-                        </Button> : null
-
-                    }
-
-                    {
-                        showAddItem &&
-                        <Form 
-                            className="grid"
-                            onSubmit={addItem}
-                        >
-                            <input 
-                                type="text" 
-                                name=""
-                                className="bg-white/5 rounded-lg py-2 px-4 text-center font-bold"
-                                autoFocus
-                                placeholder="Item..."
-                                onChange={handleFormChange}
-                                value={formData}
-                                required 
-                            />
-                        </Form>
-                    }
-
-                    {
-                        !showAddItem && shoppingList.items.length > 0 &&
-                        <>
-                            <Button 
-                                className="flex items-center justify-between"
-                                onClick={toggleCheckAllItems}
-                            >
+                    shoppingList ?
+                    <PageMain>
+                        {
+                            shoppingList.items.length > 0 ?
+                            <List>
                                 {
-                                    shoppingList?.items.some(item => item.checked === false) ?
-                                        <>
-                                        Check All <FaCheck /> 
-                                        </>:
-                                        "Uncheck All"
+                                    shoppingList.items.map((item, index, arr) => {
+            
+                                        if (index === arr.length - 1) {
+                                            
+                                            return (
+                                                <ListItemLast
+                                                    key={item.id}
+                                                    className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
+                                                    onClick={() => toggleChecked(item.id)}
+                                                >
+                                                    {getCapString(item.name)}
+                                                    {item.checked ? <FaCheck /> : null}
+                                                </ListItemLast>
+                                            )
+                                        } else {
+            
+                                            return (
+                                                <ListItem
+                                                    key={item.id}
+                                                    className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
+                                                    onClick={() => toggleChecked(item.id)}
+                                                >
+                                                    {getCapString(item.name)}
+                                                    {item.checked ? <FaCheck /> : null}
+                                                </ListItem>
+                                            )
+            
+                                        }
+                                    })
                                 }
+                            </List> : 
+                            !showAddItem ?
+                            <>
+                            <Button
+                                className="flex py-2 text-2xl justify-center"
+                                onClick={toggleShowAddITem}
+                                >
+                                <FaPlus />
                             </Button>
-
+                            
                             <NavLink>Recipes <FaAngleRight /></NavLink>
+                            </> : null 
 
-                            <Button 
-                                className="text-red-700 disabled:text-red-700/40"
-                                onClick={deleteCheckedItems}
-                                disabled={shoppingList?.items.every(item => item.checked === false)}
+                        }
+
+                        {
+                            showAddItem &&
+                            <Form 
+                                className="grid"
+                                onSubmit={addItem}
                             >
-                                Delete checked items
+                                <input 
+                                    type="text" 
+                                    name=""
+                                    className="bg-white/5 rounded-lg py-2 px-4 text-center font-bold"
+                                    autoFocus
+                                    placeholder="Item..."
+                                    onChange={handleFormChange}
+                                    value={formData}
+                                    required 
+                                />
+                            </Form>
+                        }
 
-                            </Button>
-                        </>
-                    }
+                        {
+                            !showAddItem && shoppingList.items.length > 0 &&
+                            <>
+                                <Button 
+                                    className="flex items-center justify-between"
+                                    onClick={toggleCheckAllItems}
+                                >
+                                    {
+                                        shoppingList?.items.some(item => item.checked === false) ?
+                                            <>
+                                            Check All <FaCheck /> 
+                                            </>:
+                                            "Uncheck All"
+                                    }
+                                </Button>
 
-                </PageMain> : "Loading..."
-            }
+                                <NavLink>Recipes <FaAngleRight /></NavLink>
 
-        </div>
+                                <Button 
+                                    className="text-red-700 disabled:text-red-700/40"
+                                    onClick={deleteCheckedItems}
+                                    disabled={shoppingList?.items.every(item => item.checked === false)}
+                                >
+                                    Delete checked items
+
+                                </Button>
+                            </>
+                        }
+
+                    </PageMain> 
+                    : 
+                    <PageMain>
+                        Loading...
+                    </PageMain>
+                }
+
+            </div>
+        </ShoppingListPageContext.Provider>
     )
 }
+
+export { ShoppingListPageContext }
 
 // className="py-1 shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
