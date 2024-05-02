@@ -45,8 +45,10 @@ export default function ShoppingListPage() {
                                 return (
                                     <ListItemLast
                                         key={item.id}
+                                        className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
                                     >
                                         {getCapString(item.name)}
+                                        {item.checked ? <FaCheck /> : null}
                                     </ListItemLast>
                                 )
                             } else {
@@ -54,8 +56,10 @@ export default function ShoppingListPage() {
                                 return (
                                     <ListItem
                                         key={item.id}
+                                        className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
                                     >
                                         {getCapString(item.name)}
+                                        {item.checked ? <FaCheck /> : null}
                                     </ListItem>
                                 )
 
