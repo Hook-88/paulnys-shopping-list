@@ -40,7 +40,7 @@ export default function RecipesPage() {
                 <PageHeader>
                     <h1 className="col-start-2 col-span-4 justify-self-center">Recipes</h1>
                     <Link
-                        to="add-recipe"  
+                        to="./../add-recipe"  
                         className="col-start-6 flex items-center justify-center text-xl"
                     >
                         <FaPlus />

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Form from "./Form"
 
-export default function AddItemInput({addItemFunction = () => {}}) {
+export default function AddItemInput({addItemFunction = () => {}, confirmButton}) {
     const [formData, setFormData] = useState("")
 
     function handleFormChange(event) {
@@ -28,6 +28,9 @@ export default function AddItemInput({addItemFunction = () => {}}) {
                 value={formData}
                 required 
             />
+
+            {confirmButton}
+
         </Form>
     )
 }

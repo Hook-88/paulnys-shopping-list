@@ -131,7 +131,7 @@ export default function ShoppingListPage() {
                     <ConfirmModal 
                         question="Are you sure you want to delete the items?" 
                         closeFunc={() => setShowConfirm(false)} 
-                        confirmActionFunc={deleteCheckedItems}
+                        confirmActionFunc={handleDeleteChecked}
                     />    
                 }
 
