@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { FaPlus, FaAngleRight, FaCheck, FaAngleLeft, FaCartShopping } from "react-icons/fa6"
 import Button from "../components/Button"
 import PageLink from "../components/PageLink"
@@ -21,6 +21,7 @@ import getCapString from "../utility/getCapedString"
 export default function RecipesPage() {
     const [recipes, setRecipes] = useState(null)
     const [showAddItem, setShowAddItem] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const unsub = onSnapshot(recipesCollection, snapshot => {
@@ -43,6 +44,7 @@ export default function RecipesPage() {
         const docRef = await addDoc(recipesCollection, recipeObj)
 
         console.log(docRef.id)
+        navigate(`/recipes/${docRef.id}/edit`)
     }
     
     return (
