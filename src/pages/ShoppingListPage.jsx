@@ -1,5 +1,4 @@
 import { FaPlus, FaAngleRight, FaCheck } from "react-icons/fa6"
-import { IoClose } from "react-icons/io5";
 import Button from "../components/Button"
 import PageLink from "../components/PageLink"
 import PageMain from "../components/PageMain"
@@ -12,8 +11,6 @@ import AddItemInput from "../components/AddItemInput"
 import ShoppingListEl from "../components/ShoppingListEl"
 import setAllPropsInFirebase from "../utility/setAllPropsInFirebase"
 import deleteValuesInFirebase from "../utility/deleteValuesInFirebase"
-import ListItem from "../components/List/ListItem"
-import List from "../components/List/List"
 import ConfirmModal from "../components/ConfirmModal";
 
 const ShoppingListPageContext = createContext()
