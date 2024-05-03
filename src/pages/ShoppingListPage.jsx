@@ -15,40 +15,27 @@ import { db } from "../firebase"
 import { nanoid } from "nanoid"
 import ShoppingListPageHeader from "./ShoppingListPageHeader"
 import addItemToFirebase from "../utility/addItemToFirebase"
+import AddItemInput from "../components/AddItemInput"
 
 const ShoppingListPageContext = createContext()
 
 export default function ShoppingListPage() {
     const [shoppingList, setShoppipngList] = useState(null)
     const [showAddItem, setShowAddItem] = useState(false)
-    const [formData, setFormData] = useState("")
 
     function toggleShowAddITem() {
         setShowAddItem(prev => !prev)
     }
 
-    function handleFormChange(event) {
-        setFormData(event.target.value)
-    }
-
-    function addItem() {
-        // const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
-        // const slDoc = await getDoc(docRef)
-        // const itemObj = {
-        //     name: formData.toLowerCase(),
-        //     checked: false,
-        //     id: nanoid()
-        // }
-        // const newSlArray = [...slDoc.data().items, itemObj]
-
-        // await updateDoc(docRef, {items: newSlArray})
-
-        // setFormData("")
-        addItemToFirebase("shoppingList", "MMy6fOXSXocRw3w7k7GR", "items", formData)
-        setFormData("")
+    function addItem(value) {
+        const AddItemObj = {
+            collectionName : "shoppingList", 
+            docId : "MMy6fOXSXocRw3w7k7GR", 
+            docProp: "items"
+        }
+        addItemToFirebase(AddItemObj, value)
 
     }
-
 
     useEffect(() => {
         const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
@@ -170,30 +157,13 @@ export default function ShoppingListPage() {
                                 >
                                 <FaPlus />
                             </Button>
-                            
+
                             <NavLink>Recipes <FaAngleRight /></NavLink>
                             </> : null 
 
                         }
 
-                        {
-                            showAddItem &&
-                            <Form 
-                                className="grid"
-                                onSubmit={addItem}
-                            >
-                                <input 
-                                    type="text" 
-                                    name=""
-                                    className="bg-white/5 rounded-lg py-2 px-4 text-center font-bold"
-                                    autoFocus
-                                    placeholder="Item..."
-                                    onChange={handleFormChange}
-                                    value={formData}
-                                    required 
-                                />
-                            </Form>
-                        }
+                        { showAddItem && <AddItemInput addItemFunction={addItem}/> }
 
                         {
                             !showAddItem && shoppingList.items.length > 0 &&

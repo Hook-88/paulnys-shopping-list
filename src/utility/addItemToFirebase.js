@@ -2,7 +2,9 @@ import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { nanoid } from "nanoid"
 
-export default async function addItemToFirebase(collectionName, docId, docProp, value) {
+export default async function addItemToFirebase(AddItemObj, value) {
+        const {collectionName, docId, docProp} = AddItemObj
+
         const docRef = doc(db, collectionName, docId)
         const slDoc = await getDoc(docRef)
         const itemObj = {
