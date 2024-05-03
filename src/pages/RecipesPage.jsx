@@ -103,63 +103,6 @@ export default function RecipesPage() {
                             Loading...
                         </PageMain>
                 }
-                {/* {
-                    shoppingList ?
-                    <PageMain>
-                        {
-                            shoppingList.items.length > 0 ?
-                                <ShoppingListEl /> : 
-                                !showAddItem ?
-                                    <>
-                                    <Button
-                                        className="flex py-2 text-2xl justify-center"
-                                        onClick={toggleShowAddITem}
-                                        >
-                                        <FaPlus />
-                                    </Button>
-
-                                    <PageLink>Recipes <FaAngleRight /></PageLink>
-                                    </> : null 
-                        }
-
-                        { showAddItem && <AddItemInput addItemFunction={addItem}/> }
-
-                        {
-                            !showAddItem && shoppingList.items.length > 0 &&
-                            <>
-                                <Button 
-                                    className="flex items-center justify-between"
-                                    onClick={toggleCheckAllItems}
-                                >
-                                    {
-                                        shoppingList?.items.some(item => item.checked === false) ?
-                                            <>
-                                            Check All <FaCheck /> 
-                                            </>:
-                                            "Uncheck All"
-                                    }
-                                </Button>
-
-                                <PageLink>Recipes <FaAngleRight /></PageLink>
-
-                                <Button 
-                                    className="text-red-700 disabled:text-red-700/40"
-                                    onClick={() => setShowConfirm(true)}
-                                    disabled={shoppingList?.items.every(item => item.checked === false)}
-                                >
-                                    Delete checked items
-                                </Button>
-                            </>
-                        }
-
-                    </PageMain> 
-                    : 
-                    <PageMain>
-                        Loading...
-                    </PageMain>
-                }
-                 */}
-
             </div>
     )
 }
