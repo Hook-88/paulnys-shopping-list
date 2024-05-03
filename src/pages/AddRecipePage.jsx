@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import { FaPlus, FaAngleRight, FaCheck, FaAngleLeft, FaCartShopping } from "react-icons/fa6"
 import Button from "../components/Button"
 import PageLink from "../components/PageLink"
@@ -40,7 +40,9 @@ export default function RecipesPage() {
             name: value.toLowerCase(),
             ingredients: []
         }
-        await addDoc(recipesCollection, recipeObj)
+        const docRef = await addDoc(recipesCollection, recipeObj)
+
+        console.log(docRef.id)
     }
     
     return (
