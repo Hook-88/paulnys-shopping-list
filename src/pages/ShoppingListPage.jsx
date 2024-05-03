@@ -14,6 +14,7 @@ import setAllPropsInFirebase from "../utility/setAllPropsInFirebase"
 import deleteValuesInFirebase from "../utility/deleteValuesInFirebase"
 import ListItem from "../components/List/ListItem"
 import List from "../components/List/List"
+import ConfirmModal from "../components/ConfirmModal";
 
 const ShoppingListPageContext = createContext()
 
@@ -130,35 +131,11 @@ export default function ShoppingListPage() {
 
                 {
                     showConfirm &&
-                    <div
-                    className="fixed inset-0 bg-white/20 backdrop-blur flex items-center justify-center"
-                >
-                    <List className="bg-[#0d0d0d] p-0 text-center">
-                        <li
-                            className="py-2 px-4 shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
-                        >
-                            Are you sure you want to delete the items?
-                        </li>
-                        <li className="grid">
-                            <button 
-                                className="flex items-center justify-center gap-2 py-2 mx-4 shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
-                                onClick={handleDeleteChecked}
-                            >
-                                Yes <FaCheck className="text-green-700"/>
-                            </button>
-
-                        </li>
-                        <li className="grid">
-                            <button 
-                                className="flex items-center justify-center gap-2 py-2 px-4"
-                                onClick={() => setShowConfirm(false)}
-                            >
-                                No <IoClose className="text-xl text-red-700" />
-                            </button>
-
-                        </li>
-                    </List>
-                </div>
+                    <ConfirmModal 
+                        question="Are you sure you want to delete the items?" 
+                        closeFunc={() => setShowConfirm(false)} 
+                        confirmActionFunc={deleteCheckedItems}
+                    />    
                 }
 
             </div>
