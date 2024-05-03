@@ -85,7 +85,7 @@ export default function ShoppingListPage() {
                                         <FaPlus />
                                     </Button>
 
-                                    <PageLink>Recipes <FaAngleRight /></PageLink>
+                                    <PageLink to="/recipes">Recipes <FaAngleRight /></PageLink>
                                     </> : null 
                         }
 
@@ -107,7 +107,7 @@ export default function ShoppingListPage() {
                                     }
                                 </Button>
 
-                                <PageLink>Recipes <FaAngleRight /></PageLink>
+                                <PageLink to="/recipes">Recipes <FaAngleRight /></PageLink>
 
                                 <Button 
                                     className="text-red-700 disabled:text-red-700/40"
