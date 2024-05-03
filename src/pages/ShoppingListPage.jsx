@@ -4,9 +4,8 @@ import PageHeader from "../components/PageHeader"
 import getCapString from "../utility/getCapedString"
 import List from "../components/List/List"
 import ListItem from "../components/List/ListItem"
-import ListItemLast from "../components/List/ListItemLast"
 import Button from "../components/Button"
-import NavLink from "../components/NavLink"
+import PageLink from "../components/PageLink"
 import PageMain from "../components/PageMain"
 import Form from "../components/Form"
 import { createContext, useEffect, useState } from "react"
@@ -16,25 +15,37 @@ import { nanoid } from "nanoid"
 import ShoppingListPageHeader from "./ShoppingListPageHeader"
 import addItemToFirebase from "../utility/addItemToFirebase"
 import AddItemInput from "../components/AddItemInput"
+import ShoppingListEl from "../components/ShoppingListEl"
+import setAllPropsInFirebase from "../utility/setAllPropsInFirebase"
+import deleteValuesInFirebase from "../utility/deleteValuesInFirebase"
 
 const ShoppingListPageContext = createContext()
 
 export default function ShoppingListPage() {
     const [shoppingList, setShoppipngList] = useState(null)
     const [showAddItem, setShowAddItem] = useState(false)
+    const AddItemObj = {
+        collectionName : "shoppingList", 
+        docId : "MMy6fOXSXocRw3w7k7GR", 
+        docProp: "items"
+    }
 
     function toggleShowAddITem() {
         setShowAddItem(prev => !prev)
     }
 
     function addItem(value) {
-        const AddItemObj = {
-            collectionName : "shoppingList", 
-            docId : "MMy6fOXSXocRw3w7k7GR", 
-            docProp: "items"
-        }
         addItemToFirebase(AddItemObj, value)
+    }
 
+    function toggleCheckAllItems() {
+        shoppingList?.items.some(item => item.checked === false) ?
+            setAllPropsInFirebase(AddItemObj, "checked", true) :
+            setAllPropsInFirebase(AddItemObj, "checked", false)
+    }
+
+    async function deleteCheckedItems() {
+        deleteValuesInFirebase(AddItemObj, "checked", true)
     }
 
     useEffect(() => {
@@ -46,67 +57,14 @@ export default function ShoppingListPage() {
 
         return unSub
     }, [])
-
-    async function toggleChecked(itemId) {
-        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
-        const slDoc = await getDoc(docRef)
-        const newSlArray = slDoc.data().items.map(item => {
-            if (item.id === itemId) {
-                
-                return {
-                    ...item,
-                    checked: !item.checked
-                }
-            } else {
-
-                return item
-            }
-        })
-
-        await updateDoc(docRef, {items: newSlArray})
-    }
-
-    async function checkAllItems(checkValue) {
-        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
-        const slDoc = await getDoc(docRef)
-        const newSlArray = slDoc.data().items.map(item => {
-            return {
-                ...item,
-                checked: checkValue
-            }
-        })
-
-        await updateDoc(docRef, {items: newSlArray})
-    }
-
-    function toggleCheckAllItems() {
-        shoppingList?.items.some(item => item.checked === false) ?
-            checkAllItems(true) :
-            checkAllItems(false)
-    }
-
-    async function deleteItem(itemId) {
-        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
-        const slDoc = await getDoc(docRef)
-        const newSlArray = slDoc.data().items.filter(item => item.id !== itemId)
-
-        await updateDoc(docRef, {items: newSlArray})
-    }
-
-    async function deleteCheckedItems() {
-        const docRef = doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR")
-        const slDoc = await getDoc(docRef)
-        const newSlArray = slDoc.data().items.filter(item => item.checked === false)
-
-        await updateDoc(docRef, {items: newSlArray})
-    }
     
     return (
         <ShoppingListPageContext.Provider 
             value={{
                 showAddItem,
                 shoppingList,
-                toggleShowAddITem
+                toggleShowAddITem,
+                AddItemObj
             }}
         >
             <div>
@@ -116,51 +74,18 @@ export default function ShoppingListPage() {
                     <PageMain>
                         {
                             shoppingList.items.length > 0 ?
-                            <List>
-                                {
-                                    shoppingList.items.map((item, index, arr) => {
-            
-                                        if (index === arr.length - 1) {
-                                            
-                                            return (
-                                                <ListItemLast
-                                                    key={item.id}
-                                                    className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
-                                                    onClick={() => toggleChecked(item.id)}
-                                                >
-                                                    {getCapString(item.name)}
-                                                    {item.checked ? <FaCheck /> : null}
-                                                </ListItemLast>
-                                            )
-                                        } else {
-            
-                                            return (
-                                                <ListItem
-                                                    key={item.id}
-                                                    className={item.checked ? "flex items-center justify-between text-white/20 line-through italic": ""}
-                                                    onClick={() => toggleChecked(item.id)}
-                                                >
-                                                    {getCapString(item.name)}
-                                                    {item.checked ? <FaCheck /> : null}
-                                                </ListItem>
-                                            )
-            
-                                        }
-                                    })
-                                }
-                            </List> : 
-                            !showAddItem ?
-                            <>
-                            <Button
-                                className="flex py-2 text-2xl justify-center"
-                                onClick={toggleShowAddITem}
-                                >
-                                <FaPlus />
-                            </Button>
+                                <ShoppingListEl /> : 
+                                !showAddItem ?
+                                    <>
+                                    <Button
+                                        className="flex py-2 text-2xl justify-center"
+                                        onClick={toggleShowAddITem}
+                                        >
+                                        <FaPlus />
+                                    </Button>
 
-                            <NavLink>Recipes <FaAngleRight /></NavLink>
-                            </> : null 
-
+                                    <PageLink>Recipes <FaAngleRight /></PageLink>
+                                    </> : null 
                         }
 
                         { showAddItem && <AddItemInput addItemFunction={addItem}/> }
@@ -181,7 +106,7 @@ export default function ShoppingListPage() {
                                     }
                                 </Button>
 
-                                <NavLink>Recipes <FaAngleRight /></NavLink>
+                                <PageLink>Recipes <FaAngleRight /></PageLink>
 
                                 <Button 
                                     className="text-red-700 disabled:text-red-700/40"
@@ -189,7 +114,6 @@ export default function ShoppingListPage() {
                                     disabled={shoppingList?.items.every(item => item.checked === false)}
                                 >
                                     Delete checked items
-
                                 </Button>
                             </>
                         }
@@ -207,5 +131,3 @@ export default function ShoppingListPage() {
 }
 
 export { ShoppingListPageContext }
-
-// className="py-1 shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
