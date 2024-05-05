@@ -69,7 +69,10 @@ export default function RecipesPage() {
                                                     key={item.id}
                                                     className={classNameGen}
                                                 >
-                                                    <Link className="flex justify-between items-center">
+                                                    <Link 
+                                                        className="flex justify-between items-center"
+                                                        to={item.id}
+                                                    >
                                                         {getCapString(item.name)}
                                                         <FaAngleRight />
                                                     </Link>
