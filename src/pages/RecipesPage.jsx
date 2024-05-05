@@ -45,15 +45,6 @@ export default function RecipesPage() {
                     >
                         <FaPlus />
                     </Link>
-                    {/* {
-                        showAddItem || shoppingList?.items.length > 0 ?
-                        <button 
-                            className="col-start-6 flex items-center justify-center text-xl"
-                            onClick={toggleShowAddITem}
-                        >
-                            {showAddItem ? <FaCheck /> : <FaPlus />}
-                        </button> : null
-                    } */}
                 </PageHeader>
                 {
                     recipes ?
