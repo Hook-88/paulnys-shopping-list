@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import PageHeader from "../components/PageHeader"
 import PageMain from "../components/PageMain"
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import { db } from "../firebase"
 import { doc, getDoc } from "firebase/firestore"
 import { IoCheckmarkCircle, IoEllipseOutline } from "react-icons/io5";
@@ -11,6 +11,7 @@ import ListItem from "../components/List/ListItem"
 import Button from "../components/Button"
 import PageLink from "../components/PageLink"
 import { FaAngleRight, FaPlus } from "react-icons/fa6"
+import { FaEdit } from "react-icons/fa"
 
 export default function RecipePage() {
     const { id } = useParams()
@@ -30,17 +31,14 @@ export default function RecipePage() {
     return (
         recipe ?
         <div>
-            <PageHeader>
+            <PageHeader className="items-center">
                 <h1 className="col-start-2 col-span-4 justify-self-center">{getCapString(recipe.name)}</h1>
-                {/* {
-                    showAddItem || shoppingList?.items.length > 0 ?
-                    <button 
-                        className="col-start-6 flex items-center justify-center text-xl"
-                        onClick={toggleShowAddITem}
-                    >
-                        {showAddItem ? <FaCheck /> : <FaPlus />}
-                    </button> : null
-                } */}
+                <Link 
+                    className="justify-self-end px-6 h-full flex items-center"
+                    to="edit"
+                >
+                    <FaEdit />
+                </Link>
             </PageHeader>
             <PageMain>
                 <List>
