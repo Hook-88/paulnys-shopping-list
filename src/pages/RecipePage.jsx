@@ -28,14 +28,14 @@ export default function RecipePage() {
         getRecipe()
     }, [])
 
-    function toggleChecked(ingredientId) {
+    function toggleSelected(ingredientId) {
         const newIngredientsArray = 
             recipe.ingredients.map(ingredient => {
                 if (ingredient.id === ingredientId) {
                     
                     return {
                         ...ingredient,
-                        checked: !ingredient.checked
+                        selected: !ingredient.selected
                     }
                 } else {
 
@@ -53,13 +53,13 @@ export default function RecipePage() {
 
     }
 
-    function selectAll(checkValue) {
+    function selectAll(selectValue) {
         const newIngredientsArray = 
             recipe.ingredients.map(ingredient => {
                 
                 return {
                     ...ingredient,
-                    checked: checkValue
+                    selected: selectValue
                 }
             })
         
@@ -73,7 +73,7 @@ export default function RecipePage() {
     }
 
     function ToggleCheckAll() {
-        const allChecked = recipe.ingredients.every(ingredient => ingredient.checked === true)
+        const allChecked = recipe.ingredients.every(ingredient => ingredient.selected === true)
         selectAll(!allChecked)
     }
 
@@ -93,25 +93,22 @@ export default function RecipePage() {
                 <List>
                     {
                         recipe.ingredients.map((ingredient, index, arr) => {
-                            let classNameGen = "flex items-center justify-between" 
+                            let classNameGen = 
+                                "flex items-center justify-between " + `${!ingredient.selected ? "text-white/40" : ""}`
         
                             if (index !== arr.length - 1) {
                                 classNameGen += " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
                             }
         
-                            // if (ingredient.checked) {
-                            //     classNameGen += " flex items-center justify-between text-white/20 line-through italic"
-                            // }
-        
                             return (
                                 <ListItem
                                     key={ingredient.id}
                                     className={classNameGen}
-                                    onClick={() => toggleChecked(ingredient.id)}
+                                    onClick={() => toggleSelected(ingredient.id)}
                                 >
                                     {getCapString(ingredient.name)}
                                     {
-                                        ingredient.checked ?
+                                        ingredient.selected ?
                                         <IoCheckmarkCircle className="text-xl text-sky-700"/> :
                                         <IoEllipseOutline className="text-xl"/>
                                     }
@@ -128,9 +125,9 @@ export default function RecipePage() {
                     
                 >
                     {
-                        recipe.ingredients.every(ingredient => ingredient.checked === true) ?
+                        recipe.ingredients.every(ingredient => ingredient.selected === true) ?
                             <>
-                                Deselect all
+                                Unselect all
                                 <IoEllipseOutline className="text-xl"/>
                             </> :
                             <>
@@ -140,7 +137,10 @@ export default function RecipePage() {
                     }
                 </Button>
                 
-                <Button className="flex items-center justify-between">
+                <Button 
+                    className="flex items-center justify-between disabled:text-white/40"
+                    disabled={recipe.ingredients.every(ingredient => !ingredient.selected)}
+                >
                     Add to shopping list
                     <FaPlus />
                 </Button>
