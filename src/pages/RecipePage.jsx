@@ -28,6 +28,31 @@ export default function RecipePage() {
         getRecipe()
     }, [])
 
+    function toggleChecked(ingredientId) {
+        const newIngredientsArray = 
+            recipe.ingredients.map(ingredient => {
+                if (ingredient.id === ingredientId) {
+                    
+                    return {
+                        ...ingredient,
+                        checked: !ingredient.checked
+                    }
+                } else {
+
+                    return ingredient
+                }
+            })
+        
+        setRecipe(prevRecipe => {
+            
+            return {
+                ...prevRecipe,
+                ingredients: newIngredientsArray
+            }
+        })
+
+    }
+
     return (
         recipe ?
         <div>
@@ -58,7 +83,7 @@ export default function RecipePage() {
                                 <ListItem
                                     key={ingredient.id}
                                     className={classNameGen}
-                                    // onClick={() => togglePropInFirebase(AddItemObj, item.id, "checked")}
+                                    onClick={() => toggleChecked(ingredient.id)}
                                 >
                                     {getCapString(ingredient.name)}
                                     {
@@ -66,7 +91,6 @@ export default function RecipePage() {
                                         <IoCheckmarkCircle className="text-xl text-sky-700"/> :
                                         <IoEllipseOutline className="text-xl"/>
                                     }
-                                    {ingredient.checked ? <FaCheck /> : null}
                                 </ListItem>
                             )
         
