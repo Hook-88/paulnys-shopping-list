@@ -127,8 +127,17 @@ export default function RecipePage() {
                     onClick={ToggleCheckAll}
                     
                 >
-                    Select all
-                    <IoCheckmarkCircle className="text-xl text-sky-700"/>
+                    {
+                        recipe.ingredients.every(ingredient => ingredient.checked === true) ?
+                            <>
+                                Deselect all
+                                <IoEllipseOutline className="text-xl"/>
+                            </> :
+                            <>
+                                Select all
+                                <IoCheckmarkCircle className="text-xl text-sky-700"/>
+                            </> 
+                    }
                 </Button>
                 
                 <Button className="flex items-center justify-between">
