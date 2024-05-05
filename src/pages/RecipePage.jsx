@@ -12,6 +12,7 @@ import Button from "../components/Button"
 import PageLink from "../components/PageLink"
 import { FaAngleRight, FaPlus } from "react-icons/fa6"
 import { FaEdit } from "react-icons/fa"
+import addSelectionToFirebase from "../utility/addSelectionToFirebase"
 
 export default function RecipePage() {
     const { id } = useParams()
@@ -27,6 +28,18 @@ export default function RecipePage() {
     useEffect(() => {
         getRecipe()
     }, [])
+
+    function handleAddIngredientsToSL() {
+        const AddItemObj = {
+            collectionName : "shoppingList", 
+            docId : "MMy6fOXSXocRw3w7k7GR", 
+            docProp: "items"
+        }
+        const ingredientsToAdd = recipe.ingredients.filter(ingredient => ingredient.selected === true)
+        
+        addSelectionToFirebase(AddItemObj, ingredientsToAdd)
+    }
+
 
     function toggleSelected(ingredientId) {
         const newIngredientsArray = 
@@ -137,7 +150,8 @@ export default function RecipePage() {
                     }
                 </Button>
                 
-                <Button 
+                <Button
+                    onClick={handleAddIngredientsToSL} 
                     className="flex items-center justify-between disabled:text-white/40"
                     disabled={recipe.ingredients.every(ingredient => !ingredient.selected)}
                 >
