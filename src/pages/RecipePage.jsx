@@ -53,6 +53,30 @@ export default function RecipePage() {
 
     }
 
+    function selectAll(checkValue) {
+        const newIngredientsArray = 
+            recipe.ingredients.map(ingredient => {
+                
+                return {
+                    ...ingredient,
+                    checked: checkValue
+                }
+            })
+        
+        setRecipe(prevRecipe => {
+        
+            return {
+                ...prevRecipe,
+                ingredients: newIngredientsArray
+            }
+        })
+    }
+
+    function ToggleCheckAll() {
+        const allChecked = recipe.ingredients.every(ingredient => ingredient.checked === true)
+        selectAll(!allChecked)
+    }
+
     return (
         recipe ?
         <div>
@@ -98,7 +122,11 @@ export default function RecipePage() {
                     }
                 </List>
 
-                <Button className="flex items-center justify-between">
+                <Button 
+                    className="flex items-center justify-between"
+                    onClick={ToggleCheckAll}
+                    
+                >
                     Select all
                     <IoCheckmarkCircle className="text-xl text-sky-700"/>
                 </Button>
