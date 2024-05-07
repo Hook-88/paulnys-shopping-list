@@ -13,10 +13,12 @@ import PageLink from "../components/PageLink"
 import { FaAngleRight, FaPlus } from "react-icons/fa6"
 import { FaEdit } from "react-icons/fa"
 import addSelectionToFirebase from "../utility/addSelectionToFirebase"
+import ConfirmModal from "../components/ConfirmModal"
 
 export default function RecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
+    const [showConfirm, setShowConfirm] = useState(false)
 
     async function getRecipe() {
         const docRef = doc(db, "recipes", id)
@@ -29,16 +31,27 @@ export default function RecipePage() {
         getRecipe()
     }, [])
 
-    function handleAddIngredientsToSL() {
+    async function handleAddIngredientsToSL() {
         const AddItemObj = {
             collectionName : "shoppingList", 
             docId : "MMy6fOXSXocRw3w7k7GR", 
             docProp: "items"
         }
-        const ingredientsToAdd = recipe.ingredients.filter(ingredient => ingredient.selected === true)
+        const ingredientsSelected = recipe.ingredients.filter(ingredient => ingredient.selected === true)
+        const currentShoppingList = await getDoc(doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR"))
+
+        console.log(currentShoppingList.data().items)
+        console.log(ingredientsSelected)
+
         
-        addSelectionToFirebase(AddItemObj, ingredientsToAdd)
+
+
+        // addSelectionToFirebase(AddItemObj, ingredientsToAdd)
+        selectAll(false)
+        setShowConfirm(false)
     }
+
+    
 
 
     function toggleSelected(ingredientId) {
@@ -107,7 +120,7 @@ export default function RecipePage() {
                     {
                         recipe.ingredients.map((ingredient, index, arr) => {
                             let classNameGen = 
-                                "flex items-center justify-between " + `${!ingredient.selected ? "text-white/40" : ""}`
+                                "flex items-center justify-between " + `${ingredient.selected ? "text-sky-700" : ""}`
         
                             if (index !== arr.length - 1) {
                                 classNameGen += " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
@@ -143,15 +156,15 @@ export default function RecipePage() {
                                 Unselect all
                                 <IoEllipseOutline className="text-xl"/>
                             </> :
-                            <>
+                            <div className="text-sky-700 flex items-center justify-between w-full">
                                 Select all
-                                <IoCheckmarkCircle className="text-xl text-sky-700"/>
-                            </> 
+                                <IoCheckmarkCircle className="text-xl"/>
+                            </div> 
                     }
                 </Button>
                 
                 <Button
-                    onClick={handleAddIngredientsToSL} 
+                    onClick={() => setShowConfirm(true)} 
                     className="flex items-center justify-between disabled:text-white/40"
                     disabled={recipe.ingredients.every(ingredient => !ingredient.selected)}
                 >
@@ -165,7 +178,15 @@ export default function RecipePage() {
                 </PageLink>
 
 
-            </PageMain> 
+            </PageMain>
+            {
+                showConfirm &&
+                <ConfirmModal 
+                    question="Add ingredients to shopping list?" 
+                    closeFunc={() => setShowConfirm(false)} 
+                    confirmActionFunc={handleAddIngredientsToSL}
+                />    
+            } 
         </div> : null
     )
 }
