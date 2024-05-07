@@ -8,16 +8,16 @@ export default async function addSelectionToFirebase(AddItemObj, selectionArray)
     //doc needs ref to database, name of collection and the id of the document
     const docRef = doc(db, collectionName, docId)
     //get current list
-    const slDoc = await getDoc(docRef)
+    // const slDoc = await getDoc(docRef)
     const itemsToAddArray = selectionArray.map(item => ({
         name: item.name,
         id: item.id,
         checked: false 
     }))
 
-    const newSlArray = [...slDoc.data()[docProp], ...itemsToAddArray]
+    // const newSlArray = [...slDoc.data()[docProp], ...itemsToAddArray]
 
-    await updateDoc(docRef, {[docProp]: newSlArray})
+    await updateDoc(docRef, {[docProp]: itemsToAddArray})
 
 
 }

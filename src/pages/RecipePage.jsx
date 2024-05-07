@@ -3,7 +3,7 @@ import PageHeader from "../components/PageHeader"
 import PageMain from "../components/PageMain"
 import { useParams, Link } from "react-router-dom"
 import { db } from "../firebase"
-import { doc, getDoc } from "firebase/firestore"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { IoCheckmarkCircle, IoEllipseOutline } from "react-icons/io5";
 import getCapString from "../utility/getCapedString"
 import List from "../components/List/List"
@@ -39,19 +39,23 @@ export default function RecipePage() {
         }
         const ingredientsSelected = recipe.ingredients.filter(ingredient => ingredient.selected === true)
         const currentShoppingList = await getDoc(doc(db, "shoppingList", "MMy6fOXSXocRw3w7k7GR"))
+        const ingredientsToAdd = filterOutDoubleValues([...currentShoppingList.data().items, ...ingredientsSelected])
 
-        console.log(currentShoppingList.data().items)
-        console.log(ingredientsSelected)
-
-        
-
-
-        // addSelectionToFirebase(AddItemObj, ingredientsToAdd)
+        addSelectionToFirebase(AddItemObj, ingredientsToAdd)
         selectAll(false)
         setShowConfirm(false)
+
     }
 
-    
+    function filterOutDoubleValues(arr) {
+
+        return arr.filter((obj, index, self) => {
+
+          return index === self.findIndex((t) => (
+            t.name === obj.name
+          ))
+        })
+      }
 
 
     function toggleSelected(ingredientId) {
@@ -120,7 +124,7 @@ export default function RecipePage() {
                     {
                         recipe.ingredients.map((ingredient, index, arr) => {
                             let classNameGen = 
-                                "flex items-center justify-between " + `${ingredient.selected ? "text-sky-700" : ""}`
+                                "flex items-center justify-between "
         
                             if (index !== arr.length - 1) {
                                 classNameGen += " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
@@ -156,10 +160,10 @@ export default function RecipePage() {
                                 Unselect all
                                 <IoEllipseOutline className="text-xl"/>
                             </> :
-                            <div className="text-sky-700 flex items-center justify-between w-full">
+                            <>
                                 Select all
-                                <IoCheckmarkCircle className="text-xl"/>
-                            </div> 
+                                <IoCheckmarkCircle className="text-xl text-sky-700"/>
+                            </> 
                     }
                 </Button>
                 
