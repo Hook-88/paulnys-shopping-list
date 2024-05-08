@@ -1,7 +1,7 @@
 import getCapString from "../utility/getCapedString"
 import PageHeader from "../components/PageHeader"
 import PageMain from "../components/PageMain"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import { FaEdit } from "react-icons/fa"
 import { FaAngleRight, FaAngleLeft, FaPlus } from "react-icons/fa6"
 import List from "../components/List/List"
@@ -10,12 +10,14 @@ import Button from "../components/Button"
 import PageLink from "../components/PageLink"
 import ConfirmModal from "../components/ConfirmModal"
 import { useEffect, useState } from "react"
-import { onSnapshot, doc } from "firebase/firestore"
+import { onSnapshot, doc, deleteDoc } from "firebase/firestore"
 import { db } from "../firebase"
 
 export default function EditRecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
+    const [showConfirm, setShowConfirm] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const docRef = doc(db, "recipes", id)
@@ -32,7 +34,14 @@ export default function EditRecipePage() {
         return unsub
     }, [])
 
-    console.log(recipe)
+    async function deleteRecipe(recipeId) {
+        navigate("/recipes")
+        const docRef = doc(db, "recipes", recipeId)
+        await deleteDoc(docRef)
+        
+
+    }
+
     
     return (
         recipe ?
@@ -63,68 +72,57 @@ export default function EditRecipePage() {
                         <FaAngleRight /> 
                     </PageLink>
                 </div>
-                <List>
-                    {
-                        recipe.ingredients.map((ingredient, index, arr) => {
-                            let classNameGen = 
-                                "flex items-center justify-between "
-        
-                            if (index !== arr.length - 1) {
-                                classNameGen += " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
-                            }
-        
-                            return (
-                                <ListItem
-                                    key={ingredient.id}
-                                    className={classNameGen}
-                                >
-                                    <Link 
-                                        className="flex justify-between items-center w-full"
-                                        to={ingredient.id}
+                <div>
+                    <h2 className="ml-4 text-sm text-gray-500 mb-1">INGREDIENTS</h2>
+                    <List>
+                        {
+                            recipe.ingredients.map((ingredient, index, arr) => {
+                                let classNameGen = 
+                                    "flex items-center justify-between "
+            
+                                if (index !== arr.length - 1) {
+                                    classNameGen += " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
+                                }
+            
+                                return (
+                                    <ListItem
+                                        key={ingredient.id}
+                                        className={classNameGen}
                                     >
-                                        {getCapString(ingredient.name)}
-                                        <FaAngleRight />
-                                    </Link>
-                                </ListItem>
-                            )
-        
-                        })
-                    }
-                </List>
+                                        <Link 
+                                            className="flex justify-between items-center w-full"
+                                            to={ingredient.id}
+                                        >
+                                            {getCapString(ingredient.name)}
+                                            <FaAngleRight />
+                                        </Link>
+                                    </ListItem>
+                                )
+            
+                            })
+                        }
+                    </List>
+                </div>
 
-                {/* <Button 
-                    className="flex items-center justify-between"
-                    onClick={ToggleCheckAll}
-                    
+                <Button 
+                    className="text-red-700 mt-4"
+                    onClick={() => setShowConfirm(true)}
+                    // disabled={shoppingList?.items.every(item => item.checked === false)}
                 >
-                    {
-                        recipe.ingredients.every(ingredient => ingredient.selected === true) ?
-                            <>
-                                Unselect all
-                                <IoEllipseOutline className="text-xl"/>
-                            </> :
-                            <>
-                                Select all
-                                <IoCheckmarkCircle className="text-xl text-sky-700"/>
-                            </> 
-                    }
-                </Button> */}
+                    Delete Recipe
+                </Button>
 
-                <PageLink to="/recipes">
-                    Recipes
-                    <FaAngleRight />
-                </PageLink>
 
 
             </PageMain>
-            {/* {
+            {
                 showConfirm &&
                 <ConfirmModal 
-                    question="Add ingredients to shopping list?" 
+                    question="Are you sure you want to delete the recipe?" 
                     closeFunc={() => setShowConfirm(false)} 
-                    confirmActionFunc={handleAddIngredientsToSL}
+                    confirmActionFunc={() => deleteRecipe(id)}
                 />    
-            }  */}
+            } 
         </div> : null
     )
 }
