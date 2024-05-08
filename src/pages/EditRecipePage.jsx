@@ -72,37 +72,40 @@ export default function EditRecipePage() {
                         <FaAngleRight /> 
                     </PageLink>
                 </div>
-                <div>
-                    <h2 className="ml-4 text-sm text-gray-500 mb-1">INGREDIENTS</h2>
-                    <List>
-                        {
-                            recipe.ingredients.map((ingredient, index, arr) => {
-                                let classNameGen = 
-                                    "flex items-center justify-between "
-            
-                                if (index !== arr.length - 1) {
-                                    classNameGen += " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
-                                }
-            
-                                return (
-                                    <ListItem
-                                        key={ingredient.id}
-                                        className={classNameGen}
-                                    >
-                                        <Link 
-                                            className="flex justify-between items-center w-full"
-                                            to={ingredient.id}
+
+                {   recipe.ingredients.length > 0 &&
+                    <div>
+                        <h2 className="ml-4 text-sm text-gray-500 mb-1">INGREDIENTS</h2>
+                        <List>
+                            {
+                                recipe.ingredients.map((ingredient, index, arr) => {
+                                    let classNameGen = 
+                                        "flex items-center justify-between "
+                
+                                    if (index !== arr.length - 1) {
+                                        classNameGen += " shadow-[rgba(100,100,100,0.5)_0px_1px_0px_0px]"
+                                    }
+                
+                                    return (
+                                        <ListItem
+                                            key={ingredient.id}
+                                            className={classNameGen}
                                         >
-                                            {getCapString(ingredient.name)}
-                                            <FaAngleRight />
-                                        </Link>
-                                    </ListItem>
-                                )
-            
-                            })
-                        }
-                    </List>
-                </div>
+                                            <Link 
+                                                className="flex justify-between items-center w-full"
+                                                to={ingredient.id}
+                                            >
+                                                {getCapString(ingredient.name)}
+                                                <FaAngleRight />
+                                            </Link>
+                                        </ListItem>
+                                    )
+                
+                                })
+                            }
+                        </List>
+                    </div>
+                }
 
                 <Button 
                     className="text-red-700 mt-4"
