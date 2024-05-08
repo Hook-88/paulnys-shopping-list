@@ -38,9 +38,10 @@ export default function EditRecipePage() {
         navigate("/recipes")
         const docRef = doc(db, "recipes", recipeId)
         await deleteDoc(docRef)
-        
 
     }
+
+    // TODO add logic to add ingredients to the recipe
 
     
     return (
