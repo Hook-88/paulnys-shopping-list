@@ -86,7 +86,7 @@ export default function EditRecipePage() {
                 <div>
                     <h2 className="ml-4 text-sm text-gray-500 mb-1">NAME RECIPE</h2>
 
-                    <PageLink>
+                    <PageLink to="name">
                         {getCapString(recipe.name)}
                         <FaAngleRight /> 
                     </PageLink>
@@ -112,7 +112,7 @@ export default function EditRecipePage() {
                                         >
                                             <Link 
                                                 className="flex justify-between items-center w-full"
-                                                to={ingredient.id}
+                                                to={`ingredients/${ingredient.id}`}
                                             >
                                                 {getCapString(ingredient.name)}
                                                 <FaAngleRight />
