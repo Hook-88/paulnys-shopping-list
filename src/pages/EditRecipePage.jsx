@@ -3,7 +3,7 @@ import PageHeader from "../components/PageHeader"
 import PageMain from "../components/PageMain"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { FaEdit } from "react-icons/fa"
-import { FaAngleRight, FaAngleLeft, FaPlus } from "react-icons/fa6"
+import { FaAngleRight, FaAngleLeft, FaPlus, FaCheck } from "react-icons/fa6"
 import List from "../components/List/List"
 import ListItem from "../components/List/ListItem"
 import Button from "../components/Button"
@@ -12,12 +12,29 @@ import ConfirmModal from "../components/ConfirmModal"
 import { useEffect, useState } from "react"
 import { onSnapshot, doc, deleteDoc } from "firebase/firestore"
 import { db } from "../firebase"
+import addItemToFirebase from "../utility/addItemToFirebase"
+import AddItemInput from "../components/AddItemInput"
 
 export default function EditRecipePage() {
     const { id } = useParams()
     const [recipe, setRecipe] = useState(null)
     const [showConfirm, setShowConfirm] = useState(false)
+    const [showAddItem, setShowAddItem] = useState(false)
     const navigate = useNavigate()
+
+    const AddIngredientObj = {
+        collectionName : "recipes", 
+        docId : id, 
+        docProp: "ingredients"
+    }
+
+    function addIngredient(value) {
+        addItemToFirebase(AddIngredientObj, value)
+    }
+
+    function toggleShowAddItem() {
+        setShowAddItem(prev => !prev)
+    }
 
     useEffect(() => {
         const docRef = doc(db, "recipes", id)
@@ -41,8 +58,6 @@ export default function EditRecipePage() {
 
     }
 
-    // TODO add logic to add ingredients to the recipe
-
     
     return (
         recipe ?
@@ -60,8 +75,11 @@ export default function EditRecipePage() {
                 <h1 className="col-start-2 col-span-4 justify-self-center">{getCapString("edit recipe")}</h1>
                 <button
                     className="col-start-6 flex items-center justify-center text-xl"
+                    onClick={toggleShowAddItem}
                 >
-                    <FaPlus />
+                    {
+                        showAddItem ? <FaCheck /> : <FaPlus />
+                    }
                 </button>
             </PageHeader>
             <PageMain>
@@ -106,6 +124,11 @@ export default function EditRecipePage() {
                             }
                         </List>
                     </div>
+                }
+
+                {
+                    showAddItem &&
+                    <AddItemInput addItemFunction={addIngredient} />
                 }
 
                 <Button 
