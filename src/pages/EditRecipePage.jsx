@@ -1,7 +1,7 @@
 import getCapString from "../utility/getCapedString"
 import PageHeader from "../components/PageHeader"
 import PageMain from "../components/PageMain"
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate, Outlet } from "react-router-dom"
 import { FaEdit } from "react-icons/fa"
 import { FaAngleRight, FaAngleLeft, FaPlus, FaCheck } from "react-icons/fa6"
 import List from "../components/List/List"
@@ -17,7 +17,7 @@ import AddItemInput from "../components/AddItemInput"
 
 export default function EditRecipePage() {
     const { id } = useParams()
-    const [recipe, setRecipe] = useState(null)
+    const [recipe, setRecipe] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
     const [showAddItem, setShowAddItem] = useState(false)
     const navigate = useNavigate()
@@ -57,7 +57,6 @@ export default function EditRecipePage() {
         await deleteDoc(docRef)
 
     }
-
     
     return (
         recipe ?
@@ -86,7 +85,10 @@ export default function EditRecipePage() {
                 <div>
                     <h2 className="ml-4 text-sm text-gray-500 mb-1">NAME RECIPE</h2>
 
-                    <PageLink to="name">
+                    <PageLink 
+                        to="name"
+                        state={recipe}
+                    >
                         {getCapString(recipe.name)}
                         <FaAngleRight /> 
                     </PageLink>
