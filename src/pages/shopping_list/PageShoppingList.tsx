@@ -1,6 +1,7 @@
-import { FaEllipsis, FaEyeSlash } from "react-icons/fa6";
-import PageHeader from "../../components/PageHeader/PageHeader";
+import { FaEllipsis, FaEyeSlash, FaMinus, FaPlus } from "react-icons/fa6"
+import PageHeader from "../../components/PageHeader/PageHeader"
 import { shoppingList } from "../../data.ts"
+import Button from "../../components/Button.tsx"
 
 export default function PageShoppingList(){
     
@@ -15,7 +16,7 @@ export default function PageShoppingList(){
                 </button>
             </PageHeader>
             <main className="px-4 mt-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between px-4 mb-1">
                     <small>
                         (4/4) - Completed
                     </small>
@@ -23,11 +24,27 @@ export default function PageShoppingList(){
                         Hide selected <FaEyeSlash />
                     </small>
                 </div>
-                <ul>
+                <ul className="space-y-2">
                     {
                         shoppingList.map(item => (
                             <li key={item.id}>
-                                {item.name}
+                                <div className="bg-white/5 px-4 py-3 flex rounded">
+                                    {item.name}
+                                    { item.quantity > 1 && ` (${item.quantity}x)` }
+                                    <div className="flex ml-auto gap-2">
+                                        {
+                                            item.quantity > 1 && (
+                                                <Button className="p-1 bg-orange-900">
+                                                    <FaMinus />
+                                                </Button>
+                                            )
+                                        }
+                                        <Button className="p-1 bg-sky-900">
+                                            <FaPlus />
+                                        </Button>
+                                    </div>
+
+                                </div>
                             </li>
                         ))
                     }
