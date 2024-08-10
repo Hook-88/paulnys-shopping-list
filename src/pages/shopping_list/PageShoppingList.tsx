@@ -22,7 +22,7 @@ export default function PageShoppingList(){
                 <List>
                     <List.Header>
                         <List.Progress />
-                        <button className="flex items-center gap-1 text-">
+                        <button className="flex items-center gap-1 text-xs">
                             Hide selected <FaEyeSlash />
                         </button>
                     </List.Header>
