@@ -1,7 +1,10 @@
 import { FaEllipsis, FaEyeSlash, FaMinus, FaPlus } from "react-icons/fa6"
 import PageHeader from "../../components/PageHeader/PageHeader"
+import PageBody from "../../components/PageBody"
 import { shoppingList } from "../../data.ts"
-import Button from "../../components/Button.tsx"
+import Button from "../../components/Button"
+import List from "../../components/List/List.tsx"
+import Card from "../../components/Card.tsx"
 
 export default function PageShoppingList(){
     
@@ -15,42 +18,45 @@ export default function PageShoppingList(){
                     <FaEllipsis />
                 </button>
             </PageHeader>
-            <main className="px-4 mt-4">
-                <div className="flex items-center justify-between px-4 mb-1">
-                    <small>
-                        (4/4) - Completed
-                    </small>
-                    <small className="flex items-center gap-1">
-                        Hide selected <FaEyeSlash />
-                    </small>
-                </div>
-                <ul className="space-y-2">
-                    {
-                        shoppingList.map(item => (
-                            <li key={item.id}>
-                                <div className="bg-white/5 px-4 py-3 flex rounded">
-                                    {item.name}
-                                    { item.quantity > 1 && ` (${item.quantity}x)` }
-                                    <div className="flex ml-auto gap-2">
-                                        {
-                                            item.quantity > 1 && (
-                                                <Button className="p-1 bg-orange-900">
-                                                    <FaMinus />
-                                                </Button>
-                                            )
-                                        }
-                                        <Button className="p-1 bg-sky-900">
-                                            <FaPlus />
-                                        </Button>
-                                    </div>
+            <PageBody>
+                <List>
+                    <List.Header>
+                        <List.Progress />
+                        <button className="flex items-center gap-1 text-">
+                            Hide selected <FaEyeSlash />
+                        </button>
+                    </List.Header>
+                    <List.Body>
+                        {
+                            shoppingList.map(item => (
+                                <li 
+                                    key={item.id}
+                                    className="border border-transparent"
+                                >
+                                    <Card className="flex">
+                                        { item.name }
+                                        { item.quantity > 1 && ` (${item.quantity}x)` }
+                                        <div className="flex ml-auto gap-2">
+                                            {
+                                                item.quantity > 1 && (
+                                                    <Button className="p-1 bg-orange-900">
+                                                        <FaMinus />
+                                                    </Button>
+                                                )
+                                            }
+                                            <Button className="p-1 bg-sky-900">
+                                                <FaPlus />
+                                            </Button>
+                                        </div>
 
-                                </div>
-                            </li>
-                        ))
-                    }
-                </ul>
+                                    </Card>
+                                </li>
+                            ))
+                        }
+                    </List.Body>
+                </List>
                 
-            </main>
+            </PageBody>
         </>
     )
 }
