@@ -5,6 +5,7 @@ import { shoppingList } from "../../data.ts"
 import Button from "../../components/Button"
 import List from "../../components/List/List.tsx"
 import Card from "../../components/Card.tsx"
+import Menu from "../../components/Menu/Menu.tsx"
 
 export default function PageShoppingList(){
     
@@ -14,9 +15,14 @@ export default function PageShoppingList(){
                 <PageHeader.Title>
                     Shopping List
                 </PageHeader.Title>
-                <button className="flex items-center justify-center">
+                <Menu>
+                    <Menu.Button>
+                        <FaEllipsis />
+                    </Menu.Button>
+                </Menu>
+                {/* <button className="flex items-center justify-center">
                     <FaEllipsis />
-                </button>
+                </button> */}
             </PageHeader>
             <PageBody>
                 <List>
