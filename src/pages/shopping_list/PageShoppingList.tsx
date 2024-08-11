@@ -20,8 +20,18 @@ export default function PageShoppingList(){
                         <FaEllipsis />
                     </Menu.Button>
                     <Menu.Dropdown>
-                        <Menu.Item>Add new item</Menu.Item>
-                        <Menu.Item>Delete selection</Menu.Item>
+                        <Menu.Item itemType="button">
+                            {/* <button className="px-2 py-1 text-right">
+                                Add new item
+                            </button> */}
+                            Add new item
+                        </Menu.Item>
+                        <Menu.Item itemType="button">
+                            Delete selection
+                            {/* <button className="px-2 py-1 text-right">
+                                Delete selection
+                            </button> */}
+                        </Menu.Item>
                     </Menu.Dropdown>
                 </Menu>
                 {/* <button className="flex items-center justify-center">
