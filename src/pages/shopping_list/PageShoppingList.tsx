@@ -19,6 +19,10 @@ export default function PageShoppingList(){
                     <Menu.Button>
                         <FaEllipsis />
                     </Menu.Button>
+                    <Menu.Dropdown>
+                        <Menu.Item>Add new item</Menu.Item>
+                        <Menu.Item>Delete selection</Menu.Item>
+                    </Menu.Dropdown>
                 </Menu>
                 {/* <button className="flex items-center justify-center">
                     <FaEllipsis />
