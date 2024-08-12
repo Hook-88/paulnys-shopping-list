@@ -1,10 +1,19 @@
 import React from "react";
 
-export default function ListProgress(): React.ReactElement {
+type Props = {
+    totalLength: number
+    selectedLength: number
+    completedText: string
+}
+
+export default function ListProgress({totalLength, selectedLength, completedText}: Props): React.ReactElement {
     
     return (
         <small>
-            (4/4) - Completed
+            {`(${selectedLength}/${totalLength})`}
+            {
+                selectedLength === totalLength && ` - ${completedText}`
+            }
         </small>
     )
 }
