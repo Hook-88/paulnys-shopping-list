@@ -11,7 +11,7 @@ type Item = {
 
 type ActionType = {
     type: string,
-    id: string
+    id?: string
 }
 
 type ShoppingListContextType = {
@@ -38,7 +38,6 @@ export default function PageShoppingListProvider(){
                     )
                 )
             }
-
             case "increment_quantity" : {
 
                 return (
@@ -49,7 +48,6 @@ export default function PageShoppingListProvider(){
                     )
                 )
             }
-
             case "decrement_quantity" : {
 
                 return (
@@ -60,7 +58,6 @@ export default function PageShoppingListProvider(){
                     )
                 )
             }
-
             case "delete_selection" : {
 
                 return (

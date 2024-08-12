@@ -6,11 +6,12 @@ type Props = {
     children: React.ReactNode,
     className?: string,
     itemType: "link" | "button"
-    to?: string
+    to?: string,
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
     
 }
 
-export default function MenuItem({children, className, itemType, to = ""}: Props): React.ReactElement {
+export default function MenuItem({children, className, itemType, to = "", onClick}: Props): React.ReactElement {
     const MenuItemClassName = twMerge(
         "px-4 py-1 grid text-nowrap text-right text-base w-full h-full font-normal",
         className
@@ -39,7 +40,10 @@ export default function MenuItem({children, className, itemType, to = ""}: Props
 
     return (
         <li className="border-b border-white/30 last:border-none">
-            <button  className={MenuItemClassName}>
+            <button 
+                className={MenuItemClassName}
+                onClick={onClick}
+            >
                 {children}
             </button>
         </li>

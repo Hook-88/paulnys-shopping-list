@@ -1,8 +1,20 @@
 import PageHeader from "../../components/PageHeader/PageHeader"
 import Menu from "../../components/Menu/Menu"
 import { FaEllipsis } from "react-icons/fa6"
+import { useContext } from "react"
+import { ShoppingListContext } from "./PageShoppingList"
+import { ShoppingListContextType } from "./PageShoppingList"
 
 export default function PageHeaderShoppingList() {
+    const { dispatch } = useContext<ShoppingListContextType>(ShoppingListContext)
+
+    function handleClickDelete() {
+        if (dispatch) {
+            dispatch({
+                type: "delete_selection"
+            })
+        }
+    }
     
     return (
         <PageHeader>
@@ -17,7 +29,10 @@ export default function PageHeaderShoppingList() {
                     <Menu.Item itemType="button">
                         Add new item
                     </Menu.Item>
-                    <Menu.Item itemType="button">
+                    <Menu.Item 
+                        itemType="button"
+                        onClick={handleClickDelete}
+                    >
                         Delete selection
                     </Menu.Item>
                 </Menu.Dropdown>
