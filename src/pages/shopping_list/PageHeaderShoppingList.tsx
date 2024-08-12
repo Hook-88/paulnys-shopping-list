@@ -4,9 +4,11 @@ import { FaEllipsis } from "react-icons/fa6"
 import { useContext } from "react"
 import { ShoppingListContext } from "./PageShoppingList"
 import { ShoppingListContextType } from "./PageShoppingList"
+import { PageShoppingListContext } from "./Page"
 
 export default function PageHeaderShoppingList() {
     const { dispatch } = useContext<ShoppingListContextType>(ShoppingListContext)
+    const { openDialog, setDialogContent } = useContext(PageShoppingListContext)
 
     function handleClickDelete() {
         if (dispatch) {
@@ -14,6 +16,15 @@ export default function PageHeaderShoppingList() {
                 type: "delete_selection"
             })
         }
+    }
+
+    function handleClickAddItem() {
+        setDialogContent(
+            <>
+                <p>Time to add stuff</p>
+            </>
+        )
+        openDialog()
     }
     
     return (
@@ -26,7 +37,10 @@ export default function PageHeaderShoppingList() {
                     <FaEllipsis />
                 </Menu.Button>
                 <Menu.Dropdown>
-                    <Menu.Item itemType="button">
+                    <Menu.Item 
+                        itemType="button"
+                        onClick={handleClickAddItem}
+                    >
                         Add new item
                     </Menu.Item>
                     <Menu.Item 
