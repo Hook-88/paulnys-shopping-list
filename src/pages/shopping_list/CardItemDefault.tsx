@@ -4,16 +4,34 @@ import Button from "../../components/Button";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 type Props = {
-    item: Item
+    item: Item,
+    dispatch: any
 }
-
 type Item = {
     name: string
     quantity: number
     selected: boolean
+    id: string
 }
 
-export default function CardItemDefault({item}: Props): React.JSX.Element {
+export default function CardItemDefault({item, dispatch}: Props): React.JSX.Element {
+
+    function handleClickIncrement(event: React.MouseEvent<HTMLButtonElement>) {
+        event.stopPropagation()
+        dispatch({
+            type: "increment_quantity",
+            id: item.id
+        })
+    }
+
+    function handleClickDecrement(event: React.MouseEvent<HTMLButtonElement>) {
+        event.stopPropagation()
+        dispatch({
+            type: "decrement_quantity",
+            id: item.id
+        })
+        
+    }
     
     return (
         <Card className="flex">
@@ -22,12 +40,18 @@ export default function CardItemDefault({item}: Props): React.JSX.Element {
             <div className="flex ml-auto gap-2">
                 {
                     item.quantity > 1 && (
-                        <Button className="p-1 bg-orange-900">
+                        <Button 
+                            className="p-1 bg-orange-900"
+                            onClick={handleClickDecrement}
+                        >
                             <FaMinus />
                         </Button>
                     )
                 }
-                <Button className="p-1 bg-sky-900">
+                <Button
+                    onClick={handleClickIncrement} 
+                    className="p-1 bg-sky-900"
+                >
                     <FaPlus />
                 </Button>
             </div>

@@ -1,19 +1,31 @@
-import { FaEllipsis, FaEyeSlash } from "react-icons/fa6"
-import PageHeader from "../../components/PageHeader/PageHeader"
+import { FaEyeSlash } from "react-icons/fa6"
 import PageBody from "../../components/PageBody"
 import { shoppingList } from "../../data.ts"
 import List from "../../components/List/List.tsx"
-import Menu from "../../components/Menu/Menu.tsx"
 import CardItemDefault from "./CardItemDefault.tsx"
 import CardItemSelected from "./CardItemSelected.tsx"
 import { useReducer } from "react"
+import PageHeaderShoppingList from "./PageHeaderShoppingList.tsx"
+
+type Item = {
+    name: string
+    quantity: number
+    selected: boolean
+    id: string
+}
+
+type ActionType = {
+    type: string,
+    id: string
+}
 
 export default function PageShoppingList(){
     const [localShoppingList, dispatch] = useReducer(reducer, shoppingList)
 
-    function reducer(localShoppingList, action) {
+    function reducer(localShoppingList : Item[], action: ActionType) {
         switch (action.type) {
             case "toggle_select" : {
+                
                 return (
                     localShoppingList.map(
                         item => item.id === action.id ? 
@@ -21,7 +33,28 @@ export default function PageShoppingList(){
                             : item
                     )
                 )
-                break
+            }
+
+            case "increment_quantity" : {
+
+                return (
+                    localShoppingList.map(
+                        item => item.id === action.id ?
+                            {...item, quantity: item.quantity + 1}
+                            : item
+                    )
+                )
+            }
+
+            case "decrement_quantity" : {
+
+                return (
+                    localShoppingList.map(
+                        item => item.id === action.id ?
+                            {...item, quantity: item.quantity - 1}
+                            : item
+                    )
+                )
             }
 
             default: {
@@ -30,7 +63,7 @@ export default function PageShoppingList(){
         }
     }
 
-    function handleClickItem(itemId) {
+    function handleClickItem(itemId: string) {
         dispatch({
             type: "toggle_select",
             id: itemId
@@ -39,24 +72,7 @@ export default function PageShoppingList(){
 
     return (
         <>
-            <PageHeader>
-                <PageHeader.Title>
-                    Shopping List
-                </PageHeader.Title>
-                <Menu>
-                    <Menu.Button>
-                        <FaEllipsis />
-                    </Menu.Button>
-                    <Menu.Dropdown>
-                        <Menu.Item itemType="button">
-                            Add new item
-                        </Menu.Item>
-                        <Menu.Item itemType="button">
-                            Delete selection
-                        </Menu.Item>
-                    </Menu.Dropdown>
-                </Menu>
-            </PageHeader>
+            <PageHeaderShoppingList />
             <PageBody>
                 <List>
                     <List.Header>
@@ -78,7 +94,7 @@ export default function PageShoppingList(){
                                         {
                                             item.selected ? (
                                                 <CardItemSelected item={item} />
-                                            ) : <CardItemDefault item={item} />
+                                            ) : <CardItemDefault item={item} dispatch={dispatch} />
                                         }
                                     </li>
                                 )
