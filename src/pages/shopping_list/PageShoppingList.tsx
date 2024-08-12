@@ -1,14 +1,42 @@
-import { FaEllipsis, FaEyeSlash, FaMinus, FaPlus } from "react-icons/fa6"
+import { FaEllipsis, FaEyeSlash } from "react-icons/fa6"
 import PageHeader from "../../components/PageHeader/PageHeader"
 import PageBody from "../../components/PageBody"
 import { shoppingList } from "../../data.ts"
-import Button from "../../components/Button"
 import List from "../../components/List/List.tsx"
-import Card from "../../components/Card.tsx"
 import Menu from "../../components/Menu/Menu.tsx"
+import CardItemDefault from "./CardItemDefault.tsx"
+import CardItemSelected from "./CardItemSelected.tsx"
+import { useReducer } from "react"
 
 export default function PageShoppingList(){
-    
+    const [localShoppingList, dispatch] = useReducer(reducer, shoppingList)
+
+    function reducer(localShoppingList, action) {
+        switch (action.type) {
+            case "toggle_select" : {
+                return (
+                    localShoppingList.map(
+                        item => item.id === action.id ? 
+                            {...item, selected: !item.selected} 
+                            : item
+                    )
+                )
+                break
+            }
+
+            default: {
+                throw Error('Unknown action: ' + action.type);
+            }
+        }
+    }
+
+    function handleClickItem(itemId) {
+        dispatch({
+            type: "toggle_select",
+            id: itemId
+        })
+    }
+
     return (
         <>
             <PageHeader>
@@ -39,30 +67,22 @@ export default function PageShoppingList(){
                     </List.Header>
                     <List.Body>
                         {
-                            shoppingList.map(item => (
-                                <li 
-                                    key={item.id}
-                                    className="border border-transparent"
-                                >
-                                    <Card className="flex">
-                                        { item.name }
-                                        { item.quantity > 1 && ` (${item.quantity}x)` }
-                                        <div className="flex ml-auto gap-2">
-                                            {
-                                                item.quantity > 1 && (
-                                                    <Button className="p-1 bg-orange-900">
-                                                        <FaMinus />
-                                                    </Button>
-                                                )
-                                            }
-                                            <Button className="p-1 bg-sky-900">
-                                                <FaPlus />
-                                            </Button>
-                                        </div>
+                            localShoppingList.map(item => {
 
-                                    </Card>
-                                </li>
-                            ))
+                                return (
+                                    <li 
+                                        key={item.id}
+                                        className="border rounded border-transparent"
+                                        onClick={() => handleClickItem(item.id)}
+                                    >
+                                        {
+                                            item.selected ? (
+                                                <CardItemSelected item={item} />
+                                            ) : <CardItemDefault item={item} />
+                                        }
+                                    </li>
+                                )
+                            })
                         }
                     </List.Body>
                 </List>
