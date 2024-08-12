@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { ShoppingListContextType, ShoppingListContext } from "./PageShoppingListProvider";
 
 type Props = {
     item: Item,
-    dispatch: any
 }
 type Item = {
     name: string
@@ -14,23 +14,27 @@ type Item = {
     id: string
 }
 
-export default function CardItemDefault({item, dispatch}: Props): React.JSX.Element {
+export default function CardItemDefault({item}: Props): React.JSX.Element {
+    const {dispatch} = useContext<ShoppingListContextType>(ShoppingListContext)
 
     function handleClickIncrement(event: React.MouseEvent<HTMLButtonElement>) {
         event.stopPropagation()
-        dispatch({
-            type: "increment_quantity",
-            id: item.id
-        })
+        if (dispatch) {
+            dispatch({
+                type: "increment_quantity",
+                id: item.id
+            })
+        }
     }
 
     function handleClickDecrement(event: React.MouseEvent<HTMLButtonElement>) {
         event.stopPropagation()
-        dispatch({
-            type: "decrement_quantity",
-            id: item.id
-        })
-        
+        if (dispatch) {
+            dispatch({
+                type: "decrement_quantity",
+                id: item.id
+            })
+        }
     }
     
     return (

@@ -1,77 +1,29 @@
 import { FaEyeSlash } from "react-icons/fa6"
 import PageBody from "../../components/PageBody"
-import { shoppingList } from "../../data.ts"
-import List from "../../components/List/List.tsx"
-import CardItemDefault from "./CardItemDefault.tsx"
-import CardItemSelected from "./CardItemSelected.tsx"
-import { useReducer } from "react"
-import PageHeaderShoppingList from "./PageHeaderShoppingList.tsx"
+import List from "../../components/List/List"
+import CardItemDefault from "./CardItemDefault"
+import CardItemSelected from "./CardItemSelected"
+import { useContext } from "react"
+import PageHeaderShoppingList from "./PageHeaderShoppingList"
+import PageShoppingListProvider, { ShoppingListContext } from "./PageShoppingListProvider"
+import { ShoppingListContextType } from "./PageShoppingListProvider"
 
-type Item = {
-    name: string
-    quantity: number
-    selected: boolean
-    id: string
-}
-
-type ActionType = {
-    type: string,
-    id: string
-}
 
 export default function PageShoppingList(){
-    const [localShoppingList, dispatch] = useReducer(reducer, shoppingList)
-
-    function reducer(localShoppingList : Item[], action: ActionType) {
-        switch (action.type) {
-            case "toggle_select" : {
-                
-                return (
-                    localShoppingList.map(
-                        item => item.id === action.id ? 
-                            {...item, selected: !item.selected} 
-                            : item
-                    )
-                )
-            }
-
-            case "increment_quantity" : {
-
-                return (
-                    localShoppingList.map(
-                        item => item.id === action.id ?
-                            {...item, quantity: item.quantity + 1}
-                            : item
-                    )
-                )
-            }
-
-            case "decrement_quantity" : {
-
-                return (
-                    localShoppingList.map(
-                        item => item.id === action.id ?
-                            {...item, quantity: item.quantity - 1}
-                            : item
-                    )
-                )
-            }
-
-            default: {
-                throw Error('Unknown action: ' + action.type);
-            }
-        }
-    }
+    const { dispatch, localShoppingList } = useContext<ShoppingListContextType | {}>(ShoppingListContext)
 
     function handleClickItem(itemId: string) {
-        dispatch({
-            type: "toggle_select",
-            id: itemId
-        })
+        if (dispatch) {
+            dispatch({
+                type: "toggle_select",
+                id: itemId
+            })
+        }
     }
+    console.log(localShoppingList)
 
     return (
-        <>
+        <PageShoppingListProvider>
             <PageHeaderShoppingList />
             <PageBody>
                 <List>
@@ -83,6 +35,8 @@ export default function PageShoppingList(){
                     </List.Header>
                     <List.Body>
                         {
+                            localShoppingList &&
+
                             localShoppingList.map(item => {
 
                                 return (
@@ -94,7 +48,7 @@ export default function PageShoppingList(){
                                         {
                                             item.selected ? (
                                                 <CardItemSelected item={item} />
-                                            ) : <CardItemDefault item={item} dispatch={dispatch} />
+                                            ) : <CardItemDefault item={item} />
                                         }
                                     </li>
                                 )
@@ -104,6 +58,6 @@ export default function PageShoppingList(){
                 </List>
                 
             </PageBody>
-        </>
+        </PageShoppingListProvider>
     )
 }
