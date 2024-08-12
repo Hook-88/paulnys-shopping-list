@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import { ShoppingListContextType, ShoppingListContext } from "./PageShoppingListProvider";
+import { ShoppingListContextType, ShoppingListContext } from "./PageShoppingList";
 
 type Props = {
     item: Item,
@@ -15,7 +15,7 @@ type Item = {
 }
 
 export default function CardItemDefault({item}: Props): React.JSX.Element {
-    const {dispatch} = useContext<ShoppingListContextType>(ShoppingListContext)
+    const { dispatch } = useContext<ShoppingListContextType>(ShoppingListContext)
 
     function handleClickIncrement(event: React.MouseEvent<HTMLButtonElement>) {
         event.stopPropagation()
