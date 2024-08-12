@@ -1,4 +1,4 @@
-import { FaEyeSlash } from "react-icons/fa6"
+import { FaEye, FaEyeSlash } from "react-icons/fa6"
 import PageBody from "../../components/PageBody"
 import List from "../../components/List/List"
 import CardItemDefault from "./CardItemDefault"
@@ -80,6 +80,13 @@ export default function Page(){
         )
     }, [localShoppingList, filter])
 
+    useEffect(() => {
+        if (localShoppingListSelectedLength === 0) {
+            setFilter(false)
+        }
+
+    }, [localShoppingListSelectedLength])
+
     return (
         <>
             <PageHeaderShoppingList />
@@ -92,33 +99,25 @@ export default function Page(){
                             completedText="completed" 
                         />
                         <button
+                            disabled={localShoppingListSelectedLength === 0}
                             onClick={toggleFilter} 
-                            className="flex items-center gap-1 text-xs"
+                            className="
+                                flex items-center gap-1 text-xs
+                                disabled:text-white/30
+                            "
                         >
-                            Hide selected <FaEyeSlash />
+                            {
+                                filter && localShoppingListSelectedLength > 0 ? 
+                                    <>
+                                        Show checked <FaEye />
+                                    </> : 
+                                    <>
+                                        Hide checked <FaEyeSlash />
+                                    </>
+                            }
                         </button>
                     </List.Header>
                     {listBodyContent}
-                    {/* <List.Body>
-                        {
-                            localShoppingList.map(item => {
-
-                                return (
-                                    <li 
-                                        key={item.id}
-                                        className="border rounded border-transparent"
-                                        onClick={() => handleClickItem(item.id)}
-                                    >
-                                        {
-                                            item.selected ? (
-                                                <CardItemSelected item={item} />
-                                            ) : <CardItemDefault item={item} />
-                                        }
-                                    </li>
-                                )
-                            })
-                        }
-                    </List.Body> */}
                 </List>
                 
             </PageBody>
