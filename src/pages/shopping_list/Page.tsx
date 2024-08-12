@@ -39,7 +39,7 @@ export default function Page(){
                 <div 
                     className="
                         bg-black/10 backdrop-blur fixed inset-0 
-                        flex flex-col justify-end px-4 pb-4
+                        flex flex-col justify-end px-4 pb-8
                     "
                 >    
 

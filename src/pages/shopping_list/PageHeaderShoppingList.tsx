@@ -5,6 +5,8 @@ import { useContext } from "react"
 import { ShoppingListContext } from "./PageShoppingList"
 import { ShoppingListContextType } from "./PageShoppingList"
 import { PageShoppingListContext } from "./Page"
+import Button from "../../components/Button"
+import FormAddNewItem from "./FormAddNewItem"
 
 export default function PageHeaderShoppingList() {
     const { dispatch } = useContext<ShoppingListContextType>(ShoppingListContext)
@@ -20,9 +22,7 @@ export default function PageHeaderShoppingList() {
 
     function handleClickAddItem() {
         setDialogContent(
-            <>
-                <p>Time to add stuff</p>
-            </>
+            <FormAddNewItem />
         )
         openDialog()
     }
