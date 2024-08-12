@@ -28,9 +28,6 @@ export default function PageShoppingList(){
                         </Menu.Item>
                     </Menu.Dropdown>
                 </Menu>
-                {/* <button className="flex items-center justify-center">
-                    <FaEllipsis />
-                </button> */}
             </PageHeader>
             <PageBody>
                 <List>
