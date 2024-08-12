@@ -12,7 +12,7 @@ type Props = {
 
 export default function MenuItem({children, className, itemType, to = ""}: Props): React.ReactElement {
     const MenuItemClassName = twMerge(
-        "px-4 py-1 grid text-nowrap text-base font-normal",
+        "px-4 py-1 grid text-nowrap text-right text-base w-full h-full font-normal",
         className
     )
 
