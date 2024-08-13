@@ -1,14 +1,20 @@
 import PageBody from "../../components/PageBody"
 import PageHeaderShoppingList from "./PageHeaderShoppingList"
 import ListShoppingList from "./ListShoppingList"
-import { useRef, createContext, useState } from "react"
+import React, { useRef, createContext, useState } from "react"
 import Card from "../../components/Card"
 
-const PageShoppingListContext = createContext({
+type PageShoppingListContextType = {
+    openDialog? : () => void
+    closeDialog?: () => void
+    setDialogContent?: React.Dispatch<React.SetStateAction<React.ReactNode | null>>
+}
+
+const PageShoppingListContext = createContext<PageShoppingListContextType>({
 })
 
 export default function Page(){
-    const [dialogContent, setDialogContent] = useState(null)
+    const [dialogContent, setDialogContent] = useState<React.ReactNode | null>(null)
     const dialogRef = useRef<HTMLDialogElement>(null)
 
     function openDialog() {
@@ -44,7 +50,7 @@ export default function Page(){
                 >    
 
                 <Card className="text-center text-white px-2 bg-[#1a1a1a] mt-4">
-                    {dialogContent}
+                    {dialogContent || null}
                 </Card>
 
                 </div>

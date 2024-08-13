@@ -3,6 +3,10 @@ import Button from "../../components/Button"
 import { useContext } from "react"
 import { PageShoppingListContext } from "./Page"
 
+type FormData = {
+    itemName: string
+}
+
 export default function FormAddNewItem() {
     const {closeDialog} = useContext(PageShoppingListContext)
     const {register, reset, handleSubmit} = useForm({
@@ -11,7 +15,7 @@ export default function FormAddNewItem() {
         }
     })
 
-    function onHandleSubmit(formData) {
+    function onHandleSubmit(formData: FormData) {
         console.log(formData)
         reset()
     }
@@ -30,7 +34,11 @@ export default function FormAddNewItem() {
                     "
                     {...register("itemName")}
                 />
-                <Button className="bg-red-900">
+                <Button 
+                    className="bg-red-900"
+                    type="button"
+                    onClick={closeDialog}
+                >
                     X
                 </Button>
             </div>

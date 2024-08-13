@@ -5,7 +5,6 @@ import { useContext } from "react"
 import { ShoppingListContext } from "./PageShoppingList"
 import { ShoppingListContextType } from "./PageShoppingList"
 import { PageShoppingListContext } from "./Page"
-import Button from "../../components/Button"
 import FormAddNewItem from "./FormAddNewItem"
 
 export default function PageHeaderShoppingList() {
@@ -21,10 +20,13 @@ export default function PageHeaderShoppingList() {
     }
 
     function handleClickAddItem() {
-        setDialogContent(
-            <FormAddNewItem />
-        )
-        openDialog()
+        if (setDialogContent && openDialog) {
+            setDialogContent(
+                <FormAddNewItem />
+            )
+            openDialog()
+            
+        }
     }
     
     return (
